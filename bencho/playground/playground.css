@@ -1,0 +1,10 @@
+body { margin: 0; }
+.pg { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--font-ui); padding: 32px 24px; }
+.pg-head { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto 16px; }
+.pg-head h1 { font-size: 22px; font-weight: 500; margin: 0; }
+.pg-head button, .pg-sounds button { font: inherit; border: 0; border-radius: 999px; padding: 8px 14px; background: var(--surface-2); color: var(--ink); cursor: pointer; }
+.pg-sounds { display: flex; flex-wrap: wrap; gap: 6px; max-width: 1200px; margin: 0 auto 24px; }
+.pg-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
+.pg-card { background: var(--card); border-radius: 24px; padding: 16px; display: grid; gap: 12px; }
+.pg-stage { min-height: 380px; display: grid; place-items: center; overflow: hidden; }
+.pg-card a { color: var(--ink-3); font-size: 13px; text-decoration: none; }
