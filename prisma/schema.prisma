@@ -1,0 +1,1487 @@
+generator client {
+  // Generator baru `prisma-client` (bukan `prisma-client-js`): keluarannya
+  // TypeScript/ESM, jadi cocok dengan Vite/SvelteKit ("type": "module").
+  // `prisma-client-js` menghasilkan CommonJS -> Vite error
+  // "exports is not defined".
+  provider     = "prisma-client"
+  // "client" = nggak ada Rust query-engine binary yang di-download (yang bikin
+  // `npm install` gagal di Termux/Android). Semua query lewat driver `pg`
+  // (adapter di src/lib/server/prisma.ts) — pure JS.
+  engineType   = "client"
+  moduleFormat = "esm"
+  // Output DI DALAM src/ (bukan node_modules) — biar hasil `prisma generate`
+  // dari LAPTOP ikut ke-zip/commit dan dipindah ke Termux tanpa generate ulang
+  // (`prisma generate` butuh binary schema-engine yang tidak ada buat Termux).
+  // Import dari "generated/prisma/client".
+  output       = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Pegawai {
+  id                 String    @id @default(cuid())
+  no                 Int?
+  nama               String
+  nip                String?   @unique
+  jenisKelamin       String?
+  jenisKepegawaian   String?
+  tempatLahir        String?
+  tanggalLahir       DateTime?
+  tanggalLahirMentah String?
+  skCpnsPppk         String?
+  tmtCpnsPppk        DateTime?
+  tmtCpnsPppkMentah  String?
+  skPns              String?
+  tmtPns             DateTime?
+  tmtPnsMentah       String?
+  pangkat            String?
+  golRuang           String?
+  noSkKp             String?
+  tmtGolRuang        DateTime?
+  tmtGolRuangMentah  String?
+  jabatan            String?
+  eselonIv           String?
+  eselonIii          String?
+  eselonIi           String?
+  noSkJab            String?
+  tmtJab             DateTime?
+  tmtJabMentah       String?
+  jenisJabatan       String?
+  kelasJabatan       Int?
+  tingkatPendidikan  String?
+  jurusan            String?
+  namaUniversitas    String?
+  status             String?   @default("AKTIF")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  timKerja         TimKerjaAnggota[]
+  // Tahap C — baris KONVERSI di KARKEN yang diisi WI sendiri.
+  konversi         KonversiWi[]
+  verifikasiKarken VerifikasiKarken[]
+  // Ruang Coaching — pustaka video YouTube milik WI.
+  videoCoaching    VideoCoaching[]
+  // Seminar RAP/LAP yang diuji pegawai ini (satu peserta satu penguji).
+  mengujiSeminar   SeminarPeserta[]
+
+  // ---------------------------------------------------------------------
+  // Data operasional Widyaiswara (BUKAN dari Excel HR — diisi lewat aplikasi,
+  // PATCH /api/wi/[id]). Tabel `staff` sudah DIHAPUS (keputusan demo:
+  // cukup satu sumber data kepegawaian). Yang dulu ada di Staff dan tidak
+  // bisa diturunkan dari kolom HR dipindah ke sini; sisanya diturunkan:
+  //   name/gender/education/role -> nama/jenisKelamin/tingkatPendidikan/jabatan
+  //   ageGroup                   -> dihitung dari tanggalLahir
+  //   jpTerpakai                 -> dihitung dari PenugasanApproval "disetujui"
+  // Semua kolom di bawah opsional — pegawai non-WI membiarkannya kosong.
+  // `jpMaksimal` = batas JP PER BULAN khusus WI ini (mengalahkan batas jenjang di pengaturan_jp).
+  // null = ikut batas jenjang; bila itu pun kosong, kapasitas belum diisi (bukan "tak terbatas").
+  // ---------------------------------------------------------------------
+  jpMaksimal    Int?
+  // Koordinator Widyaiswara: WI yang ditunjuk admin (tetap berperan Widyaiswara). Memantau semua
+  // penugasan, mencatat sesi mengajar, mengatur batas JP WI, dan memverifikasi KARKEN.
+  koordinatorWi Boolean  @default(false)
+  spesialisasi  String[] @default([])
+  bio           String?
+
+  penugasan          PenugasanApproval[]
+  penugasanSementara PenugasanSementara[]
+  cuti               CutiPegawai[]
+  spd                Spd[]
+  // Langkah 3 (EB-034/EB-035): wewenang Admin Penyelenggara dari Super Admin & penugasan per angkatan.
+  wewenangPenyelenggara WewenangPenyelenggara?
+  penugasanAngkatan     PenugasanAngkatan[]
+
+  @@map("pegawai")
+}
+
+// ---------------------------------------------------------------------------
+// TimKerja & TimKerjaAnggota — implementasi "Tim Kerja" dari CATATAN-RENCANA.md
+// (rencana #2, desain diputuskan 26 Sept 2026). Kelompok wewenang lintas-
+// jabatan, terpisah dari struktur formal (eselon) — tempat "landing" buat
+// role fungsional yang nggak match jabatan formal apa pun (ketua-diklat,
+// pamdal, lihat temuan #3 di catatan itu).
+//
+// SCOPE SESI INI: cuma fondasi data + CRUD admin (schema, repository, API,
+// halaman kelola). BELUM dipakai buat enforce akses di mana pun —
+// `requireRole()` di server/auth.ts masih 100% jalan lewat 8 UserRole lama,
+// belum baca tabel ini sama sekali. `ketua-diklat`/`pamdal` juga BELUM
+// dipindah — masih role lama seperti sebelumnya. Lihat CATATAN-TIM-KERJA.md
+// buat detail lengkap + langkah migrasi yang belum dikerjain.
+// ---------------------------------------------------------------------------
+model TimKerja {
+  id        String   @id @default(cuid())
+  nama      String
+  deskripsi String?
+  // General-purpose (keputusan diskusi): satu tim boleh dikasih beberapa
+  // wewenang sekaligus, bukan cuma satu tujuan. Isinya kode bebas (mis.
+  // "tugaskan-wi", "approve-penugasan-wi") — belum ada enum tertutup karena
+  // daftar wewenang yang valid belum diputuskan; validasi sengaja longgar
+  // di layer API (non-empty string), bukan di skema.
+  wewenang  String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  anggota  TimKerjaAnggota[]
+  // Jadwal diklat yang dipegang tim ini (wewenang "tugaskan-wi"; lihat src/lib/tim-kerja.ts).
+  training Training[]
+
+  @@map("tim_kerja")
+}
+
+/**
+ * Satu baris = satu pegawai jadi anggota satu tim kerja, dengan peran
+ * internal ketua/anggota (keputusan diskusi: "Ketua Tim Diklat" = anggota
+ * Tim Diklat + posisi ketua, BUKAN jabatan formal tersendiri). Satu pegawai
+ * boleh muncul di banyak tim (keanggotaan lintas-tim), tapi cuma sekali per
+ * tim yang sama — dijaga `@@unique([timKerjaId, pegawaiId])`.
+ * Wewenang efektif ketua vs anggota biasa di tim yang sama BISA beda
+ * (keputusan diskusi), tapi detail mana yang khusus-ketua belum dirinci —
+ * jadi untuk sekarang `peran` cuma disimpan (buat tampilan + fondasi nanti),
+ * BELUM dipakai buat bedain wewenang aktual (lihat getWewenangPegawai di
+ * repository, union rata semua wewenang timnya tanpa peduli peran).
+ */
+model TimKerjaAnggota {
+  id         String   @id @default(cuid())
+  timKerjaId String
+  timKerja   TimKerja @relation(fields: [timKerjaId], references: [id], onDelete: Cascade)
+  pegawaiId  String
+  pegawai    Pegawai  @relation(fields: [pegawaiId], references: [id])
+  peran      String   @default("anggota") // "ketua" | "anggota"
+  createdAt  DateTime @default(now())
+
+  @@unique([timKerjaId, pegawaiId])
+  @@map("tim_kerja_anggota")
+}
+
+// ---------------------------------------------------------------------------
+// Training & PenugasanApproval — MENGISI domain types yang sudah lama
+// disiapkan di server/types.ts (TrainingRecord, AssignableTrainingRecord,
+// PendingApprovalRecord) tapi belum pernah dipetakan ke tabel apa pun sejak
+// rewrite ini dimulai (comment lama di types.ts: "siap dipetakan ke schema
+// DB"). Ini implementasi buat fitur "Tugaskan Widyaiswara" (ketua-diklat) +
+// "Persetujuan penugasan" (kepala-balai) yang tadinya cuma placeholder "#" di
+// DashboardActionsGrid. Lihat CATATAN-PENUGASAN-WI.md buat detail lengkap +
+// aturan H-3.
+// ---------------------------------------------------------------------------
+model Training {
+  id              String    @id @default(cuid())
+  name            String
+  category        String // slug: "manajerial" | "jafung" | "teknis-sub" | "teknis-umum", lihat src/app/pelatihan/page.tsx
+  participants    Int       @default(0)
+  startDate       DateTime
+  endDate         DateTime?
+  jpDibutuhkan    Int       @default(0)
+  // Tempat pelaksanaan — jadi nilai default kolom "Tempat" di KARKEN (tiap sesi
+  // menyalin nilai ini saat dibuat, lalu boleh diubah per sesi).
+  tempat          String    @default("BBPKA-PDN II Jatinangor")
+  // Disamakan otomatis dengan tanggal (lihat sinkronStatusTraining di repositories/training.ts).
+  status          String    @default("Terjadwal") // "Terjadwal" | "Berjalan" | "Selesai"
+  // LMS tahap 1 — program berkurikulum LAN. Isinya KODE dari src/lib/kurikulum.ts
+  // (kurikulum disimpan sebagai kode, bukan tabel). Kosong = diklat biasa tanpa kurikulum.
+  jenisPelatihan  String? // "PKA" | "PKP"
+  modePelatihan   String? // "BLENDED" | "KLASIKAL"
+  angkatan        String? // teks bebas pendek, mis. "IV"
+  // Evaluasi peserta (tenaga pelatihan & penyelenggaraan) ditutup penyelenggara (isian tidak bisa diubah lagi).
+  evaluasiDitutup Boolean   @default(false)
+  // Tim kerja yang memegang diklat ini. Anggota tim (ketua & anggota) yang timnya berwenang
+  // "tugaskan-wi" boleh mengubah jadwal ini dan mengajukan/membatalkan WI-nya. Kosong = hanya
+  // Ketua Diklat (dan admin). Tim dihapus -> kembali kosong.
+  timKerjaId      String?
+  timKerja        TimKerja? @relation(fields: [timKerjaId], references: [id], onDelete: SetNull)
+  // Batas unggah dokumen persyaratan peserta. Kosong = bawaan H-7 dari tanggal mulai
+  // (src/lib/dokumen-peserta.ts batasBawaan; keputusan 14 Okt 2026).
+  batasDokumen    DateTime? @db.Date
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  approvals               PenugasanApproval[]
+  peserta                 Peserta[]
+  sesiPembelajaran        SesiPembelajaran[]
+  tes                     Tes[]
+  sasaranEvaluasi         SasaranEvaluasi[]
+  evaluasi                EvaluasiPengajar[]
+  evaluasiPenyelenggaraan EvaluasiPenyelenggaraan[]
+  kelompok                KelompokPeserta[]
+  masaTempatKerja         MasaTempatKerja[]
+  suratTugas              SuratTugas[]
+  suratKeterangan         SuratKeterangan[]
+  pemantauanPersiapan     PemantauanPersiapan[]
+  naskahDinas             NaskahDinas[]
+  tugas                   Tugas[]
+  seminarPeserta          SeminarPeserta[]
+  penugasanAngkatan       PenugasanAngkatan[]
+
+  @@index([timKerjaId])
+  @@map("training")
+}
+
+/**
+ * Satu training bisa dapet beberapa WI (beda spesialisasi/sesi), jadi ini
+ * bukan field langsung di Training, melainkan tabel penugasan terpisah —
+ * satu baris = satu pengajuan WI ke satu training, dengan status approval
+ * sendiri-sendiri. `instructorId` nunjuk ke `Pegawai.id` (pegawai berjabatan
+ * Widyaiswara); `jpMaksimal` buat cek `overCapacity` ada di tabel yang sama.
+ */
+model PenugasanApproval {
+  id             String    @id @default(cuid())
+  trainingId     String
+  training       Training  @relation(fields: [trainingId], references: [id])
+  instructorId   String
+  instructor     Pegawai   @relation(fields: [instructorId], references: [id])
+  jp             Int
+  // Snapshot pas diajukan: apakah jp ini bakal bikin instructor lewat
+  // jpMaksimal dia (jpTerpakai + jp > jpMaksimal). Dihitung sekali pas
+  // create, BUKAN live query — konsisten dengan pola snapshot lain di app
+  // ini (mis. `jabatan` di SessionPayload).
+  overCapacity   Boolean   @default(false)
+  status         String    @default("menunggu") // "menunggu" | "disetujui" | "ditolak"
+  diajukanOleh   String // email ketua-diklat/admin yang mengajukan
+  diajukanPada   DateTime  @default(now())
+  disetujuiOleh  String? // email kepala-balai/admin yang memutuskan
+  diputuskanPada DateTime?
+  catatan        String?
+  // Alasan penolakan oleh Kepala Balai (wajib saat ditolak, 18 Okt 2026).
+  alasanTolak    String?
+  // LMS tahap 1 — kode mata pelatihan yang diampu (src/lib/kurikulum.ts). Kosong
+  // untuk diklat tanpa kurikulum atau penugasan yang tidak terikat satu mata pelatihan.
+  mataPelatihan  String?
+
+  sesi PenugasanSesi[]
+
+  @@map("penugasan_approval")
+}
+
+// Satu baris = satu sesi mengajar WI pada satu tanggal. Ini sumber data baris
+// "Tatap Muka" di KARKEN (Kartu Kendali Kegiatan Widyaiswara). Hanya boleh
+// diisi untuk penugasan berstatus "disetujui", dan jumlah JP semua sesi tidak
+// boleh melebihi `jp` penugasannya (dicek di repositories/sesi.ts).
+model PenugasanSesi {
+  id          String            @id @default(cuid())
+  penugasanId String
+  penugasan   PenugasanApproval @relation(fields: [penugasanId], references: [id], onDelete: Cascade)
+  // DATE (tanpa jam) supaya tidak tergeser zona waktu.
+  tanggal     DateTime          @db.Date
+  kegiatan    String // mis. "PKA 4, Agenda II" — teks bebas, tampil apa adanya di KARKEN
+  jp          Int
+  tempat      String // snapshot Training.tempat saat dibuat; boleh diubah per sesi
+  keterangan  String?
+  dibuatOleh  String // email pengisi
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([penugasanId])
+  @@index([tanggal])
+  @@map("penugasan_sesi")
+}
+
+// ---------------------------------------------------------------------
+// LMS tahap 2 — peserta, jadwal pembelajaran, kehadiran
+// ---------------------------------------------------------------------
+
+// Peserta SATU pelatihan (orang yang sama di dua pelatihan = dua baris). Belum
+// ditautkan ke akun: di tahap ini peserta tidak login, kehadiran dicatat penyelenggara.
+model Peserta {
+  id                 String           @id @default(cuid())
+  trainingId         String
+  training           Training         @relation(fields: [trainingId], references: [id])
+  nomor              Int // nomor urut / daftar hadir di dalam pelatihan
+  nama               String
+  nip                String? // hanya angka (lihat rapikanNip di src/lib/peserta.ts)
+  jabatan            String?
+  instansi           String?
+  status             String           @default("AKTIF") // "AKTIF" | "MENGUNDURKAN_DIRI" | "DIBERHENTIKAN"
+  catatan            String?
+  // Akun login peserta (ruang belajar). Cara akun dibuat/ditautkan diputuskan
+  // kemudian; kosong = peserta belum bisa masuk.
+  akunId             String?
+  akun               Akun?            @relation(fields: [akunId], references: [id], onDelete: SetNull)
+  // Kelompok kecil e-learning & pembimbingan coach (PKA/PKP). Kelompok dihapus -> kosong.
+  // USANG sejak keputusan 14 Okt 2026: keanggotaan per jenis kelompok ada di `AnggotaKelompok`.
+  // Kolom ini dibiarkan sampai semua repository pindah, lalu dihapus di migrasi berikutnya.
+  kelompokId         String?
+  kelompok           KelompokPeserta? @relation(fields: [kelompokId], references: [id], onDelete: SetNull)
+  // Keputusan 14 Okt 2026: jalur menentukan berkas wajib (src/lib/dokumen-peserta.ts).
+  jalurDaftar        String           @default("INSTANSI") // "INSTANSI" | "PERORANGAN"
+  ukuranKaos         String? // "S" | "M" | "L" | "XL" | "XXL" | ... (teks bebas pendek)
+  judulAksiPerubahan String?
+  // Waktu peserta melakukan daftar ulang (online). Kosong = belum.
+  daftarUlangPada    DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  kehadiran               Kehadiran[]
+  nilai                   NilaiPeserta[]
+  tes                     PengerjaanTes[]
+  evaluasi                EvaluasiPengajar[]
+  evaluasiPenyelenggaraan EvaluasiPenyelenggaraan?
+  suratKeterangan         SuratKeterangan[]
+  dokumen                 DokumenPeserta[]
+  anggotaKelompok         AnggotaKelompok[]
+  pelaksanaanRemedial     PelaksanaanRemedial[]
+  catatanCoaching         CatatanCoaching[]
+  seminar                 SeminarPeserta[]
+  tontonVideo             TontonVideo[]
+  kirimanTugas            KirimanTugas[]
+
+  // NIP yang sama tidak boleh dua kali dalam satu pelatihan (baris tanpa NIP tidak dibatasi).
+  @@unique([trainingId, nip])
+  @@index([trainingId])
+  @@index([akunId])
+  @@index([kelompokId])
+  @@map("peserta")
+}
+
+// Kelompok kecil peserta PKA/PKP (KepKa LAN 2/2023: e-learning dalam 4 kelompok kecil,
+// pembimbingan aksi perubahan 4 kelompok @ 1 coach) — src/lib/kelompok.ts.
+model KelompokPeserta {
+  id             String            @id @default(cuid())
+  trainingId     String
+  training       Training          @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  nomor          Int
+  nama           String?
+  coachNama      String?
+  coachPegawaiId String? // bila coach pegawai balai (WI)
+  tautan         String? // ruang rapat daring kelompok
+  // Jenis kegiatan (src/lib/kelompok.ts JENIS_KELOMPOK). Kelompok lama = ELEARNING.
+  jenis          String            @default("ELEARNING") // "ELEARNING" | "STULA" | "MANDIRI" | "SEMINAR"
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  peserta        Peserta[]
+  anggota        AnggotaKelompok[]
+  // Ruang Coaching (hanya kelompok ELEARNING & pembimbingan coach).
+  sesiCoaching   SesiCoaching[]
+  videoKelompok  VideoKelompok[]
+  topikForum     TopikForum[]
+  bacaForum      BacaForum[]
+
+  @@unique([trainingId, jenis, nomor])
+  @@map("kelompok_peserta")
+}
+
+// Satu sesi pada jadwal pembelajaran pelatihan. BEDA dari PenugasanSesi (sesi
+// mengajar seorang WI untuk KARKEN): ini jadwal kelasnya, dasar pencatatan kehadiran.
+model SesiPembelajaran {
+  id            String   @id @default(cuid())
+  trainingId    String
+  training      Training @relation(fields: [trainingId], references: [id])
+  // DATE (tanpa jam) supaya tidak tergeser zona waktu.
+  tanggal       DateTime @db.Date
+  jamMulai      String? // "08:00" — hanya untuk mengurutkan sesi dalam satu hari
+  kegiatan      String
+  jp            Int
+  // "KLASIKAL" | "SINKRON" | "LAPANGAN" (kehadiran dicatat) | "ASINKRON" | "MANDIRI" — lihat src/lib/kehadiran.ts
+  bentuk        String   @default("KLASIKAL")
+  mataPelatihan String? // kode dari src/lib/kurikulum.ts (hanya PKP/PKA)
+  keterangan    String?
+  // Tautan rapat daring (Zoom/Meet) untuk sesi sinkron; tampil di ruang belajar peserta.
+  tautan        String?
+  // Ruang/tempat sesi (mis. "Kelas A"); kosong = tempat diklat. Tampil di Jadwal hari ini (EB-041).
+  ruang         String?
+  dibuatOleh    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  kehadiran Kehadiran[]
+
+  @@index([trainingId, tanggal])
+  @@map("sesi_pembelajaran")
+}
+
+model Kehadiran {
+  id          String           @id @default(cuid())
+  sesiId      String
+  sesi        SesiPembelajaran @relation(fields: [sesiId], references: [id], onDelete: Cascade)
+  pesertaId   String
+  peserta     Peserta          @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  status      String // "HADIR" | "TIDAK_HADIR" | "DISPENSASI"
+  keterangan  String?
+  dicatatOleh String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([sesiId, pesertaId])
+  @@index([pesertaId])
+  @@map("kehadiran")
+}
+
+// ---------------------------------------------------------------------
+// LMS tahap 3 — penilaian peserta PKA/PKP (lihat src/lib/penilaian.ts)
+// ---------------------------------------------------------------------
+
+// Satu baris = satu nilai (0–100) satu aspek untuk satu peserta dari satu
+// penilai. `kodeAspek` = kode dari daftarAspek() ("AKADEMIK-2", ...) atau
+// "REMEDIAL-<JENIS_EVALUASI>" untuk nilai remedial.
+//   sumber "REKAP"   : diisi Ketua Diklat/admin (dari formulir) — didahulukan;
+//   sumber "PENILAI" : diisi WI lewat akunnya — dirata-rata bila lebih dari satu.
+model NilaiPeserta {
+  id          String   @id @default(cuid())
+  pesertaId   String
+  peserta     Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  kodeAspek   String
+  nilai       Float
+  sumber      String // "REKAP" | "PENILAI"
+  penilai     String // email pengisi
+  penilaiNama String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([pesertaId, kodeAspek, penilai])
+  @@index([pesertaId])
+  @@map("nilai_peserta")
+}
+
+// Baris tunggal ("singleton", id tetap "singleton") — belum ada indikator
+// beban JP harian otomatis (butuh model jadwal WI per-tanggal yang belum
+// dibuat), jadi tabel ini BARU tempat menyimpan angka batasnya. Dipakai
+// nanti begitu indikator harian digarap, supaya nggak hardcode di kode.
+model PengaturanJp {
+  id                String   @id @default("singleton")
+  batasHijauHarian  Int      @default(14)
+  batasKuningHarian Int      @default(20)
+  batasRekapBulanan Int      @default(23)
+  // Batas JP Widyaiswara PER BULAN menurut jenjang (diisi admin di halaman Aturan JP; kosong =
+  // belum diatur). WI dengan `pegawai.jpMaksimal` terisi memakai angkanya sendiri. JP dihitung
+  // dari penugasan disetujui pada diklat yang MULAI di bulan itu (lihat $lib/kapasitas.ts).
+  batasWiPertama    Int?
+  batasWiMuda       Int?
+  batasWiMadya      Int?
+  batasWiUtama      Int?
+  updatedAt         DateTime @updatedAt
+  diubahOleh        String?
+
+  @@map("pengaturan_jp")
+}
+
+// Rilis bertahap: status modul yang bisa dibuka-tutup (lihat src/lib/modul.ts). Satu baris per
+// modul; modul tanpa baris memakai status bawaan di DAFTAR_MODUL. `ujiCoba` = email akun yang boleh
+// membuka modul berstatus "uji-coba".
+model PengaturanModul {
+  kode       String   @id
+  status     String   @default("tertutup") // "tertutup" | "uji-coba" | "dibuka"
+  ujiCoba    String[] @default([])
+  diubahOleh String?
+  updatedAt  DateTime @updatedAt
+
+  @@map("pengaturan_modul")
+}
+
+// ---------------------------------------------------------------------------
+// Akun login & notifikasi per-role — PINDAH dari JSON store (data/store/*.json)
+// ke database. Alasan: file JSON tidak bisa dipakai di Vercel (filesystem
+// read-only/sementara), dan akun demo di data/seed/users.json memuat password
+// yang diketahui publik. Akun asli dibuat lewat `npm run akun:buat`, BUKAN
+// dari seed.
+// ---------------------------------------------------------------------------
+model Akun {
+  id              String   @id @default(cuid())
+  email           String   @unique // selalu disimpan huruf kecil
+  // Nama pengguna pilihan sendiri (registrasi mandiri /registrasi); huruf kecil,
+  // diawali huruf, jadi tidak pernah tertukar dengan NIP. Kosong untuk akun lain.
+  username        String?  @unique
+  name            String
+  role            String // salah satu id di src/lib/roles.ts
+  passwordHash    String // scrypt "salt:key" (lihat src/lib/server/password.ts)
+  pegawaiId       String? // Pegawai.id kalau akun ini punya padanan pegawai formal
+  aktif           Boolean  @default(true)
+  // true = kata sandi sementara dari admin (reset / akun baru): semua API ditolak
+  // sampai pemiliknya mengganti kata sandi (B15).
+  wajibGantiSandi Boolean  @default(false)
+  // Catatan sandi awal (EB-040): kata sandi sementara terenkripsi AES-256-GCM (kunci
+  // turunan BBPKA_SESSION_SECRET, lihat src/lib/server/sandi-awal.ts), dibaca admin di
+  // Kelola Akun. Dikosongkan saat pemilik mengganti kata sandinya.
+  sandiAwal       String?
+  sandiAwalAt     DateTime?
+  // Naik setiap reset sandi, ganti sandi, aktif/nonaktif, dan ubah peran: semua
+  // sesi (cookie) yang dibuat sebelumnya langsung gugur.
+  sesiVersi       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  peserta Peserta[]
+  profil  ProfilPeserta?
+  // Ruang Coaching: penulis forum (SetNull: tulisan tetap ada bila akun dihapus) & tanda sudah dibaca.
+  topikForum   TopikForum[]
+  balasanForum BalasanForum[]
+  bacaForum    BacaForum[]
+
+  @@map("akun")
+}
+
+// Registrasi mandiri peserta (halaman publik /registrasi, lihat src/lib/registrasi.ts).
+// Akun dibuat NONAKTIF dan baru aktif setelah disetujui admin/Ketua Diklat; ditolak =
+// akun & profil dihapus (bisa mendaftar ulang). Data pribadi (UU PDP) — RLS aktif.
+model ProfilPeserta {
+  id                 String    @id @default(cuid())
+  akunId             String    @unique
+  akun               Akun      @relation(fields: [akunId], references: [id], onDelete: Cascade)
+  nip                String    @unique // 18 angka
+  namaDepan          String
+  namaBelakang       String?
+  kodeProvinsi       String // kode Kemendagri, mis. "32" (src/lib/wilayah-data.ts)
+  kodeKabKota        String // mis. "32.11"
+  instansi           String
+  unitOrganisasi     String // OPD / Unit Organisasi
+  unitKerja          String?
+  golongan           String // mis. "III/d" (src/lib/registrasi.ts GOLONGAN)
+  jabatan            String
+  telepon            String?
+  ponsel             String
+  alamat             String // alamat rumah / tempat tinggal
+  // Biodata tambahan (workbook biodata diklat; keputusan 14 Okt 2026). Agama TIDAK disimpan.
+  tempatLahir        String?
+  tanggalLahir       DateTime? @db.Date
+  jenisKelamin       String? // "L" | "P"
+  pendidikanTerakhir String?
+  eselon             String?
+  tmtPangkat         DateTime? @db.Date
+  tmtJabatan         DateTime? @db.Date
+  alamatKantor       String?
+  status             String    @default("MENUNGGU") // "MENUNGGU" | "DISETUJUI"
+  // Waktu pendaftar menyetujui pemrosesan data pribadinya (UU PDP).
+  persetujuanData    DateTime
+  diputuskanOleh     String?
+  diputuskanPada     DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([status])
+  @@map("profil_peserta")
+}
+
+// Plt/Plh: pegawai merangkap jabatan lain untuk sementara (dasar: SK). Selama
+// mulai..selesai dan belum dicabut, pemilik akun boleh "bertindak sebagai" peran
+// `role` (lihat /api/auth/peran). Jabatan asli di Data Pegawai tidak diubah.
+model PenugasanSementara {
+  id         String    @id @default(cuid())
+  pegawaiId  String
+  pegawai    Pegawai   @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  jenis      String // "PLT" | "PLH"
+  jabatan    String // jabatan yang dirangkap, mis. "Kepala Bagian Tata Usaha"
+  role       String // peran aplikasi yang diberikan selama penugasan
+  nomorSk    String
+  mulai      DateTime  @db.Date
+  selesai    DateTime  @db.Date
+  dicabutAt  DateTime?
+  dibuatOleh String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([pegawaiId])
+  @@map("penugasan_sementara")
+}
+
+// Catatan siapa melakukan apa (kelola akun, Plt/Plh, peran, status pegawai).
+model LogAudit {
+  id         String   @id @default(cuid())
+  waktu      DateTime @default(now())
+  pelaku     String // email akun pelaku
+  pelakuNama String
+  sebagai    String? // mis. "Plt. Kepala Bagian Tata Usaha"
+  aksi       String
+  sasaran    String?
+  rincian    String?
+
+  @@index([waktu])
+  @@map("log_audit")
+}
+
+// ---------------------------------------------------------------------
+// Pre-test & post-test peserta (lihat src/lib/tes.ts). Evaluasi program,
+// tidak masuk Formulir 14.
+// ---------------------------------------------------------------------
+
+// Bank soal pilihan ganda per program (PKA/PKP), dipakai lintas angkatan.
+model SoalTes {
+  id             String   @id @default(cuid())
+  program        String // "PKA" | "PKP"
+  kisi           String // "I" | "II" | "III" | "IV" | "DASAR" | "UMUM"
+  pertanyaan     String
+  opsi           Json // string[] 2–5 pilihan, urutan asli (A..E)
+  kunci          Int // indeks pilihan benar (0 = A)
+  pembahasan     String?
+  // "DIAJUKAN" (dari WI) | "SIAP" | "DIKEMBALIKAN" | "NONAKTIF"
+  status         String   @default("DIAJUKAN")
+  catatanPeriksa String?
+  // Penyusun soal (nama WI). Admin boleh menginput atas nama WI.
+  penyusun       String?
+  dibuatOleh     String // email akun yang menginput
+  pegawaiId      String? // pegawai (WI) pemilik soal, bila diinput WI sendiri
+  diperiksaOleh  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([program, status])
+  @@index([pegawaiId])
+  @@map("soal_tes")
+}
+
+// Satu tes (PRE/POST) pada satu jadwal diklat.
+model Tes {
+  id             String    @id @default(cuid())
+  trainingId     String
+  training       Training  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  jenis          String // "PRE" | "POST"
+  status         String    @default("DRAF") // "DRAF" | "TERBIT" | "DITUTUP"
+  buka           DateTime?
+  tutup          DateTime?
+  durasiMenit    Int       @default(30)
+  soalIds        Json      @default("[]") // string[] paket soal (urutan dasar)
+  acakSoal       Boolean   @default(true)
+  acakOpsi       Boolean   @default(true)
+  // Peserta melihat skor pre & post-nya setelah post-test dikirim.
+  tampilkanHasil Boolean   @default(true)
+  diubahOleh     String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  pengerjaan PengerjaanTes[]
+
+  @@unique([trainingId, jenis])
+  @@map("tes")
+}
+
+// Satu peserta mengerjakan satu tes (sekali). Jawaban = indeks pilihan ASLI.
+model PengerjaanTes {
+  id         String    @id @default(cuid())
+  tesId      String
+  tes        Tes       @relation(fields: [tesId], references: [id], onDelete: Cascade)
+  pesertaId  String
+  peserta    Peserta   @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  mulai      DateTime  @default(now())
+  batas      DateTime
+  selesai    DateTime?
+  urutan     Json // [{ soalId, opsi: number[] }] yang dilihat peserta
+  jawaban    Json      @default("{}") // { soalId: indeksPilihanAsli }
+  benar      Int?
+  jumlahSoal Int
+  skor       Float?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([tesId, pesertaId])
+  @@index([pesertaId])
+  @@map("pengerjaan_tes")
+}
+
+// ---------------------------------------------------------------------
+// Evaluasi tenaga pelatihan oleh peserta (Formulir 16–21, rekap 22) — src/lib/evaluasi.ts
+// ---------------------------------------------------------------------
+
+// Sasaran selain pengampu (pengampu otomatis dari penugasan WI): penceramah, coach, penguji, mentor.
+model SasaranEvaluasi {
+  id         String   @id @default(cuid())
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  formulir   String // "PENCERAMAH" | "COACH" | "PENGUJI" | "MENTOR"
+  nama       String
+  pegawaiId  String? // bila tenaga pelatihan pegawai balai (WI)
+  keterangan String? // materi ceramah / kelompok
+  dibuatOleh String
+  createdAt  DateTime @default(now())
+
+  @@index([trainingId])
+  @@map("sasaran_evaluasi")
+}
+
+// Satu isian evaluasi satu peserta untuk satu sasaran. Rekap ditampilkan tanpa nama peserta.
+model EvaluasiPengajar {
+  id            String   @id @default(cuid())
+  trainingId    String
+  training      Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  pesertaId     String
+  peserta       Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  formulir      String
+  sasaranKunci  String // "P:<pegawaiId>:<kodeMp>" (pengampu) | "S:<SasaranEvaluasi.id>"
+  namaSasaran   String
+  pegawaiId     String?
+  mataPelatihan String?
+  nilai         Json // { A1: 85, ... }
+  rataRata      Float
+  catatan       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([pesertaId, sasaranKunci])
+  @@index([trainingId])
+  @@index([pegawaiId])
+  @@map("evaluasi_pengajar")
+}
+
+// Evaluasi penyelenggaraan oleh peserta (Formulir 23B) — src/lib/evaluasi-penyelenggaraan.ts.
+// Satu isian per peserta (baris Peserta sudah per jadwal). Rekap tanpa nama peserta.
+model EvaluasiPenyelenggaraan {
+  id         String   @id @default(cuid())
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  pesertaId  String   @unique
+  peserta    Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  nilai      Json // { "1a": 85, "2e1": 90, ... }
+  rataRata   Float
+  catatan    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([trainingId])
+  @@map("evaluasi_penyelenggaraan")
+}
+
+model RoleUpdate {
+  id          String   @id
+  role        String
+  type        String // "jadwal" | "penugasan" | "memo" | "pengumuman"
+  priority    String // "penting" | "segera" | "sedang"
+  title       String
+  description String
+  time        String
+  unread      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([role])
+  @@map("role_update")
+}
+
+// ---------------------------------------------------------------------------
+// Counter pembatas percobaan login (lihat src/lib/server/rate-limit.ts).
+// Diakses lewat raw SQL di rate-limit-pg.ts, jadi client hasil generate tidak
+// wajib dibuat ulang; model ini ada supaya `prisma migrate dev` tidak
+// menganggap tabelnya "drift" dan mencoba menghapusnya.
+// ---------------------------------------------------------------------------
+model LoginAttempt {
+  bucket      String   @id
+  hits        Int
+  windowStart DateTime @default(now()) @map("window_start") @db.Timestamptz(6)
+
+  @@index([windowStart])
+  @@map("login_attempt")
+}
+
+// ---------------------------------------------------------------------
+// Tahap C — dokumen penugasan WI: surat tugas, KARKEN (konversi), pengaturan
+// ---------------------------------------------------------------------
+
+// Konsep surat tugas mengajar untuk satu jadwal diklat. Ditandatangani lewat TTE di luar
+// aplikasi; aplikasi menghasilkan konsep Word/PDF tanpa tanda tangan. Satu penerima = "Kepada"
+// langsung; lebih dari satu = "Daftar nama terlampir" + lampiran.
+model SuratTugas {
+  id            String   @id @default(cuid())
+  trainingId    String
+  training      Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  nomor         String? // diketik manual dari agenda persuratan, mis. "800.1.11.1/4640/BBPKA-PDN II"
+  tanggal       DateTime @db.Date // "Pada tanggal" (ditetapkan)
+  tempat        String   @default("Sumedang") // "Ditetapkan di"
+  dasar         String[] // butir "Dasar"
+  untuk         String[] // butir "Untuk"
+  pegawaiIds    String[] // penerima (urutan = urutan di surat); data pegawai dibaca saat dicetak
+  // Rentang tanggal tugas [{ mulai, selesai }] (hari kalender) — dasar cek bentrok & SPD. Kosong = tanggal diklat.
+  tanggalTugas  Json     @default("[]")
+  penandatangan String // baris jabatan penanda tangan, mis. "Kepala Balai Besar\nPengembangan ..."
+  // Nama & NIP penanda tangan; kosong = Kepala Balai dari Pengaturan Dokumen (data lama).
+  ttdNama       String   @default("")
+  ttdNip        String   @default("")
+  dibuatOleh    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([trainingId])
+  @@map("surat_tugas")
+}
+
+// Surat keterangan peserta PKA/PKP "ditunda kelulusannya" / "tidak lulus" (KepKa LAN 2/2023 III.F.5–6),
+// ditandatangani Kepala Balai lewat TTE di luar aplikasi. Isi dibaca dari penilaian saat dicetak — src/lib/surat-keterangan.ts.
+model SuratKeterangan {
+  id         String   @id @default(cuid())
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  pesertaId  String
+  peserta    Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenis      String // "DITUNDA" | "TIDAK_LULUS"
+  nomor      String? // diketik manual dari agenda persuratan
+  tanggal    DateTime @db.Date
+  dibuatOleh String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([pesertaId, jenis])
+  @@index([trainingId])
+  @@map("surat_keterangan")
+}
+
+// Baris KONVERSI KARKEN (menyusun bahan tayang, RBPMP/RP, dst.) — diisi WI untuk bulannya.
+model KonversiWi {
+  id         String   @id @default(cuid())
+  pegawaiId  String
+  pegawai    Pegawai  @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  bulan      String // "YYYY-MM"
+  uraian     String
+  jp         Int
+  tempat     String?
+  dibuatOleh String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([pegawaiId, bulan])
+  @@map("konversi_wi")
+}
+
+// KARKEN satu WI satu bulan sudah diperiksa Koordinator WI. Selama ada, baris konversi dan sesi
+// mengajar WI itu pada bulan itu terkunci (batalkan verifikasi dulu untuk mengubah).
+model VerifikasiKarken {
+  id        String   @id @default(cuid())
+  pegawaiId String
+  pegawai   Pegawai  @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  bulan     String // "YYYY-MM"
+  oleh      String // email pemeriksa
+  olehNama  String
+  catatan   String?
+  createdAt DateTime @default(now())
+
+  @@unique([pegawaiId, bulan])
+  @@map("verifikasi_karken")
+}
+
+// Pengaturan dokumen (satu baris): JP minimal KARKEN per jenjang WI dan penanda tangan KARKEN.
+model PengaturanDokumen {
+  id                String   @id @default("singleton")
+  jpMinimalPertama  Int?
+  jpMinimalMuda     Int?
+  jpMinimalMadya    Int?     @default(23)
+  jpMinimalUtama    Int?     @default(21)
+  koordinatorWiNama String?
+  koordinatorWiNip  String?
+  kabagTuNama       String?
+  kabagTuNip        String?
+  kepalaBalaiNama   String?
+  kepalaBalaiNip    String?
+  // Perjalanan dinas (SPD & dasar surat tugas): PPK, teks nomor SP DIPA tahun berjalan, akun (MAK).
+  ppkNama           String?
+  ppkNip            String?
+  dipaTeks          String?
+  akunPerjalanan    String?
+  diubahOleh        String?
+  updatedAt         DateTime @updatedAt
+
+  @@map("pengaturan_dokumen")
+}
+
+// ---------------------------------------------------------------------------
+// Keputusan 14 Okt 2026 (CATATAN-KEPUTUSAN-14OKT.md)
+// ---------------------------------------------------------------------------
+
+/// Keanggotaan kelompok per jenis kegiatan: satu peserta paling banyak satu kelompok per jenis.
+model AnggotaKelompok {
+  id         String          @id @default(cuid())
+  kelompokId String
+  kelompok   KelompokPeserta @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  pesertaId  String
+  peserta    Peserta         @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenis      String // salinan KelompokPeserta.jenis, untuk batas unik per jenis
+  createdAt  DateTime        @default(now())
+
+  @@unique([pesertaId, jenis])
+  @@index([kelompokId])
+  @@map("anggota_kelompok")
+}
+
+/// Dokumen persyaratan peserta (src/lib/dokumen-peserta.ts). Satu berkas TERBARU per jenis;
+/// unggah ulang menimpa baris dan menghapus objek lama di Storage. Isi berkas di bucket privat
+/// Supabase Storage `dokumen-peserta` (`path` = kunci objek), bukan di database.
+model DokumenPeserta {
+  id               String    @id @default(cuid())
+  pesertaId        String
+  peserta          Peserta   @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenis            String // JenisDokumen
+  status           String    @default("DIUNGGAH") // "DIUNGGAH" | "DITERIMA" | "DITOLAK"
+  path             String
+  namaBerkas       String
+  tipe             String // "application/pdf" | "image/jpeg" | "image/png"
+  ukuran           Int // byte, maks 2 MB
+  alasan           String? // wajib bila DITOLAK
+  diunggahOleh     String // Akun.id (peserta sendiri atau penyelenggara)
+  diunggahPada     DateTime  @default(now())
+  diverifikasiOleh String? // Akun.id
+  diverifikasiPada DateTime?
+
+  @@unique([pesertaId, jenis])
+  @@map("dokumen_peserta")
+}
+
+/// Formulir 2 — isian daftar pemantauan persiapan per butir (kode di src/lib/formulir-penyelenggaraan.ts).
+model PemantauanPersiapan {
+  id              String   @id @default(cuid())
+  trainingId      String
+  training        Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  kode            String // mis. "I.4", "II.C.5"
+  jangkaWaktu     String?
+  penanggungJawab String?
+  selesai         Boolean  @default(false)
+  diubahOleh      String?
+  updatedAt       DateTime @updatedAt
+
+  @@unique([trainingId, kode])
+  @@map("pemantauan_persiapan")
+}
+
+/// Formulir 15 — pelaksanaan remedial/konseling per jenis evaluasi. Nilai remedialnya tetap
+/// di NilaiPeserta (kodeRemedial di src/lib/penilaian.ts).
+model PelaksanaanRemedial {
+  id            String    @id @default(cuid())
+  pesertaId     String
+  peserta       Peserta   @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenisEvaluasi String // JenisEvaluasi (src/lib/kurikulum.ts)
+  tanggal       DateTime? @db.Date
+  waktu         String? // "08:00"
+  teknis        String? // bentuk remedial, mis. "Ujian tulis"
+  catatan       String? // dasar pertimbangan pemberian nilai
+  diubahOleh    String?
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([pesertaId, jenisEvaluasi])
+  @@map("pelaksanaan_remedial")
+}
+
+// Masa peserta di tempat kerja asal (komitmen bersama, aktualisasi) per jadwal — hari di dalamnya
+// tidak diperiksa "tanpa sesi" pada presensi harian (src/lib/kehadiran.ts JENIS_MASA_TEMPAT_KERJA).
+model MasaTempatKerja {
+  id         String   @id @default(cuid())
+  trainingId String
+  training   Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  jenis      String // "KOMITMEN_BERSAMA" | "AKTUALISASI" | "LAINNYA"
+  mulai      DateTime @db.Date
+  selesai    DateTime @db.Date
+  dibuatOleh String
+  createdAt  DateTime @default(now())
+
+  @@index([trainingId])
+  @@map("masa_tempat_kerja")
+}
+
+// =====================================================================================
+// Persuratan (modul "persuratan", 18 Okt 2026) — CATATAN-SURAT-MENYURAT.md.
+// Format naskah: Permendagri 18/2024 (src/lib/tata-naskah.ts); logika: src/lib/persuratan.ts.
+// =====================================================================================
+
+// Naskah dinas keluar buatan aplikasi (surat tugas umum, nota dinas, surat dinas, undangan,
+// panggilan peserta, permohonan pengajar, pengajuan ke LAN, berita acara, laporan).
+model NaskahDinas {
+  id              String    @id @default(cuid())
+  jenis           String // JenisNaskah
+  trainingId      String?
+  training        Training? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+  hal             String    @default("")
+  tanggal         DateTime  @db.Date
+  tempat          String    @default("Sumedang")
+  sifat           String    @default("Biasa")
+  keamanan        String    @default("B") // SR | R | T | B (Permendagri 18/2024 Ps. 47)
+  lampiranTeks    String    @default("") // isian "Lampiran", mis. "1 (satu) berkas"
+  kepada          String[]  @default([]) // Yth. (surat/nota dinas)
+  tembusan        String[]  @default([])
+  pegawaiIds      String[]  @default([]) // penerima surat tugas umum (data pegawai dibaca saat dicetak)
+  tanggalTugas    Json      @default("[]") // surat tugas: rentang [{ mulai, selesai }] (hari kalender)
+  isi             Json // IsiNaskah
+  ttdJabatan      String // baris jabatan penanda tangan (dipisah baris baru)
+  ttdNama         String    @default("")
+  ttdNip          String    @default("")
+  // Nomor dari buku agenda (atau diketik untuk surat lama). Kosong = konsep belum bernomor.
+  nomor           String?
+  // Surat tugas yang dibuat dari nota usulan ini (jejak asal; daftar penerima tetap disalin).
+  notaId          String?
+  nota            NaskahDinas?  @relation("NotaSurat", fields: [notaId], references: [id], onDelete: SetNull)
+  suratDariNota   NaskahDinas[] @relation("NotaSurat")
+  dibuatOleh      String // email akun
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([jenis])
+  @@index([trainingId])
+  @@index([notaId])
+  @@map("naskah_dinas")
+}
+
+// Buku agenda surat keluar: satu baris per nomor yang diberikan TU. Nomor urut satu seri per
+// tahun untuk semua surat keluar (pola contoh kantor); `kodeUnit` membedakan pasangan nota dinas
+// (kepeg) & surat izin cuti yang berbagi nomor urut.
+model AgendaSurat {
+  id              String   @id @default(cuid())
+  tahun           Int
+  nomorUrut       Int
+  kodeKlasifikasi String
+  kodeUnit        String
+  nomor           String
+  jenis           String // label jenis naskah
+  hal             String
+  tanggal         DateTime @db.Date
+  sumber          String // naskah | surat-tugas | surat-keterangan | cuti | manual
+  sumberId        String?
+  dicatatOleh     String
+  createdAt       DateTime @default(now())
+
+  @@unique([tahun, nomorUrut, kodeUnit])
+  // Satu surat (sumber) hanya sekali diberi nomor per kode unit; sumber "manual" punya sumberId kosong.
+  @@unique([sumber, sumberId, kodeUnit])
+  @@map("agenda_surat")
+}
+
+// Nomor urut terakhir per tahun (id = tahun, mis. "2026"). Dinaikkan atomik saat memberi nomor.
+model PenghitungNomorSurat {
+  id        String   @id
+  terakhir  Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@map("penghitung_nomor_surat")
+}
+
+model SuratMasuk {
+  id            String      @id @default(cuid())
+  tahun         Int
+  nomorAgenda   Int
+  tanggalTerima DateTime    @db.Date
+  asal          String
+  nomorSurat    String
+  tanggalSurat  DateTime?   @db.Date
+  hal           String
+  sifat         String      @default("Biasa")
+  keamanan      String      @default("B")
+  ringkasan     String?
+  // Pindaian surat di bucket privat "surat-masuk" (opsional).
+  berkasPath    String?
+  berkasNama    String?
+  berkasTipe    String?
+  selesai       Boolean     @default(false) // ditandai selesai/diarsipkan oleh pencatat
+  dicatatOleh   String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  disposisi     Disposisi[]
+
+  @@unique([tahun, nomorAgenda])
+  @@map("surat_masuk")
+}
+
+model Disposisi {
+  id              String     @id @default(cuid())
+  suratMasukId    String
+  suratMasuk      SuratMasuk @relation(fields: [suratMasukId], references: [id], onDelete: Cascade)
+  dariEmail       String // akun pemberi disposisi
+  dariJabatan     String
+  kepadaPegawaiId String
+  instruksi       String[]   @default([])
+  catatan         String?
+  batasWaktu      DateTime?  @db.Date
+  status          String     @default("BARU") // BARU | DIBACA | SELESAI
+  tindakLanjut    String?
+  selesaiPada     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([suratMasukId])
+  @@index([kepadaPegawaiId])
+  @@map("disposisi")
+}
+
+// Cuti pegawai -> Nota Dinas permohonan + Surat Izin Cuti (satu nomor urut). Cuti sakit: alasan
+// medis TIDAK disimpan (data kesehatan); surat keterangan dokter tidak diunggah ke aplikasi.
+model CutiPegawai {
+  id              String    @id @default(cuid())
+  pegawaiId       String
+  pegawai         Pegawai   @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  jenis           String // JenisCuti
+  mulai           DateTime  @db.Date
+  selesai         DateTime  @db.Date
+  lamaHari        Int
+  alasan          String? // kosong untuk cuti sakit
+  status          String    @default("DIAJUKAN") // DIAJUKAN | DISETUJUI | DITOLAK | DIBATALKAN
+  alasanTolak     String?
+  diputuskanOleh  String?
+  diputuskanPada  DateTime?
+  nomorNotaDinas  String?
+  nomorSuratIzin  String?
+  tanggalSurat    DateTime? @db.Date
+  diajukanOleh    String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([pegawaiId])
+  @@index([status])
+  @@map("cuti_pegawai")
+}
+
+// Surat Perjalanan Dinas (SPD), satu per pegawai per surat tugas bernomor; diterbitkan PPK.
+// Format Lampiran I PMK 113/PMK.05/2012 (lembar I & II). Data pegawai & PPK dibaca saat dicetak.
+model Spd {
+  id               String   @id @default(cuid())
+  sumber           String // "naskah" (surat tugas umum) | "surat-tugas" (surat tugas mengajar)
+  sumberId         String
+  pegawaiId        String
+  pegawai          Pegawai  @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  nomor            String?
+  tanggal          DateTime @db.Date // "Dikeluarkan … tanggal"
+  tingkatBiaya     String   @default("")
+  maksud           String
+  alatAngkut       String   @default("Kendaraan Umum")
+  tempatBerangkat  String   @default("Sumedang")
+  tempatTujuan     String
+  tanggalBerangkat DateTime @db.Date
+  tanggalKembali   DateTime @db.Date
+  lamaHari         Int
+  akun             String   @default("")
+  keterangan       String   @default("")
+  dibuatOleh       String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([sumber, sumberId, pegawaiId])
+  @@index([pegawaiId])
+  @@map("spd")
+}
+
+// ---------------------------------------------------------------------------
+// Ruang Coaching (23 Okt 2026, CATATAN-RUANG-COACHING.md; logika murni src/lib/coaching.ts).
+// Satu ruang per kelompok ELEARNING (pembimbingan aksi perubahan, 1 coach). Video TIDAK diunggah ke
+// aplikasi: hanya ID YouTube. Forum tanya-jawab per kelompok; tidak ada chat pribadi.
+// ---------------------------------------------------------------------------
+
+/// Pustaka video milik seorang WI/pegawai — dipakai ulang di banyak kelompok & angkatan.
+model VideoCoaching {
+  id         String          @id @default(cuid())
+  pegawaiId  String
+  pegawai    Pegawai         @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  judul      String
+  youtubeId  String // 11 karakter, diperiksa bacaYoutube()
+  jenis      String          @default("MATERI") // "PENGANTAR" | "MATERI" | "REKAMAN"
+  keterangan String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  pemakaian  VideoKelompok[]
+
+  @@index([pegawaiId])
+  @@map("video_coaching")
+}
+
+/// Sesi coaching terjadwal satu kelompok (tautan rapat daring opsional).
+model SesiCoaching {
+  id          String            @id @default(cuid())
+  kelompokId  String
+  kelompok    KelompokPeserta   @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  judul       String
+  tanggal     DateTime?         @db.Date
+  jamMulai    String? // "HH:MM" WIB
+  tautanRapat String?
+  keterangan  String?
+  dibuatOleh  String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  video       VideoKelompok[]
+  catatan     CatatanCoaching[]
+  topik       TopikForum[]
+
+  @@index([kelompokId])
+  @@map("sesi_coaching")
+}
+
+/// Video dari pustaka yang dipasang di satu kelompok (opsional di bawah satu sesi).
+model VideoKelompok {
+  id           String          @id @default(cuid())
+  kelompokId   String
+  kelompok     KelompokPeserta @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  videoId      String
+  video        VideoCoaching   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  sesiId       String?
+  sesi         SesiCoaching?   @relation(fields: [sesiId], references: [id], onDelete: SetNull)
+  dipasangOleh String
+  createdAt    DateTime        @default(now())
+  tontonan     TontonVideo[]
+  topik        TopikForum[]
+
+  @@unique([kelompokId, videoId])
+  @@index([sesiId])
+  @@map("video_kelompok")
+}
+
+/// Peserta menandai sudah menonton satu video di kelompoknya.
+model TontonVideo {
+  id              String        @id @default(cuid())
+  videoKelompokId String
+  videoKelompok   VideoKelompok @relation(fields: [videoKelompokId], references: [id], onDelete: Cascade)
+  pesertaId       String
+  peserta         Peserta       @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+
+  @@unique([videoKelompokId, pesertaId])
+  @@index([pesertaId])
+  @@map("tonton_video")
+}
+
+/// Catatan coach untuk satu peserta pada satu sesi (dibaca peserta itu sendiri).
+model CatatanCoaching {
+  id           String       @id @default(cuid())
+  sesiId       String
+  sesi         SesiCoaching @relation(fields: [sesiId], references: [id], onDelete: Cascade)
+  pesertaId    String
+  peserta      Peserta      @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  hadir        Boolean?
+  catatan      String?
+  tindakLanjut String?
+  diisiOleh    String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@unique([sesiId, pesertaId])
+  @@index([pesertaId])
+  @@map("catatan_coaching")
+}
+
+/// Topik forum tanya-jawab satu kelompok. Tidak dihapus — hanya disembunyikan (jejak tetap).
+model TopikForum {
+  id                String          @id @default(cuid())
+  kelompokId        String
+  kelompok          KelompokPeserta @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  sesiId            String?
+  sesi              SesiCoaching?   @relation(fields: [sesiId], references: [id], onDelete: SetNull)
+  videoKelompokId   String?
+  videoKelompok     VideoKelompok?  @relation(fields: [videoKelompokId], references: [id], onDelete: SetNull)
+  judul             String
+  isi               String
+  akunId            String?
+  akun              Akun?           @relation(fields: [akunId], references: [id], onDelete: SetNull)
+  namaPenulis       String
+  peranPenulis      String // "COACH" | "PESERTA" | "PENYELENGGARA"
+  disematkan        Boolean         @default(false)
+  terjawab          Boolean         @default(false)
+  terjawabOleh      String?
+  tersembunyi       Boolean         @default(false)
+  disembunyikanOleh String?
+  disembunyikanPada DateTime?
+  diubahPada        DateTime?
+  // Waktu tulisan terakhir (topik atau balasan) — urutan daftar topik.
+  aktifPada         DateTime        @default(now())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  balasan           BalasanForum[]
+
+  @@index([kelompokId])
+  @@map("topik_forum")
+}
+
+model BalasanForum {
+  id                String     @id @default(cuid())
+  topikId           String
+  topik             TopikForum @relation(fields: [topikId], references: [id], onDelete: Cascade)
+  isi               String
+  akunId            String?
+  akun              Akun?      @relation(fields: [akunId], references: [id], onDelete: SetNull)
+  namaPenulis       String
+  peranPenulis      String
+  tersembunyi       Boolean    @default(false)
+  disembunyikanOleh String?
+  disembunyikanPada DateTime?
+  diubahPada        DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([topikId])
+  @@map("balasan_forum")
+}
+
+/// Kapan seorang akun terakhir membuka forum kelompok (hitungan "belum dibaca").
+model BacaForum {
+  id             String          @id @default(cuid())
+  kelompokId     String
+  kelompok       KelompokPeserta @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  akunId         String
+  akun           Akun            @relation(fields: [akunId], references: [id], onDelete: Cascade)
+  terakhirDibaca DateTime
+
+  @@unique([kelompokId, akunId])
+  @@map("baca_forum")
+}
+
+// ---------------------------------------------------------------------------
+// Seminar aksi perubahan RAP/LAP (CATATAN-SEMINAR-AKSI-PERUBAHAN.md; logika src/lib/seminar.ts).
+// Satu baris per peserta per seminar. Satu peserta satu penguji. Mentor bisa hadir langsung atau daring
+// (Zoom), jadi tiap baris punya ruang DAN tautan daring. Evaluator = panitia yang memanggil peserta;
+// `status` diubah evaluator di panel pelaksanaan. Nilai tetap lewat tab Penilaian (siapa yang menilai
+// belum diputuskan).
+// ---------------------------------------------------------------------------
+model SeminarPeserta {
+  id               String    @id @default(cuid())
+  trainingId       String
+  training         Training  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  pesertaId        String
+  peserta          Peserta   @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenis            String // "RAP" | "LAP"
+  tanggal          DateTime? @db.Date
+  jamMulai         String? // "HH:MM" WIB
+  urutan           Int?
+  ruang            String?
+  tautanDaring     String?
+  pengujiPegawaiId String?
+  penguji          Pegawai?  @relation(fields: [pengujiPegawaiId], references: [id], onDelete: SetNull)
+  pengujiNama      String?
+  mentorNama       String?
+  mentorJabatan    String?
+  mentorHadir      String? // "LANGSUNG" | "DARING"
+  evaluatorNama    String?
+  status           String    @default("MENUNGGU") // MENUNGGU | DIPANGGIL | PRESENTASI | SELESAI | TIDAK_HADIR
+  statusPada       DateTime?
+  diubahOleh       String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@unique([pesertaId, jenis])
+  @@index([trainingId])
+  @@index([pengujiPegawaiId])
+  @@map("seminar_peserta")
+}
+
+// ---------------------------------------------------------------------------
+// Langkah 3 — fondasi akses PKA/PKP (docs/spesifikasi/Rancangan_Langkah3_Fondasi_Akses.md).
+// ---------------------------------------------------------------------------
+
+// Admin Penyelenggara (EB-034): Super Admin (akun admin) menunjuk pegawai dan memilih wewenangnya.
+// Kode wewenang di src/lib/wewenang-penyelenggara.ts; berlaku untuk semua diklat.
+model WewenangPenyelenggara {
+  id         String   @id @default(cuid())
+  pegawaiId  String   @unique
+  pegawai    Pegawai  @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  wewenang   String[]
+  // Dasar penunjukan (nomor SK/nota dinas), boleh kosong.
+  dasar      String?
+  diubahOleh String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("wewenang_penyelenggara")
+}
+
+// Penugasan per angkatan (EB-035): coach, mentor, penguji, penguji akademik, pendamping studi
+// lapangan pada satu diklat. Orangnya pegawai balai (pegawaiId) atau orang luar (kolom *Luar).
+// Lingkup = peserta dan/atau kelompok (kosong = seluruh angkatan untuk peran tanpa lingkup).
+// Mentor bisa diusulkan peserta (status USULAN), lalu disetujui penyelenggara.
+// Aturan & larangan rangkap di src/lib/penugasan-angkatan.ts.
+model PenugasanAngkatan {
+  id            String    @id @default(cuid())
+  trainingId    String
+  training      Training  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  peran         String // COACH | MENTOR | PENGUJI | PENGUJI_AKADEMIK | PENDAMPING_STULA
+  pegawaiId     String?
+  pegawai       Pegawai?  @relation(fields: [pegawaiId], references: [id], onDelete: SetNull)
+  namaLuar      String?
+  jabatanLuar   String?
+  instansiLuar  String?
+  emailLuar     String?
+  ponselLuar    String?
+  pesertaIds    String[]  @default([])
+  kelompokIds   String[]  @default([])
+  mulai         DateTime? @db.Date
+  selesai       DateTime? @db.Date
+  dasar         String?
+  status        String    @default("AKTIF") // USULAN | AKTIF | DITOLAK | DICABUT
+  alasan        String?
+  // Email akun peserta bila penugasan ini usulan mentor dari peserta.
+  diusulkanOleh String?
+  diubahOleh    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([trainingId])
+  @@index([pegawaiId])
+  @@map("penugasan_angkatan")
+}
+
+// Log aktivitas angkatan (EB-039; docs/spesifikasi/Rancangan_Dasbor_Pengelola_dan_Tugas.md bagian 4) — panel
+// "Aktivitas Terbaru" Beranda pengelola. Ringkasan pendek TANPA isi nilai, isi dokumen, atau alasan medis. Ditulis
+// lewat catatAktivitas() (src/lib/server/aktivitas.ts); baris lebih dari 2 tahun dihapus otomatis. Log audit hak
+// akses tetap di log_audit. Tanpa relasi ke training supaya catatan tetap terbaca bila jadwal dihapus.
+model LogAktivitas {
+  id         String   @id @default(cuid())
+  trainingId String?
+  aktorEmail String
+  aktorNama  String
+  // Pihak yang diwakili bila petugas mencatat atas nama orang lain (Dokumen Induk 5.3).
+  atasNama   String?
+  jenis      String // kode tetap, lihat JENIS_AKTIVITAS di src/lib/aktivitas.ts
+  objekTipe  String?
+  objekId    String?
+  ringkasan  String
+  createdAt  DateTime @default(now())
+
+  @@index([trainingId, createdAt])
+  @@index([createdAt])
+  @@map("log_aktivitas")
+}
+
+// Alur tugas peserta (EB-038; docs/spesifikasi/Rancangan_Dasbor_Pengelola_dan_Tugas.md bagian 5): Rancangan Aksi
+// Perubahan, laporan progres, tugas pembelajaran. Peserta mengunggah & mengirim; coach/mentor/pengampu meninjau.
+// Tidak mengubah nilai. Aturan status di src/lib/tugas.ts; akses di src/lib/server/repositories/tugas.ts.
+model Tugas {
+  id            String         @id @default(cuid())
+  trainingId    String
+  training      Training       @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  jenis         String // RANCANGAN_AKSI | LAPORAN_PROGRES | TUGAS_PEMBELAJARAN
+  judul         String
+  petunjuk      String?
+  tenggat       DateTime?      @db.Date
+  // Kode mata pelatihan (src/lib/kurikulum.ts), wajib untuk TUGAS_PEMBELAJARAN.
+  mataPelatihan String?
+  dibuatOleh    String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  kiriman       KirimanTugas[]
+
+  @@index([trainingId])
+  @@map("tugas")
+}
+
+// Satu baris per peserta per tugas. Berkas di bucket privat dokumen-peserta, jalur "tugas/...".
+model KirimanTugas {
+  id           String           @id @default(cuid())
+  tugasId      String
+  tugas        Tugas            @relation(fields: [tugasId], references: [id], onDelete: Cascade)
+  pesertaId    String
+  peserta      Peserta          @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  status       String           @default("DRAF") // DRAF | DIKIRIM | DITINJAU | PERLU_REVISI | DITERIMA
+  // Naik setiap kali dikirim.
+  versi        Int              @default(0)
+  berkasPath   String?
+  berkasNama   String?
+  berkasTipe   String?
+  berkasUkuran Int?
+  dikirimPada  DateTime?
+  // Persetujuan mentor atas isu & timeline (Rancangan Aksi Perubahan). Tidak wajib sebelum diterima (TG-3).
+  mentorSetuju Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  riwayat      RiwayatKiriman[]
+
+  @@unique([tugasId, pesertaId])
+  @@index([pesertaId])
+  @@map("kiriman_tugas")
+}
+
+// Jejak setiap tindakan pada kiriman (DEC-017: feedback & permintaan revisi resmi wajib tercatat). Tidak diubah/dihapus.
+model RiwayatKiriman {
+  id         String       @id @default(cuid())
+  kirimanId  String
+  kiriman    KirimanTugas @relation(fields: [kirimanId], references: [id], onDelete: Cascade)
+  aksi       String // UNGGAH | KIRIM | MULAI_TINJAU | REVISI | TERIMA | CATATAN | SETUJU_MENTOR
+  status     String // status kiriman sesudah tindakan
+  aktorEmail String
+  aktorNama  String
+  peranAktor String // PESERTA | COACH | MENTOR | PENGAMPU | PENGELOLA
+  // Pihak yang diwakili bila pengelola mencatat atas nama peninjau tanpa akun (Dokumen Induk 5.3).
+  atasNama   String?
+  catatan    String?
+  versi      Int
+  // Berkas versi yang dikirim (KIRIM), supaya versi lama tetap bisa dibuka.
+  berkasPath String?
+  berkasNama String?
+  createdAt  DateTime     @default(now())
+
+  @@index([kirimanId])
+  @@map("riwayat_kiriman")
+}
