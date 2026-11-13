@@ -8,6 +8,8 @@ import { labelWewenang } from "@/lib/wewenang-penyelenggara";
 import { wajibPengguna } from "@/lib/server/halaman";
 import { HalamanDasbor, Kartu } from "@/components/dasbor/halaman";
 import { IKON_MENU } from "@/components/dasbor/ikon";
+import { BerandaPeserta } from "@/components/peserta/beranda-peserta";
+import { listDiklatSaya } from "@/lib/server/repositories/belajar";
 
 export const metadata: Metadata = { title: "Beranda" };
 
@@ -17,6 +19,8 @@ function namaDepan(nama: string): string {
 
 export default async function Beranda() {
   const p = await wajibPengguna();
+  // Peserta: beranda ruang belajar (sama dengan aplikasi lama).
+  if (p.role === "peserta") return <BerandaPeserta nama={p.name} list={await listDiklatSaya(p.email)} />;
   const menu = menuAkun({ role: p.role, pegawaiId: p.pegawaiId, koordinatorWi: p.koordinatorWi, anggotaTimDiklat: p.timDiklat.length > 0 });
   const butir = pintasan(menu, 8);
   const peran = roleProfiles.find((r) => r.id === p.role);
