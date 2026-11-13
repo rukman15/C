@@ -107,7 +107,9 @@ export const ModelName = {
   LogAktivitas: 'LogAktivitas',
   Tugas: 'Tugas',
   KirimanTugas: 'KirimanTugas',
-  RiwayatKiriman: 'RiwayatKiriman'
+  RiwayatKiriman: 'RiwayatKiriman',
+  LokasiStula: 'LokasiStula',
+  KunjunganStula: 'KunjunganStula'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1178,6 +1180,44 @@ export const RiwayatKirimanScalarFieldEnum = {
 } as const
 
 export type RiwayatKirimanScalarFieldEnum = (typeof RiwayatKirimanScalarFieldEnum)[keyof typeof RiwayatKirimanScalarFieldEnum]
+
+
+export const LokasiStulaScalarFieldEnum = {
+  id: 'id',
+  trainingId: 'trainingId',
+  nama: 'nama',
+  kategori: 'kategori',
+  alamat: 'alamat',
+  narahubungNama: 'narahubungNama',
+  narahubungPonsel: 'narahubungPonsel',
+  status: 'status',
+  catatan: 'catatan',
+  ketuaTimPegawaiId: 'ketuaTimPegawaiId',
+  ketuaTimNama: 'ketuaTimNama',
+  kelompokId: 'kelompokId',
+  diubahOleh: 'diubahOleh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LokasiStulaScalarFieldEnum = (typeof LokasiStulaScalarFieldEnum)[keyof typeof LokasiStulaScalarFieldEnum]
+
+
+export const KunjunganStulaScalarFieldEnum = {
+  id: 'id',
+  lokasiId: 'lokasiId',
+  tanggal: 'tanggal',
+  petugas: 'petugas',
+  hasil: 'hasil',
+  berkasPath: 'berkasPath',
+  berkasNama: 'berkasNama',
+  berkasTipe: 'berkasTipe',
+  berkasUkuran: 'berkasUkuran',
+  dicatatOleh: 'dicatatOleh',
+  createdAt: 'createdAt'
+} as const
+
+export type KunjunganStulaScalarFieldEnum = (typeof KunjunganStulaScalarFieldEnum)[keyof typeof KunjunganStulaScalarFieldEnum]
 
 
 export const SortOrder = {

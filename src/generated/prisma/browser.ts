@@ -330,3 +330,13 @@ export type KirimanTugas = Prisma.KirimanTugasModel
  * 
  */
 export type RiwayatKiriman = Prisma.RiwayatKirimanModel
+/**
+ * Model LokasiStula
+ * 
+ */
+export type LokasiStula = Prisma.LokasiStulaModel
+/**
+ * Model KunjunganStula
+ * 
+ */
+export type KunjunganStula = Prisma.KunjunganStulaModel

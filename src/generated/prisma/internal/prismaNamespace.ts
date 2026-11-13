@@ -448,7 +448,9 @@ export const ModelName = {
   LogAktivitas: 'LogAktivitas',
   Tugas: 'Tugas',
   KirimanTugas: 'KirimanTugas',
-  RiwayatKiriman: 'RiwayatKiriman'
+  RiwayatKiriman: 'RiwayatKiriman',
+  LokasiStula: 'LokasiStula',
+  KunjunganStula: 'KunjunganStula'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -464,7 +466,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "sesiKelompok" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman"
+    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "sesiKelompok" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman" | "lokasiStula" | "kunjunganStula"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4834,6 +4836,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LokasiStula: {
+      payload: Prisma.$LokasiStulaPayload<ExtArgs>
+      fields: Prisma.LokasiStulaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LokasiStulaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LokasiStulaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        findFirst: {
+          args: Prisma.LokasiStulaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LokasiStulaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        findMany: {
+          args: Prisma.LokasiStulaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>[]
+        }
+        create: {
+          args: Prisma.LokasiStulaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        createMany: {
+          args: Prisma.LokasiStulaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LokasiStulaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>[]
+        }
+        delete: {
+          args: Prisma.LokasiStulaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        update: {
+          args: Prisma.LokasiStulaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        deleteMany: {
+          args: Prisma.LokasiStulaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LokasiStulaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LokasiStulaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>[]
+        }
+        upsert: {
+          args: Prisma.LokasiStulaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LokasiStulaPayload>
+        }
+        aggregate: {
+          args: Prisma.LokasiStulaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLokasiStula>
+        }
+        groupBy: {
+          args: Prisma.LokasiStulaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LokasiStulaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LokasiStulaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LokasiStulaCountAggregateOutputType> | number
+        }
+      }
+    }
+    KunjunganStula: {
+      payload: Prisma.$KunjunganStulaPayload<ExtArgs>
+      fields: Prisma.KunjunganStulaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KunjunganStulaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KunjunganStulaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        findFirst: {
+          args: Prisma.KunjunganStulaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KunjunganStulaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        findMany: {
+          args: Prisma.KunjunganStulaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>[]
+        }
+        create: {
+          args: Prisma.KunjunganStulaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        createMany: {
+          args: Prisma.KunjunganStulaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.KunjunganStulaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>[]
+        }
+        delete: {
+          args: Prisma.KunjunganStulaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        update: {
+          args: Prisma.KunjunganStulaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        deleteMany: {
+          args: Prisma.KunjunganStulaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KunjunganStulaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.KunjunganStulaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>[]
+        }
+        upsert: {
+          args: Prisma.KunjunganStulaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KunjunganStulaPayload>
+        }
+        aggregate: {
+          args: Prisma.KunjunganStulaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKunjunganStula>
+        }
+        groupBy: {
+          args: Prisma.KunjunganStulaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KunjunganStulaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KunjunganStulaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KunjunganStulaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5927,6 +6077,44 @@ export const RiwayatKirimanScalarFieldEnum = {
 export type RiwayatKirimanScalarFieldEnum = (typeof RiwayatKirimanScalarFieldEnum)[keyof typeof RiwayatKirimanScalarFieldEnum]
 
 
+export const LokasiStulaScalarFieldEnum = {
+  id: 'id',
+  trainingId: 'trainingId',
+  nama: 'nama',
+  kategori: 'kategori',
+  alamat: 'alamat',
+  narahubungNama: 'narahubungNama',
+  narahubungPonsel: 'narahubungPonsel',
+  status: 'status',
+  catatan: 'catatan',
+  ketuaTimPegawaiId: 'ketuaTimPegawaiId',
+  ketuaTimNama: 'ketuaTimNama',
+  kelompokId: 'kelompokId',
+  diubahOleh: 'diubahOleh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LokasiStulaScalarFieldEnum = (typeof LokasiStulaScalarFieldEnum)[keyof typeof LokasiStulaScalarFieldEnum]
+
+
+export const KunjunganStulaScalarFieldEnum = {
+  id: 'id',
+  lokasiId: 'lokasiId',
+  tanggal: 'tanggal',
+  petugas: 'petugas',
+  hasil: 'hasil',
+  berkasPath: 'berkasPath',
+  berkasNama: 'berkasNama',
+  berkasTipe: 'berkasTipe',
+  berkasUkuran: 'berkasUkuran',
+  dicatatOleh: 'dicatatOleh',
+  createdAt: 'createdAt'
+} as const
+
+export type KunjunganStulaScalarFieldEnum = (typeof KunjunganStulaScalarFieldEnum)[keyof typeof KunjunganStulaScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6195,6 +6383,8 @@ export type GlobalOmitConfig = {
   tugas?: Prisma.TugasOmit
   kirimanTugas?: Prisma.KirimanTugasOmit
   riwayatKiriman?: Prisma.RiwayatKirimanOmit
+  lokasiStula?: Prisma.LokasiStulaOmit
+  kunjunganStula?: Prisma.KunjunganStulaOmit
 }
 
 /* Types for Logging */

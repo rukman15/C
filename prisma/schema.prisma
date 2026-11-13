@@ -203,6 +203,7 @@ model Training {
   approvals               PenugasanApproval[]
   peserta                 Peserta[]
   sesiPembelajaran        SesiPembelajaran[]
+  lokasiStula             LokasiStula[]
   tes                     Tes[]
   sasaranEvaluasi         SasaranEvaluasi[]
   evaluasi                EvaluasiPengajar[]
@@ -368,6 +369,7 @@ model KelompokPeserta {
   topikForum     TopikForum[]
   bacaForum      BacaForum[]
   sesiKelompok   SesiKelompok[]
+  lokasiStula    LokasiStula?
 
   @@unique([trainingId, jenis, nomor])
   @@map("kelompok_peserta")
@@ -1529,4 +1531,48 @@ model RiwayatKiriman {
 
   @@index([kirimanId])
   @@map("riwayat_kiriman")
+}
+
+// Studi lapangan (EB-049, EB-050, EB-053): lokasi/lokus per angkatan, ditugaskan ke satu kelompok STULA.
+model LokasiStula {
+  id                String           @id @default(cuid())
+  trainingId        String
+  training          Training         @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  nama              String
+  kategori          String? // kode KATEGORI_INSTANSI (src/lib/kelompok.ts)
+  alamat            String?
+  narahubungNama    String?
+  narahubungPonsel  String?
+  status            String           @default("CALON") // CALON | LAYAK | TIDAK_LAYAK
+  catatan           String?
+  ketuaTimPegawaiId String? // pegawai balai pendamping
+  ketuaTimNama      String?
+  kelompokId        String?          @unique
+  kelompok          KelompokPeserta? @relation(fields: [kelompokId], references: [id], onDelete: SetNull)
+  diubahOleh        String
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  kunjungan         KunjunganStula[]
+
+  @@index([trainingId])
+  @@map("lokasi_stula")
+}
+
+// Advance kunjungan ke calon lokasi studi lapangan (EB-049). Satu berkas foto/PDF opsional (maks 10 MB).
+model KunjunganStula {
+  id           String      @id @default(cuid())
+  lokasiId     String
+  lokasi       LokasiStula @relation(fields: [lokasiId], references: [id], onDelete: Cascade)
+  tanggal      DateTime    @db.Date
+  petugas      String
+  hasil        String?
+  berkasPath   String?
+  berkasNama   String?
+  berkasTipe   String?
+  berkasUkuran Int?
+  dicatatOleh  String
+  createdAt    DateTime    @default(now())
+
+  @@index([lokasiId])
+  @@map("kunjungan_stula")
 }

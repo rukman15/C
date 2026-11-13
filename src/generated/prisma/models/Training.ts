@@ -320,6 +320,7 @@ export type TrainingWhereInput = {
   approvals?: Prisma.PenugasanApprovalListRelationFilter
   peserta?: Prisma.PesertaListRelationFilter
   sesiPembelajaran?: Prisma.SesiPembelajaranListRelationFilter
+  lokasiStula?: Prisma.LokasiStulaListRelationFilter
   tes?: Prisma.TesListRelationFilter
   sasaranEvaluasi?: Prisma.SasaranEvaluasiListRelationFilter
   evaluasi?: Prisma.EvaluasiPengajarListRelationFilter
@@ -357,6 +358,7 @@ export type TrainingOrderByWithRelationInput = {
   approvals?: Prisma.PenugasanApprovalOrderByRelationAggregateInput
   peserta?: Prisma.PesertaOrderByRelationAggregateInput
   sesiPembelajaran?: Prisma.SesiPembelajaranOrderByRelationAggregateInput
+  lokasiStula?: Prisma.LokasiStulaOrderByRelationAggregateInput
   tes?: Prisma.TesOrderByRelationAggregateInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiOrderByRelationAggregateInput
   evaluasi?: Prisma.EvaluasiPengajarOrderByRelationAggregateInput
@@ -397,6 +399,7 @@ export type TrainingWhereUniqueInput = Prisma.AtLeast<{
   approvals?: Prisma.PenugasanApprovalListRelationFilter
   peserta?: Prisma.PesertaListRelationFilter
   sesiPembelajaran?: Prisma.SesiPembelajaranListRelationFilter
+  lokasiStula?: Prisma.LokasiStulaListRelationFilter
   tes?: Prisma.TesListRelationFilter
   sasaranEvaluasi?: Prisma.SasaranEvaluasiListRelationFilter
   evaluasi?: Prisma.EvaluasiPengajarListRelationFilter
@@ -481,6 +484,7 @@ export type TrainingCreateInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -517,6 +521,7 @@ export type TrainingUncheckedCreateInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -553,6 +558,7 @@ export type TrainingUpdateInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -589,6 +595,7 @@ export type TrainingUncheckedUpdateInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1029,6 +1036,20 @@ export type TrainingUpdateOneRequiredWithoutTugasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrainingUpdateToOneWithWhereWithoutTugasInput, Prisma.TrainingUpdateWithoutTugasInput>, Prisma.TrainingUncheckedUpdateWithoutTugasInput>
 }
 
+export type TrainingCreateNestedOneWithoutLokasiStulaInput = {
+  create?: Prisma.XOR<Prisma.TrainingCreateWithoutLokasiStulaInput, Prisma.TrainingUncheckedCreateWithoutLokasiStulaInput>
+  connectOrCreate?: Prisma.TrainingCreateOrConnectWithoutLokasiStulaInput
+  connect?: Prisma.TrainingWhereUniqueInput
+}
+
+export type TrainingUpdateOneRequiredWithoutLokasiStulaNestedInput = {
+  create?: Prisma.XOR<Prisma.TrainingCreateWithoutLokasiStulaInput, Prisma.TrainingUncheckedCreateWithoutLokasiStulaInput>
+  connectOrCreate?: Prisma.TrainingCreateOrConnectWithoutLokasiStulaInput
+  upsert?: Prisma.TrainingUpsertWithoutLokasiStulaInput
+  connect?: Prisma.TrainingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainingUpdateToOneWithWhereWithoutLokasiStulaInput, Prisma.TrainingUpdateWithoutLokasiStulaInput>, Prisma.TrainingUncheckedUpdateWithoutLokasiStulaInput>
+}
+
 export type TrainingCreateWithoutTimKerjaInput = {
   id?: string
   name: string
@@ -1049,6 +1070,7 @@ export type TrainingCreateWithoutTimKerjaInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -1084,6 +1106,7 @@ export type TrainingUncheckedCreateWithoutTimKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -1168,6 +1191,7 @@ export type TrainingCreateWithoutApprovalsInput = {
   timKerja?: Prisma.TimKerjaCreateNestedOneWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -1203,6 +1227,7 @@ export type TrainingUncheckedCreateWithoutApprovalsInput = {
   updatedAt?: Date | string
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -1254,6 +1279,7 @@ export type TrainingUpdateWithoutApprovalsInput = {
   timKerja?: Prisma.TimKerjaUpdateOneWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -1289,6 +1315,7 @@ export type TrainingUncheckedUpdateWithoutApprovalsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1324,6 +1351,7 @@ export type TrainingCreateWithoutPesertaInput = {
   timKerja?: Prisma.TimKerjaCreateNestedOneWithoutTrainingInput
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -1359,6 +1387,7 @@ export type TrainingUncheckedCreateWithoutPesertaInput = {
   updatedAt?: Date | string
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -1410,6 +1439,7 @@ export type TrainingUpdateWithoutPesertaInput = {
   timKerja?: Prisma.TimKerjaUpdateOneWithoutTrainingNestedInput
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -1445,6 +1475,7 @@ export type TrainingUncheckedUpdateWithoutPesertaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1481,6 +1512,7 @@ export type TrainingCreateWithoutKelompokInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -1516,6 +1548,7 @@ export type TrainingUncheckedCreateWithoutKelompokInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -1567,6 +1600,7 @@ export type TrainingUpdateWithoutKelompokInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -1602,6 +1636,7 @@ export type TrainingUncheckedUpdateWithoutKelompokInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1636,6 +1671,7 @@ export type TrainingCreateWithoutSesiPembelajaranInput = {
   timKerja?: Prisma.TimKerjaCreateNestedOneWithoutTrainingInput
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -1671,6 +1707,7 @@ export type TrainingUncheckedCreateWithoutSesiPembelajaranInput = {
   updatedAt?: Date | string
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -1722,6 +1759,7 @@ export type TrainingUpdateWithoutSesiPembelajaranInput = {
   timKerja?: Prisma.TimKerjaUpdateOneWithoutTrainingNestedInput
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -1757,6 +1795,7 @@ export type TrainingUncheckedUpdateWithoutSesiPembelajaranInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1793,6 +1832,7 @@ export type TrainingCreateWithoutTesInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedManyWithoutTrainingInput
@@ -1828,6 +1868,7 @@ export type TrainingUncheckedCreateWithoutTesInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedManyWithoutTrainingInput
@@ -1879,6 +1920,7 @@ export type TrainingUpdateWithoutTesInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateManyWithoutTrainingNestedInput
@@ -1914,6 +1956,7 @@ export type TrainingUncheckedUpdateWithoutTesInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateManyWithoutTrainingNestedInput
@@ -1949,6 +1992,7 @@ export type TrainingCreateWithoutSasaranEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedManyWithoutTrainingInput
@@ -1984,6 +2028,7 @@ export type TrainingUncheckedCreateWithoutSasaranEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedManyWithoutTrainingInput
@@ -2035,6 +2080,7 @@ export type TrainingUpdateWithoutSasaranEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateManyWithoutTrainingNestedInput
@@ -2070,6 +2116,7 @@ export type TrainingUncheckedUpdateWithoutSasaranEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2105,6 +2152,7 @@ export type TrainingCreateWithoutEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedManyWithoutTrainingInput
@@ -2140,6 +2188,7 @@ export type TrainingUncheckedCreateWithoutEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedManyWithoutTrainingInput
@@ -2191,6 +2240,7 @@ export type TrainingUpdateWithoutEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateManyWithoutTrainingNestedInput
@@ -2226,6 +2276,7 @@ export type TrainingUncheckedUpdateWithoutEvaluasiInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2261,6 +2312,7 @@ export type TrainingCreateWithoutEvaluasiPenyelenggaraanInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -2296,6 +2348,7 @@ export type TrainingUncheckedCreateWithoutEvaluasiPenyelenggaraanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -2347,6 +2400,7 @@ export type TrainingUpdateWithoutEvaluasiPenyelenggaraanInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -2382,6 +2436,7 @@ export type TrainingUncheckedUpdateWithoutEvaluasiPenyelenggaraanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2417,6 +2472,7 @@ export type TrainingCreateWithoutSuratTugasInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -2452,6 +2508,7 @@ export type TrainingUncheckedCreateWithoutSuratTugasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -2503,6 +2560,7 @@ export type TrainingUpdateWithoutSuratTugasInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -2538,6 +2596,7 @@ export type TrainingUncheckedUpdateWithoutSuratTugasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2573,6 +2632,7 @@ export type TrainingCreateWithoutSuratKeteranganInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -2608,6 +2668,7 @@ export type TrainingUncheckedCreateWithoutSuratKeteranganInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -2659,6 +2720,7 @@ export type TrainingUpdateWithoutSuratKeteranganInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -2694,6 +2756,7 @@ export type TrainingUncheckedUpdateWithoutSuratKeteranganInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2729,6 +2792,7 @@ export type TrainingCreateWithoutPemantauanPersiapanInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -2764,6 +2828,7 @@ export type TrainingUncheckedCreateWithoutPemantauanPersiapanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -2815,6 +2880,7 @@ export type TrainingUpdateWithoutPemantauanPersiapanInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -2850,6 +2916,7 @@ export type TrainingUncheckedUpdateWithoutPemantauanPersiapanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -2885,6 +2952,7 @@ export type TrainingCreateWithoutMasaTempatKerjaInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -2920,6 +2988,7 @@ export type TrainingUncheckedCreateWithoutMasaTempatKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -2971,6 +3040,7 @@ export type TrainingUpdateWithoutMasaTempatKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3006,6 +3076,7 @@ export type TrainingUncheckedUpdateWithoutMasaTempatKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3041,6 +3112,7 @@ export type TrainingCreateWithoutNaskahDinasInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -3076,6 +3148,7 @@ export type TrainingUncheckedCreateWithoutNaskahDinasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -3127,6 +3200,7 @@ export type TrainingUpdateWithoutNaskahDinasInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3162,6 +3236,7 @@ export type TrainingUncheckedUpdateWithoutNaskahDinasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3197,6 +3272,7 @@ export type TrainingCreateWithoutSeminarPesertaInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -3232,6 +3308,7 @@ export type TrainingUncheckedCreateWithoutSeminarPesertaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -3283,6 +3360,7 @@ export type TrainingUpdateWithoutSeminarPesertaInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3318,6 +3396,7 @@ export type TrainingUncheckedUpdateWithoutSeminarPesertaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3353,6 +3432,7 @@ export type TrainingCreateWithoutPenugasanAngkatanInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -3388,6 +3468,7 @@ export type TrainingUncheckedCreateWithoutPenugasanAngkatanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -3439,6 +3520,7 @@ export type TrainingUpdateWithoutPenugasanAngkatanInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3474,6 +3556,7 @@ export type TrainingUncheckedUpdateWithoutPenugasanAngkatanInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3509,6 +3592,7 @@ export type TrainingCreateWithoutTugasInput = {
   approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
@@ -3544,6 +3628,7 @@ export type TrainingUncheckedCreateWithoutTugasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
   peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedManyWithoutTrainingInput
   tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
@@ -3595,6 +3680,7 @@ export type TrainingUpdateWithoutTugasInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3630,6 +3716,7 @@ export type TrainingUncheckedUpdateWithoutTugasInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3640,6 +3727,166 @@ export type TrainingUncheckedUpdateWithoutTugasInput = {
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutTrainingNestedInput
   pemantauanPersiapan?: Prisma.PemantauanPersiapanUncheckedUpdateManyWithoutTrainingNestedInput
   naskahDinas?: Prisma.NaskahDinasUncheckedUpdateManyWithoutTrainingNestedInput
+  seminarPeserta?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutTrainingNestedInput
+  penugasanAngkatan?: Prisma.PenugasanAngkatanUncheckedUpdateManyWithoutTrainingNestedInput
+}
+
+export type TrainingCreateWithoutLokasiStulaInput = {
+  id?: string
+  name: string
+  category: string
+  participants?: number
+  startDate: Date | string
+  endDate?: Date | string | null
+  jpDibutuhkan?: number
+  tempat?: string
+  status?: string
+  jenisPelatihan?: string | null
+  modePelatihan?: string | null
+  angkatan?: string | null
+  evaluasiDitutup?: boolean
+  batasDokumen?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  timKerja?: Prisma.TimKerjaCreateNestedOneWithoutTrainingInput
+  approvals?: Prisma.PenugasanApprovalCreateNestedManyWithoutTrainingInput
+  peserta?: Prisma.PesertaCreateNestedManyWithoutTrainingInput
+  sesiPembelajaran?: Prisma.SesiPembelajaranCreateNestedManyWithoutTrainingInput
+  tes?: Prisma.TesCreateNestedManyWithoutTrainingInput
+  sasaranEvaluasi?: Prisma.SasaranEvaluasiCreateNestedManyWithoutTrainingInput
+  evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutTrainingInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedManyWithoutTrainingInput
+  kelompok?: Prisma.KelompokPesertaCreateNestedManyWithoutTrainingInput
+  masaTempatKerja?: Prisma.MasaTempatKerjaCreateNestedManyWithoutTrainingInput
+  suratTugas?: Prisma.SuratTugasCreateNestedManyWithoutTrainingInput
+  suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutTrainingInput
+  pemantauanPersiapan?: Prisma.PemantauanPersiapanCreateNestedManyWithoutTrainingInput
+  naskahDinas?: Prisma.NaskahDinasCreateNestedManyWithoutTrainingInput
+  tugas?: Prisma.TugasCreateNestedManyWithoutTrainingInput
+  seminarPeserta?: Prisma.SeminarPesertaCreateNestedManyWithoutTrainingInput
+  penugasanAngkatan?: Prisma.PenugasanAngkatanCreateNestedManyWithoutTrainingInput
+}
+
+export type TrainingUncheckedCreateWithoutLokasiStulaInput = {
+  id?: string
+  name: string
+  category: string
+  participants?: number
+  startDate: Date | string
+  endDate?: Date | string | null
+  jpDibutuhkan?: number
+  tempat?: string
+  status?: string
+  jenisPelatihan?: string | null
+  modePelatihan?: string | null
+  angkatan?: string | null
+  evaluasiDitutup?: boolean
+  timKerjaId?: string | null
+  batasDokumen?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  approvals?: Prisma.PenugasanApprovalUncheckedCreateNestedManyWithoutTrainingInput
+  peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutTrainingInput
+  sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedCreateNestedManyWithoutTrainingInput
+  tes?: Prisma.TesUncheckedCreateNestedManyWithoutTrainingInput
+  sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedCreateNestedManyWithoutTrainingInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutTrainingInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedManyWithoutTrainingInput
+  kelompok?: Prisma.KelompokPesertaUncheckedCreateNestedManyWithoutTrainingInput
+  masaTempatKerja?: Prisma.MasaTempatKerjaUncheckedCreateNestedManyWithoutTrainingInput
+  suratTugas?: Prisma.SuratTugasUncheckedCreateNestedManyWithoutTrainingInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutTrainingInput
+  pemantauanPersiapan?: Prisma.PemantauanPersiapanUncheckedCreateNestedManyWithoutTrainingInput
+  naskahDinas?: Prisma.NaskahDinasUncheckedCreateNestedManyWithoutTrainingInput
+  tugas?: Prisma.TugasUncheckedCreateNestedManyWithoutTrainingInput
+  seminarPeserta?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutTrainingInput
+  penugasanAngkatan?: Prisma.PenugasanAngkatanUncheckedCreateNestedManyWithoutTrainingInput
+}
+
+export type TrainingCreateOrConnectWithoutLokasiStulaInput = {
+  where: Prisma.TrainingWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrainingCreateWithoutLokasiStulaInput, Prisma.TrainingUncheckedCreateWithoutLokasiStulaInput>
+}
+
+export type TrainingUpsertWithoutLokasiStulaInput = {
+  update: Prisma.XOR<Prisma.TrainingUpdateWithoutLokasiStulaInput, Prisma.TrainingUncheckedUpdateWithoutLokasiStulaInput>
+  create: Prisma.XOR<Prisma.TrainingCreateWithoutLokasiStulaInput, Prisma.TrainingUncheckedCreateWithoutLokasiStulaInput>
+  where?: Prisma.TrainingWhereInput
+}
+
+export type TrainingUpdateToOneWithWhereWithoutLokasiStulaInput = {
+  where?: Prisma.TrainingWhereInput
+  data: Prisma.XOR<Prisma.TrainingUpdateWithoutLokasiStulaInput, Prisma.TrainingUncheckedUpdateWithoutLokasiStulaInput>
+}
+
+export type TrainingUpdateWithoutLokasiStulaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  participants?: Prisma.IntFieldUpdateOperationsInput | number
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  jpDibutuhkan?: Prisma.IntFieldUpdateOperationsInput | number
+  tempat?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modePelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  angkatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  evaluasiDitutup?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  batasDokumen?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timKerja?: Prisma.TimKerjaUpdateOneWithoutTrainingNestedInput
+  approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
+  peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
+  sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
+  sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateManyWithoutTrainingNestedInput
+  kelompok?: Prisma.KelompokPesertaUpdateManyWithoutTrainingNestedInput
+  masaTempatKerja?: Prisma.MasaTempatKerjaUpdateManyWithoutTrainingNestedInput
+  suratTugas?: Prisma.SuratTugasUpdateManyWithoutTrainingNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutTrainingNestedInput
+  pemantauanPersiapan?: Prisma.PemantauanPersiapanUpdateManyWithoutTrainingNestedInput
+  naskahDinas?: Prisma.NaskahDinasUpdateManyWithoutTrainingNestedInput
+  tugas?: Prisma.TugasUpdateManyWithoutTrainingNestedInput
+  seminarPeserta?: Prisma.SeminarPesertaUpdateManyWithoutTrainingNestedInput
+  penugasanAngkatan?: Prisma.PenugasanAngkatanUpdateManyWithoutTrainingNestedInput
+}
+
+export type TrainingUncheckedUpdateWithoutLokasiStulaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  participants?: Prisma.IntFieldUpdateOperationsInput | number
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  jpDibutuhkan?: Prisma.IntFieldUpdateOperationsInput | number
+  tempat?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  jenisPelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modePelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  angkatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  evaluasiDitutup?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timKerjaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batasDokumen?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
+  peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
+  sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
+  sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateManyWithoutTrainingNestedInput
+  kelompok?: Prisma.KelompokPesertaUncheckedUpdateManyWithoutTrainingNestedInput
+  masaTempatKerja?: Prisma.MasaTempatKerjaUncheckedUpdateManyWithoutTrainingNestedInput
+  suratTugas?: Prisma.SuratTugasUncheckedUpdateManyWithoutTrainingNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutTrainingNestedInput
+  pemantauanPersiapan?: Prisma.PemantauanPersiapanUncheckedUpdateManyWithoutTrainingNestedInput
+  naskahDinas?: Prisma.NaskahDinasUncheckedUpdateManyWithoutTrainingNestedInput
+  tugas?: Prisma.TugasUncheckedUpdateManyWithoutTrainingNestedInput
   seminarPeserta?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutTrainingNestedInput
   penugasanAngkatan?: Prisma.PenugasanAngkatanUncheckedUpdateManyWithoutTrainingNestedInput
 }
@@ -3683,6 +3930,7 @@ export type TrainingUpdateWithoutTimKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutTrainingNestedInput
@@ -3718,6 +3966,7 @@ export type TrainingUncheckedUpdateWithoutTimKerjaInput = {
   approvals?: Prisma.PenugasanApprovalUncheckedUpdateManyWithoutTrainingNestedInput
   peserta?: Prisma.PesertaUncheckedUpdateManyWithoutTrainingNestedInput
   sesiPembelajaran?: Prisma.SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateManyWithoutTrainingNestedInput
   tes?: Prisma.TesUncheckedUpdateManyWithoutTrainingNestedInput
   sasaranEvaluasi?: Prisma.SasaranEvaluasiUncheckedUpdateManyWithoutTrainingNestedInput
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutTrainingNestedInput
@@ -3761,6 +4010,7 @@ export type TrainingCountOutputType = {
   approvals: number
   peserta: number
   sesiPembelajaran: number
+  lokasiStula: number
   tes: number
   sasaranEvaluasi: number
   evaluasi: number
@@ -3780,6 +4030,7 @@ export type TrainingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   approvals?: boolean | TrainingCountOutputTypeCountApprovalsArgs
   peserta?: boolean | TrainingCountOutputTypeCountPesertaArgs
   sesiPembelajaran?: boolean | TrainingCountOutputTypeCountSesiPembelajaranArgs
+  lokasiStula?: boolean | TrainingCountOutputTypeCountLokasiStulaArgs
   tes?: boolean | TrainingCountOutputTypeCountTesArgs
   sasaranEvaluasi?: boolean | TrainingCountOutputTypeCountSasaranEvaluasiArgs
   evaluasi?: boolean | TrainingCountOutputTypeCountEvaluasiArgs
@@ -3824,6 +4075,13 @@ export type TrainingCountOutputTypeCountPesertaArgs<ExtArgs extends runtime.Type
  */
 export type TrainingCountOutputTypeCountSesiPembelajaranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SesiPembelajaranWhereInput
+}
+
+/**
+ * TrainingCountOutputType without action
+ */
+export type TrainingCountOutputTypeCountLokasiStulaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LokasiStulaWhereInput
 }
 
 /**
@@ -3940,6 +4198,7 @@ export type TrainingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   approvals?: boolean | Prisma.Training$approvalsArgs<ExtArgs>
   peserta?: boolean | Prisma.Training$pesertaArgs<ExtArgs>
   sesiPembelajaran?: boolean | Prisma.Training$sesiPembelajaranArgs<ExtArgs>
+  lokasiStula?: boolean | Prisma.Training$lokasiStulaArgs<ExtArgs>
   tes?: boolean | Prisma.Training$tesArgs<ExtArgs>
   sasaranEvaluasi?: boolean | Prisma.Training$sasaranEvaluasiArgs<ExtArgs>
   evaluasi?: boolean | Prisma.Training$evaluasiArgs<ExtArgs>
@@ -4024,6 +4283,7 @@ export type TrainingInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   approvals?: boolean | Prisma.Training$approvalsArgs<ExtArgs>
   peserta?: boolean | Prisma.Training$pesertaArgs<ExtArgs>
   sesiPembelajaran?: boolean | Prisma.Training$sesiPembelajaranArgs<ExtArgs>
+  lokasiStula?: boolean | Prisma.Training$lokasiStulaArgs<ExtArgs>
   tes?: boolean | Prisma.Training$tesArgs<ExtArgs>
   sasaranEvaluasi?: boolean | Prisma.Training$sasaranEvaluasiArgs<ExtArgs>
   evaluasi?: boolean | Prisma.Training$evaluasiArgs<ExtArgs>
@@ -4053,6 +4313,7 @@ export type $TrainingPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     approvals: Prisma.$PenugasanApprovalPayload<ExtArgs>[]
     peserta: Prisma.$PesertaPayload<ExtArgs>[]
     sesiPembelajaran: Prisma.$SesiPembelajaranPayload<ExtArgs>[]
+    lokasiStula: Prisma.$LokasiStulaPayload<ExtArgs>[]
     tes: Prisma.$TesPayload<ExtArgs>[]
     sasaranEvaluasi: Prisma.$SasaranEvaluasiPayload<ExtArgs>[]
     evaluasi: Prisma.$EvaluasiPengajarPayload<ExtArgs>[]
@@ -4483,6 +4744,7 @@ export interface Prisma__TrainingClient<T, Null = never, ExtArgs extends runtime
   approvals<T extends Prisma.Training$approvalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PenugasanApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   peserta<T extends Prisma.Training$pesertaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$pesertaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PesertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sesiPembelajaran<T extends Prisma.Training$sesiPembelajaranArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$sesiPembelajaranArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SesiPembelajaranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lokasiStula<T extends Prisma.Training$lokasiStulaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$lokasiStulaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LokasiStulaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tes<T extends Prisma.Training$tesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$tesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sasaranEvaluasi<T extends Prisma.Training$sasaranEvaluasiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$sasaranEvaluasiArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SasaranEvaluasiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluasi<T extends Prisma.Training$evaluasiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Training$evaluasiArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluasiPengajarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5026,6 +5288,30 @@ export type Training$sesiPembelajaranArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.SesiPembelajaranScalarFieldEnum | Prisma.SesiPembelajaranScalarFieldEnum[]
+}
+
+/**
+ * Training.lokasiStula
+ */
+export type Training$lokasiStulaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LokasiStula
+   */
+  select?: Prisma.LokasiStulaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LokasiStula
+   */
+  omit?: Prisma.LokasiStulaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LokasiStulaInclude<ExtArgs> | null
+  where?: Prisma.LokasiStulaWhereInput
+  orderBy?: Prisma.LokasiStulaOrderByWithRelationInput | Prisma.LokasiStulaOrderByWithRelationInput[]
+  cursor?: Prisma.LokasiStulaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LokasiStulaScalarFieldEnum | Prisma.LokasiStulaScalarFieldEnum[]
 }
 
 /**

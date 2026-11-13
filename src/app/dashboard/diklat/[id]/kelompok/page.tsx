@@ -6,6 +6,8 @@ import { getKelompok } from "@/lib/server/repositories/kelompok";
 import { JENIS_KELOMPOK_BAWAAN, isJenisKelompok } from "@/lib/kelompok";
 import { EmptyState } from "@/components/arc/empty-state/empty-state";
 import { TabKelompok } from "@/components/kelompok/tab-kelompok";
+import { PanelStula } from "@/components/kelompok/panel-stula";
+import { getStula } from "@/lib/server/repositories/stula";
 
 export const metadata: Metadata = { title: "Kelompok" };
 
@@ -19,8 +21,17 @@ export default async function HalamanKelompok({ params, searchParams }: { params
     return <EmptyState title="Tidak berwenang" description="Kelompok peserta dikelola Ketua Diklat dan dibaca Kepala Balai serta Kabag TU." />;
   }
   try {
-    const data = await getKelompok(id, role === "admin" || role === "ketua-diklat", isJenisKelompok(jenis) ? jenis : JENIS_KELOMPOK_BAWAAN);
-    return <TabKelompok data={data} />;
+    const kelola = role === "admin" || role === "ketua-diklat";
+    const data = await getKelompok(id, kelola, isJenisKelompok(jenis) ? jenis : JENIS_KELOMPOK_BAWAAN);
+    if (data.jenis !== "STULA") return <TabKelompok data={data} />;
+    // Studi lapangan: kelompok + daftar lokasi, advance kunjungan, dan peringatan H-7 (EB-053).
+    const stula = await getStula(id, kelola);
+    return (
+      <div className="flex flex-col gap-6">
+        <TabKelompok data={data} />
+        <PanelStula trainingId={id} data={stula} />
+      </div>
+    );
   } catch (e) {
     if (e instanceof AppError) return <EmptyState title="Kelompok tidak tersedia" description={e.message} />;
     throw e;
