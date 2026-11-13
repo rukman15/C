@@ -2,7 +2,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { periksaPresensiHarian, rapikanJam, wajibHadir } from "../src/lib/kehadiran";
-import { perubahanKehadiran, sesiPerHari, skemaAksiMasaTempatKerja, skemaSimpanKehadiran, skemaTambahSesiPembelajaran, skemaUbahSesiPembelajaran } from "../src/lib/data-pembelajaran";
+import {
+  perubahanKehadiran,
+  sesiPerHari,
+  skemaAksiMasaTempatKerja,
+  skemaSimpanKehadiran,
+  skemaTambahSesiPembelajaran,
+  skemaUbahSesiPembelajaran,
+} from "../src/lib/data-pembelajaran";
 import { rapikanRingkasan } from "../src/lib/aktivitas";
 
 test("jam mulai dirapikan; jam tidak sah ditolak", () => {
@@ -67,6 +74,29 @@ test("sesi dikelompokkan per hari dengan jumlah JP", () => {
     { tanggal: "2026-11-03", jp: 4 },
     { tanggal: "2026-11-04", jp: 6 },
   ]);
-  assert.deepEqual(g.map((x) => [x.tanggal, x.jp, x.sesi.length]), [["2026-11-03", 6, 2], ["2026-11-04", 6, 1]]);
+  assert.deepEqual(
+    g.map((x) => [x.tanggal, x.jp, x.sesi.length]),
+    [
+      ["2026-11-03", 6, 2],
+      ["2026-11-04", 6, 1],
+    ],
+  );
   assert.equal(rapikanRingkasan("a   b\n c"), "a b c");
+});
+
+test("pengajar & Zoom per kelompok (EB-052): peserta melihat isian kelompoknya, selain itu tautan umum sesi", async () => {
+  const { untukKelompok, perKelompokKosong } = await import("../src/lib/data-pembelajaran");
+  const sesi = {
+    tautan: "https://zoom.us/j/umum",
+    perKelompok: [
+      { kelompokId: "k1", nomor: 1, pengajarPegawaiId: "w1", pengajarNama: "Dr. A", tautan: "https://zoom.us/j/1" },
+      { kelompokId: "k2", nomor: 2, pengajarPegawaiId: null, pengajarNama: "Dr. B", tautan: null },
+    ],
+  };
+  assert.deepEqual(untukKelompok(sesi, "k1"), { pengajar: "Dr. A", tautan: "https://zoom.us/j/1" });
+  assert.deepEqual(untukKelompok(sesi, "k2"), { pengajar: "Dr. B", tautan: "https://zoom.us/j/umum" });
+  assert.deepEqual(untukKelompok(sesi, "k9"), { pengajar: null, tautan: "https://zoom.us/j/umum" });
+  assert.deepEqual(untukKelompok(sesi, null), { pengajar: null, tautan: "https://zoom.us/j/umum" });
+  assert.equal(perKelompokKosong({ pengajarNama: "  ", tautan: "" }), true);
+  assert.equal(perKelompokKosong({ tautan: "https://zoom.us/j/1" }), false);
 });

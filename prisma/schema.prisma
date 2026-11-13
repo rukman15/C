@@ -367,6 +367,7 @@ model KelompokPeserta {
   videoKelompok  VideoKelompok[]
   topikForum     TopikForum[]
   bacaForum      BacaForum[]
+  sesiKelompok   SesiKelompok[]
 
   @@unique([trainingId, jenis, nomor])
   @@map("kelompok_peserta")
@@ -396,9 +397,28 @@ model SesiPembelajaran {
   updatedAt     DateTime @updatedAt
 
   kehadiran Kehadiran[]
+  perKelompok SesiKelompok[]
 
   @@index([trainingId, tanggal])
   @@map("sesi_pembelajaran")
+}
+
+// Pengajar & tautan Zoom per kelompok e-learning untuk satu sesi (EB-052). Diisi manual penyelenggara.
+model SesiKelompok {
+  id                String           @id @default(cuid())
+  sesiId            String
+  sesi              SesiPembelajaran @relation(fields: [sesiId], references: [id], onDelete: Cascade)
+  kelompokId        String
+  kelompok          KelompokPeserta  @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  pengajarPegawaiId String?
+  pengajarNama      String?
+  tautan            String?
+  diubahOleh        String
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([sesiId, kelompokId])
+  @@index([kelompokId])
+  @@map("sesi_kelompok")
 }
 
 model Kehadiran {

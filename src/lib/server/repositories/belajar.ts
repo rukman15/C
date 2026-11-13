@@ -11,6 +11,7 @@ import { awalHariWib, isoTanggal } from "@/lib/tanggal";
 import { tesTerbuka } from "@/lib/server/repositories/tes";
 import { evaluasiTertunda } from "@/lib/server/repositories/evaluasi";
 import { kelompokUntukPeserta } from "@/lib/server/repositories/kelompok";
+import { untukKelompok } from "@/lib/data-pembelajaran";
 import { seminarPeserta } from "@/lib/server/repositories/seminar";
 import { statusDokumenPeserta } from "@/lib/server/repositories/dokumen-peserta";
 import { hariPelatihan, labelPendekTahap, persenHadir, sesiTerdekat, tahapAktif, tugasPeserta } from "@/lib/beranda-peserta";
@@ -51,7 +52,10 @@ export async function listDiklatSaya(email: string, now: Date = new Date()): Pro
   const hariIni = isoTanggal(awalHariWib(now));
   const hasil: DiklatSayaRecord[] = [];
   for (const r of rows) {
-    const jadwal = await listSesiPembelajaran(r.trainingId);
+    const jadwalAsli = await listSesiPembelajaran(r.trainingId);
+    // Pengajar & Zoom kelompok e-learning peserta ini menggantikan tautan umum sesi (EB-052).
+    const kelEl = await kelompokElearning(r.id);
+    const jadwal = { ...jadwalAsli, sesi: jadwalAsli.sesi.map((s) => ({ ...s, ...isiKelompok(s, kelEl) })) };
     const t = toTrainingRecord(await getTrainingByIdOrThrow(jadwal.training.id));
     const catatan: { sesiId: string; status: string }[] = await prisma.kehadiran.findMany({
       where: { pesertaId: r.id },
@@ -77,9 +81,16 @@ export async function listDiklatSaya(email: string, now: Date = new Date()): Pro
       hari,
       kehadiranPersen: persenHadir(rekap),
       tingkatKehadiran: aturan ? rekap.tingkat : null,
-      sesiHariIni: dekat.hariIni.map((s) => ({ kegiatan: s.kegiatan, jamMulai: s.jamMulai, bentuk: s.bentuk, jp: s.jp, tautan: s.tautan })),
+      sesiHariIni: dekat.hariIni.map((s) => ({ kegiatan: s.kegiatan, jamMulai: s.jamMulai, bentuk: s.bentuk, jp: s.jp, tautan: s.tautan, pengajar: s.pengajar })),
       sesiBerikutnya: dekat.berikutnya
-        ? { tanggal: dekat.berikutnya.tanggal, jamMulai: dekat.berikutnya.jamMulai, kegiatan: dekat.berikutnya.kegiatan, bentuk: dekat.berikutnya.bentuk, tautan: dekat.berikutnya.tautan }
+        ? {
+            tanggal: dekat.berikutnya.tanggal,
+            jamMulai: dekat.berikutnya.jamMulai,
+            kegiatan: dekat.berikutnya.kegiatan,
+            bentuk: dekat.berikutnya.bentuk,
+            tautan: dekat.berikutnya.tautan,
+            pengajar: dekat.berikutnya.pengajar,
+          }
         : null,
       mandiri: mandiriDari(t.jenisPelatihan, t.modePelatihan),
       tahapKini: iTahap >= 0 && iTahap < tahap.length ? labelPendekTahap(tahap)[iTahap] : null,
@@ -103,13 +114,18 @@ async function faktaTugas(pesertaId: string, trainingId: string, evaluasiTertund
   const pengerjaan: { tesId: string; selesai: Date | null }[] = tes.length
     ? await prisma.pengerjaanTes.findMany({ where: { pesertaId, tesId: { in: tes.map((x) => x.id) } }, select: { tesId: true, selesai: true } })
     : [];
-  const terisi: number =
-    (await prisma.evaluasiPengajar.count({ where: { pesertaId } })) + (await prisma.evaluasiPenyelenggaraan.count({ where: { pesertaId } }));
+  const terisi: number = (await prisma.evaluasiPengajar.count({ where: { pesertaId } })) + (await prisma.evaluasiPenyelenggaraan.count({ where: { pesertaId } }));
   return tugasPeserta(
     {
       pesertaId,
       dokumen: dok?.wajib
-        ? { lengkap: dok.ringkas.lengkap, kurang: dok.ringkas.kurang.length, menunggu: dok.ringkas.menunggu.length, ditolak: dok.ringkas.ditolak.length, sisaHari: dok.ringkas.sisaHari }
+        ? {
+            lengkap: dok.ringkas.lengkap,
+            kurang: dok.ringkas.kurang.length,
+            menunggu: dok.ringkas.menunggu.length,
+            ditolak: dok.ringkas.ditolak.length,
+            sisaHari: dok.ringkas.sisaHari,
+          }
         : null,
       tes: tes
         .map((x) => ({ x, st: statusTes(x, now) }))
@@ -146,7 +162,9 @@ export async function getRuangBelajar(pesertaId: string, pembaca: Pembaca, now: 
     if (!akunId || p.akunId !== akunId) throw new NotFoundError("Data peserta tidak ditemukan");
   }
 
-  const jadwal = await listSesiPembelajaran(p.trainingId);
+  const jadwalAsli = await listSesiPembelajaran(p.trainingId);
+  const kelEl = await kelompokElearning(p.id);
+  const jadwal = { ...jadwalAsli, sesi: jadwalAsli.sesi.map((s) => ({ ...s, ...isiKelompok(s, kelEl) })) };
   const t = toTrainingRecord(await getTrainingByIdOrThrow(jadwal.training.id));
   const catatan: { sesiId: string; status: string }[] = await prisma.kehadiran.findMany({
     where: { pesertaId },
@@ -173,7 +191,11 @@ export async function getRuangBelajar(pesertaId: string, pembaca: Pembaca, now: 
     },
     training: t,
     hari,
-    tahapAktif: tahapAktif(tahapKur.map((x) => ({ kode: x.tipe, hari: x.hari })), hari, bentukHariIni),
+    tahapAktif: tahapAktif(
+      tahapKur.map((x) => ({ kode: x.tipe, hari: x.hari })),
+      hari,
+      bentukHariIni,
+    ),
     tahap: tahapKur.map((x) => ({
       nama: x.nama,
       tipe: labelTipeTahap(x.tipe),
@@ -198,6 +220,7 @@ export async function getRuangBelajar(pesertaId: string, pembaca: Pembaca, now: 
         wajibHadir: s.wajibHadir,
         mataPelatihanNama: s.mataPelatihanNama,
         tautan: s.tautan,
+        pengajar: s.pengajar,
         kehadiran: isStatusKehadiran(st) ? st : null,
       };
     }),
@@ -213,7 +236,6 @@ export async function getRuangBelajar(pesertaId: string, pembaca: Pembaca, now: 
   };
 }
 
-
 async function ringkasDokumenRuang(pesertaId: string, now: Date): Promise<RuangBelajarRecord["dokumen"]> {
   const d = await statusDokumenPeserta(pesertaId, now);
   if (!d.wajib) return null;
@@ -226,3 +248,14 @@ async function ringkasDokumenRuang(pesertaId: string, now: Date): Promise<RuangB
     sisaHari: d.ringkas.sisaHari,
   };
 }
+
+/** Kelompok e-learning seorang peserta (untuk pengajar & Zoom per kelompok, EB-052). */
+async function kelompokElearning(pesertaId: string): Promise<string | null> {
+  const a = await prisma.anggotaKelompok.findUnique({ where: { pesertaId_jenis: { pesertaId, jenis: "ELEARNING" } }, select: { kelompokId: true } });
+  return a?.kelompokId ?? null;
+}
+
+const isiKelompok = (s: Parameters<typeof untukKelompok>[0], kelompokId: string | null) => {
+  const k = untukKelompok(s, kelompokId);
+  return { tautan: k.tautan ?? undefined, pengajar: k.pengajar ?? undefined };
+};

@@ -290,6 +290,7 @@ export type SesiPembelajaranWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"SesiPembelajaran"> | Date | string
   training?: Prisma.XOR<Prisma.TrainingScalarRelationFilter, Prisma.TrainingWhereInput>
   kehadiran?: Prisma.KehadiranListRelationFilter
+  perKelompok?: Prisma.SesiKelompokListRelationFilter
 }
 
 export type SesiPembelajaranOrderByWithRelationInput = {
@@ -309,6 +310,7 @@ export type SesiPembelajaranOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   training?: Prisma.TrainingOrderByWithRelationInput
   kehadiran?: Prisma.KehadiranOrderByRelationAggregateInput
+  perKelompok?: Prisma.SesiKelompokOrderByRelationAggregateInput
 }
 
 export type SesiPembelajaranWhereUniqueInput = Prisma.AtLeast<{
@@ -331,6 +333,7 @@ export type SesiPembelajaranWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"SesiPembelajaran"> | Date | string
   training?: Prisma.XOR<Prisma.TrainingScalarRelationFilter, Prisma.TrainingWhereInput>
   kehadiran?: Prisma.KehadiranListRelationFilter
+  perKelompok?: Prisma.SesiKelompokListRelationFilter
 }, "id">
 
 export type SesiPembelajaranOrderByWithAggregationInput = {
@@ -391,6 +394,7 @@ export type SesiPembelajaranCreateInput = {
   updatedAt?: Date | string
   training: Prisma.TrainingCreateNestedOneWithoutSesiPembelajaranInput
   kehadiran?: Prisma.KehadiranCreateNestedManyWithoutSesiInput
+  perKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranUncheckedCreateInput = {
@@ -409,6 +413,7 @@ export type SesiPembelajaranUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   kehadiran?: Prisma.KehadiranUncheckedCreateNestedManyWithoutSesiInput
+  perKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranUpdateInput = {
@@ -427,6 +432,7 @@ export type SesiPembelajaranUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   training?: Prisma.TrainingUpdateOneRequiredWithoutSesiPembelajaranNestedInput
   kehadiran?: Prisma.KehadiranUpdateManyWithoutSesiNestedInput
+  perKelompok?: Prisma.SesiKelompokUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranUncheckedUpdateInput = {
@@ -445,6 +451,7 @@ export type SesiPembelajaranUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kehadiran?: Prisma.KehadiranUncheckedUpdateManyWithoutSesiNestedInput
+  perKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranCreateManyInput = {
@@ -613,6 +620,20 @@ export type SesiPembelajaranUncheckedUpdateManyWithoutTrainingNestedInput = {
   deleteMany?: Prisma.SesiPembelajaranScalarWhereInput | Prisma.SesiPembelajaranScalarWhereInput[]
 }
 
+export type SesiPembelajaranCreateNestedOneWithoutPerKelompokInput = {
+  create?: Prisma.XOR<Prisma.SesiPembelajaranCreateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedCreateWithoutPerKelompokInput>
+  connectOrCreate?: Prisma.SesiPembelajaranCreateOrConnectWithoutPerKelompokInput
+  connect?: Prisma.SesiPembelajaranWhereUniqueInput
+}
+
+export type SesiPembelajaranUpdateOneRequiredWithoutPerKelompokNestedInput = {
+  create?: Prisma.XOR<Prisma.SesiPembelajaranCreateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedCreateWithoutPerKelompokInput>
+  connectOrCreate?: Prisma.SesiPembelajaranCreateOrConnectWithoutPerKelompokInput
+  upsert?: Prisma.SesiPembelajaranUpsertWithoutPerKelompokInput
+  connect?: Prisma.SesiPembelajaranWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SesiPembelajaranUpdateToOneWithWhereWithoutPerKelompokInput, Prisma.SesiPembelajaranUpdateWithoutPerKelompokInput>, Prisma.SesiPembelajaranUncheckedUpdateWithoutPerKelompokInput>
+}
+
 export type SesiPembelajaranCreateNestedOneWithoutKehadiranInput = {
   create?: Prisma.XOR<Prisma.SesiPembelajaranCreateWithoutKehadiranInput, Prisma.SesiPembelajaranUncheckedCreateWithoutKehadiranInput>
   connectOrCreate?: Prisma.SesiPembelajaranCreateOrConnectWithoutKehadiranInput
@@ -642,6 +663,7 @@ export type SesiPembelajaranCreateWithoutTrainingInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   kehadiran?: Prisma.KehadiranCreateNestedManyWithoutSesiInput
+  perKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranUncheckedCreateWithoutTrainingInput = {
@@ -659,6 +681,7 @@ export type SesiPembelajaranUncheckedCreateWithoutTrainingInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   kehadiran?: Prisma.KehadiranUncheckedCreateNestedManyWithoutSesiInput
+  perKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranCreateOrConnectWithoutTrainingInput = {
@@ -707,6 +730,94 @@ export type SesiPembelajaranScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"SesiPembelajaran"> | Date | string
 }
 
+export type SesiPembelajaranCreateWithoutPerKelompokInput = {
+  id?: string
+  tanggal: Date | string
+  jamMulai?: string | null
+  kegiatan: string
+  jp: number
+  bentuk?: string
+  mataPelatihan?: string | null
+  keterangan?: string | null
+  tautan?: string | null
+  ruang?: string | null
+  dibuatOleh: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  training: Prisma.TrainingCreateNestedOneWithoutSesiPembelajaranInput
+  kehadiran?: Prisma.KehadiranCreateNestedManyWithoutSesiInput
+}
+
+export type SesiPembelajaranUncheckedCreateWithoutPerKelompokInput = {
+  id?: string
+  trainingId: string
+  tanggal: Date | string
+  jamMulai?: string | null
+  kegiatan: string
+  jp: number
+  bentuk?: string
+  mataPelatihan?: string | null
+  keterangan?: string | null
+  tautan?: string | null
+  ruang?: string | null
+  dibuatOleh: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kehadiran?: Prisma.KehadiranUncheckedCreateNestedManyWithoutSesiInput
+}
+
+export type SesiPembelajaranCreateOrConnectWithoutPerKelompokInput = {
+  where: Prisma.SesiPembelajaranWhereUniqueInput
+  create: Prisma.XOR<Prisma.SesiPembelajaranCreateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedCreateWithoutPerKelompokInput>
+}
+
+export type SesiPembelajaranUpsertWithoutPerKelompokInput = {
+  update: Prisma.XOR<Prisma.SesiPembelajaranUpdateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedUpdateWithoutPerKelompokInput>
+  create: Prisma.XOR<Prisma.SesiPembelajaranCreateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedCreateWithoutPerKelompokInput>
+  where?: Prisma.SesiPembelajaranWhereInput
+}
+
+export type SesiPembelajaranUpdateToOneWithWhereWithoutPerKelompokInput = {
+  where?: Prisma.SesiPembelajaranWhereInput
+  data: Prisma.XOR<Prisma.SesiPembelajaranUpdateWithoutPerKelompokInput, Prisma.SesiPembelajaranUncheckedUpdateWithoutPerKelompokInput>
+}
+
+export type SesiPembelajaranUpdateWithoutPerKelompokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jamMulai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kegiatan?: Prisma.StringFieldUpdateOperationsInput | string
+  jp?: Prisma.IntFieldUpdateOperationsInput | number
+  bentuk?: Prisma.StringFieldUpdateOperationsInput | string
+  mataPelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  keterangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dibuatOleh?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  training?: Prisma.TrainingUpdateOneRequiredWithoutSesiPembelajaranNestedInput
+  kehadiran?: Prisma.KehadiranUpdateManyWithoutSesiNestedInput
+}
+
+export type SesiPembelajaranUncheckedUpdateWithoutPerKelompokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainingId?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  jamMulai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kegiatan?: Prisma.StringFieldUpdateOperationsInput | string
+  jp?: Prisma.IntFieldUpdateOperationsInput | number
+  bentuk?: Prisma.StringFieldUpdateOperationsInput | string
+  mataPelatihan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  keterangan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dibuatOleh?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kehadiran?: Prisma.KehadiranUncheckedUpdateManyWithoutSesiNestedInput
+}
+
 export type SesiPembelajaranCreateWithoutKehadiranInput = {
   id?: string
   tanggal: Date | string
@@ -722,6 +833,7 @@ export type SesiPembelajaranCreateWithoutKehadiranInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   training: Prisma.TrainingCreateNestedOneWithoutSesiPembelajaranInput
+  perKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranUncheckedCreateWithoutKehadiranInput = {
@@ -739,6 +851,7 @@ export type SesiPembelajaranUncheckedCreateWithoutKehadiranInput = {
   dibuatOleh: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  perKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutSesiInput
 }
 
 export type SesiPembelajaranCreateOrConnectWithoutKehadiranInput = {
@@ -772,6 +885,7 @@ export type SesiPembelajaranUpdateWithoutKehadiranInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   training?: Prisma.TrainingUpdateOneRequiredWithoutSesiPembelajaranNestedInput
+  perKelompok?: Prisma.SesiKelompokUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranUncheckedUpdateWithoutKehadiranInput = {
@@ -789,6 +903,7 @@ export type SesiPembelajaranUncheckedUpdateWithoutKehadiranInput = {
   dibuatOleh?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  perKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranCreateManyTrainingInput = {
@@ -822,6 +937,7 @@ export type SesiPembelajaranUpdateWithoutTrainingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kehadiran?: Prisma.KehadiranUpdateManyWithoutSesiNestedInput
+  perKelompok?: Prisma.SesiKelompokUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranUncheckedUpdateWithoutTrainingInput = {
@@ -839,6 +955,7 @@ export type SesiPembelajaranUncheckedUpdateWithoutTrainingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kehadiran?: Prisma.KehadiranUncheckedUpdateManyWithoutSesiNestedInput
+  perKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutSesiNestedInput
 }
 
 export type SesiPembelajaranUncheckedUpdateManyWithoutTrainingInput = {
@@ -864,10 +981,12 @@ export type SesiPembelajaranUncheckedUpdateManyWithoutTrainingInput = {
 
 export type SesiPembelajaranCountOutputType = {
   kehadiran: number
+  perKelompok: number
 }
 
 export type SesiPembelajaranCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kehadiran?: boolean | SesiPembelajaranCountOutputTypeCountKehadiranArgs
+  perKelompok?: boolean | SesiPembelajaranCountOutputTypeCountPerKelompokArgs
 }
 
 /**
@@ -885,6 +1004,13 @@ export type SesiPembelajaranCountOutputTypeDefaultArgs<ExtArgs extends runtime.T
  */
 export type SesiPembelajaranCountOutputTypeCountKehadiranArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.KehadiranWhereInput
+}
+
+/**
+ * SesiPembelajaranCountOutputType without action
+ */
+export type SesiPembelajaranCountOutputTypeCountPerKelompokArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SesiKelompokWhereInput
 }
 
 
@@ -905,6 +1031,7 @@ export type SesiPembelajaranSelect<ExtArgs extends runtime.Types.Extensions.Inte
   updatedAt?: boolean
   training?: boolean | Prisma.TrainingDefaultArgs<ExtArgs>
   kehadiran?: boolean | Prisma.SesiPembelajaran$kehadiranArgs<ExtArgs>
+  perKelompok?: boolean | Prisma.SesiPembelajaran$perKelompokArgs<ExtArgs>
   _count?: boolean | Prisma.SesiPembelajaranCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sesiPembelajaran"]>
 
@@ -965,6 +1092,7 @@ export type SesiPembelajaranOmit<ExtArgs extends runtime.Types.Extensions.Intern
 export type SesiPembelajaranInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   training?: boolean | Prisma.TrainingDefaultArgs<ExtArgs>
   kehadiran?: boolean | Prisma.SesiPembelajaran$kehadiranArgs<ExtArgs>
+  perKelompok?: boolean | Prisma.SesiPembelajaran$perKelompokArgs<ExtArgs>
   _count?: boolean | Prisma.SesiPembelajaranCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SesiPembelajaranIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -979,6 +1107,7 @@ export type $SesiPembelajaranPayload<ExtArgs extends runtime.Types.Extensions.In
   objects: {
     training: Prisma.$TrainingPayload<ExtArgs>
     kehadiran: Prisma.$KehadiranPayload<ExtArgs>[]
+    perKelompok: Prisma.$SesiKelompokPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1391,6 +1520,7 @@ export interface Prisma__SesiPembelajaranClient<T, Null = never, ExtArgs extends
   readonly [Symbol.toStringTag]: "PrismaPromise"
   training<T extends Prisma.TrainingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainingDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainingClient<runtime.Types.Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   kehadiran<T extends Prisma.SesiPembelajaran$kehadiranArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SesiPembelajaran$kehadiranArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KehadiranPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  perKelompok<T extends Prisma.SesiPembelajaran$perKelompokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SesiPembelajaran$perKelompokArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SesiKelompokPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1851,6 +1981,30 @@ export type SesiPembelajaran$kehadiranArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.KehadiranScalarFieldEnum | Prisma.KehadiranScalarFieldEnum[]
+}
+
+/**
+ * SesiPembelajaran.perKelompok
+ */
+export type SesiPembelajaran$perKelompokArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SesiKelompok
+   */
+  select?: Prisma.SesiKelompokSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SesiKelompok
+   */
+  omit?: Prisma.SesiKelompokOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SesiKelompokInclude<ExtArgs> | null
+  where?: Prisma.SesiKelompokWhereInput
+  orderBy?: Prisma.SesiKelompokOrderByWithRelationInput | Prisma.SesiKelompokOrderByWithRelationInput[]
+  cursor?: Prisma.SesiKelompokWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SesiKelompokScalarFieldEnum | Prisma.SesiKelompokScalarFieldEnum[]
 }
 
 /**

@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/server/prisma";
-import { ConflictError, NotFoundError, ValidationError, kodePrisma } from "@/lib/server/errors";
+import { ConflictError, ForbiddenError, NotFoundError, ValidationError, kodePrisma } from "@/lib/server/errors";
 import { sinkronStatusTraining } from "@/lib/server/repositories/training";
 import {
   isBentukSesi,
@@ -16,7 +16,8 @@ import { isMataPelatihanProgram, namaMataPelatihan } from "@/lib/kurikulum";
 import { isStatusPeserta } from "@/lib/peserta";
 import { bacaTautan, diluarPeriode, isTanggalIsoValid } from "@/lib/sesi";
 import { awalHariWib, isoTanggal } from "@/lib/tanggal";
-import type { BarisKehadiran, JadwalPembelajaran, LembarKehadiran, SesiPembelajaran } from "@/lib/data-pembelajaran";
+import { perKelompokKosong, type BarisKehadiran, type JadwalPembelajaran, type LembarKehadiran, type PerKelompok, type SesiPembelajaran } from "@/lib/data-pembelajaran";
+import { labelKelompok } from "@/lib/kelompok";
 
 /**
  * Jadwal pembelajaran + kehadiran. Aturan disalin dari repositories/pembelajaran.ts aplikasi lama.
@@ -49,7 +50,7 @@ async function trainingOrThrow(id: string): Promise<TrainingRow> {
   return t;
 }
 
-function toRecord(row: SesiRow, periode: TrainingRow, hitung: Hitungan, pesertaAktif: number, pengampu?: string[]): SesiPembelajaran {
+function toRecord(row: SesiRow, periode: TrainingRow, hitung: Hitungan, pesertaAktif: number, pengampu?: string[], perKelompok: PerKelompok[] = []): SesiPembelajaran {
   const tanggal = isoTanggal(row.tanggal);
   const dicatat = hitung.hadir + hitung.tidakHadir + hitung.dispensasi;
   return {
@@ -67,6 +68,7 @@ function toRecord(row: SesiRow, periode: TrainingRow, hitung: Hitungan, pesertaA
     tautan: row.tautan ?? undefined,
     ruang: row.ruang ?? undefined,
     ...(pengampu && pengampu.length ? { pengampu } : {}),
+    perKelompok,
     diluarPeriode: diluarPeriode(tanggal, isoTanggal(periode.startDate), periode.endDate ? isoTanggal(periode.endDate) : null),
     ...hitung,
     // Semua sesi dicatat presensinya (keputusan 14 Okt); asinkron/mandiri tidak masuk batas ketidakhadiran.
@@ -77,10 +79,7 @@ function toRecord(row: SesiRow, periode: TrainingRow, hitung: Hitungan, pesertaA
 /** Urutan tampil: tanggal, lalu jam mulai (yang tanpa jam di belakang), lalu urutan dibuat. */
 function urutkan(rows: SesiRow[]): SesiRow[] {
   return [...rows].sort(
-    (a, b) =>
-      a.tanggal.getTime() - b.tanggal.getTime() ||
-      (a.jamMulai ?? "99:99").localeCompare(b.jamMulai ?? "99:99") ||
-      a.createdAt.getTime() - b.createdAt.getTime(),
+    (a, b) => a.tanggal.getTime() - b.tanggal.getTime() || (a.jamMulai ?? "99:99").localeCompare(b.jamMulai ?? "99:99") || a.createdAt.getTime() - b.createdAt.getTime(),
   );
 }
 
@@ -144,11 +143,14 @@ function periksaPresensi(training: TrainingRow, rows: SesiRow[], hitung: Awaited
 export async function listSesiPembelajaran(trainingId: string): Promise<JadwalPembelajaran> {
   await sinkronStatusTraining();
   const training = await trainingOrThrow(trainingId);
-  const [rows, hitung, masa, pengampu] = await Promise.all([
+  const [rows, hitung, masa, pengampu, kelompokEl, perKel, wi] = await Promise.all([
     prisma.sesiPembelajaran.findMany({ where: { trainingId } }) as Promise<SesiRow[]>,
     hitungPerSesi(trainingId),
     masaJadwal(trainingId),
     pengampuPerMataPelatihan(trainingId),
+    prisma.kelompokPeserta.findMany({ where: { trainingId, jenis: "ELEARNING" }, orderBy: { nomor: "asc" }, select: { id: true, nomor: true, nama: true } }),
+    perKelompokJadwal(trainingId),
+    wiJadwal(trainingId),
   ]);
   const presensi = periksaPresensi(training, rows, hitung, masa, isoTanggal(awalHariWib(new Date())));
   return {
@@ -159,12 +161,80 @@ export async function listSesiPembelajaran(trainingId: string): Promise<JadwalPe
       endDate: training.endDate ? isoTanggal(training.endDate) : null,
       jenisPelatihan: training.jenisPelatihan,
     },
-    sesi: urutkan(rows).map((r) => toRecord(r, training, hitung.perSesi.get(r.id) ?? HITUNGAN_KOSONG, hitung.pesertaAktif, r.mataPelatihan ? pengampu.get(r.mataPelatihan) : undefined)),
+    sesi: urutkan(rows).map((r) =>
+      toRecord(r, training, hitung.perSesi.get(r.id) ?? HITUNGAN_KOSONG, hitung.pesertaAktif, r.mataPelatihan ? pengampu.get(r.mataPelatihan) : undefined, perKel.get(r.id) ?? []),
+    ),
     pesertaAktif: hitung.pesertaAktif,
     presensiBelumLengkap: presensi.belumLengkap,
     presensiTanpaSesi: presensi.tanpaSesi,
     masaTempatKerja: masa.map((m) => ({ id: m.id, jenis: m.jenis, label: labelMasaTempatKerja(m.jenis), mulai: isoTanggal(m.mulai), selesai: isoTanggal(m.selesai) })),
+    kelompokElearning: kelompokEl.map((k) => ({ id: k.id, nomor: k.nomor, label: labelKelompok(k) })),
+    wi,
   };
+}
+
+// --- Pengajar & Zoom per kelompok e-learning (EB-052) ---------------------------------------
+
+/** Isian per kelompok semua sesi satu jadwal: sesiId → daftar per kelompok (urut nomor kelompok). */
+async function perKelompokJadwal(trainingId: string): Promise<Map<string, PerKelompok[]>> {
+  const rows = await prisma.sesiKelompok.findMany({
+    where: { sesi: { trainingId } },
+    select: { sesiId: true, kelompokId: true, pengajarPegawaiId: true, pengajarNama: true, tautan: true, kelompok: { select: { nomor: true } } },
+  });
+  const peta = new Map<string, PerKelompok[]>();
+  for (const r of rows) {
+    const isi: PerKelompok = { kelompokId: r.kelompokId, nomor: r.kelompok.nomor, pengajarPegawaiId: r.pengajarPegawaiId, pengajarNama: r.pengajarNama, tautan: r.tautan };
+    peta.set(
+      r.sesiId,
+      [...(peta.get(r.sesiId) ?? []), isi].sort((a, b) => a.nomor - b.nomor),
+    );
+  }
+  return peta;
+}
+
+/** WI dengan penugasan disetujui di jadwal ini (pilihan pengajar per kelompok). */
+async function wiJadwal(trainingId: string): Promise<{ id: string; nama: string }[]> {
+  const pen = await prisma.penugasanApproval.findMany({ where: { trainingId, status: "disetujui" }, select: { instructorId: true, instructor: { select: { nama: true } } } });
+  const m = new Map<string, string>();
+  for (const p of pen) if (p.instructor?.nama) m.set(p.instructorId, p.instructor.nama);
+  return [...m.entries()].map(([id, nama]) => ({ id, nama })).sort((a, b) => a.nama.localeCompare(b.nama, "id"));
+}
+
+/**
+ * Simpan pengajar & tautan Zoom per kelompok untuk satu sesi. Kelompok harus kelompok e-learning jadwal yang sama;
+ * baris tanpa pengajar dan tanpa tautan dihapus. Nama pengajar diambil dari data pegawai bila WI dipilih.
+ */
+export async function aturPerKelompok(
+  sesiId: string,
+  baris: { kelompokId: string; pengajarPegawaiId?: string | null; pengajarNama?: string | null; tautan?: string | null }[],
+  diubahOleh: string,
+): Promise<SesiPembelajaran> {
+  const sesi = await sesiOrThrow(sesiId);
+  const kelompok = await prisma.kelompokPeserta.findMany({ where: { id: { in: baris.map((b) => b.kelompokId) } }, select: { id: true, trainingId: true, jenis: true } });
+  for (const b of baris) {
+    const k = kelompok.find((x) => x.id === b.kelompokId);
+    if (!k || k.trainingId !== sesi.trainingId) throw new ForbiddenError("Kelompok bukan milik jadwal ini");
+    if (k.jenis !== "ELEARNING") throw new ValidationError("Pengajar per kelompok hanya untuk kelompok e-learning");
+  }
+  const pegawaiIds = baris.map((b) => b.pengajarPegawaiId).filter((x): x is string => !!x);
+  const pegawai = pegawaiIds.length ? await prisma.pegawai.findMany({ where: { id: { in: pegawaiIds } }, select: { id: true, nama: true } }) : [];
+  const perintah = [];
+  for (const b of baris) {
+    if (perKelompokKosong(b)) {
+      perintah.push(prisma.sesiKelompok.deleteMany({ where: { sesiId, kelompokId: b.kelompokId } }));
+      continue;
+    }
+    const pg = b.pengajarPegawaiId ? pegawai.find((p) => p.id === b.pengajarPegawaiId) : null;
+    if (b.pengajarPegawaiId && !pg) throw new ValidationError("Pengajar tidak ditemukan di data pegawai");
+    const tautan = bacaTautan(b.tautan);
+    if (tautan === undefined) throw new ValidationError("Tautan Zoom harus alamat web lengkap (https://…)");
+    const data = { pengajarPegawaiId: pg?.id ?? null, pengajarNama: pg?.nama ?? (b.pengajarNama?.trim() || null), tautan, diubahOleh };
+    perintah.push(
+      prisma.sesiKelompok.upsert({ where: { sesiId_kelompokId: { sesiId, kelompokId: b.kelompokId } }, create: { sesiId, kelompokId: b.kelompokId, ...data }, update: data }),
+    );
+  }
+  if (perintah.length) await prisma.$transaction(perintah);
+  return satuRecord(sesi);
 }
 
 /** Tambah masa di tempat kerja (rentang tanggal di dalam periode pelatihan). */
@@ -259,7 +329,8 @@ async function sesiOrThrow(id: string): Promise<SesiRow> {
 async function satuRecord(row: SesiRow): Promise<SesiPembelajaran> {
   const training = await trainingOrThrow(row.trainingId);
   const hitung = await hitungPerSesi(row.trainingId);
-  return toRecord(row, training, hitung.perSesi.get(row.id) ?? HITUNGAN_KOSONG, hitung.pesertaAktif);
+  const perKel = await perKelompokJadwal(row.trainingId);
+  return toRecord(row, training, hitung.perSesi.get(row.id) ?? HITUNGAN_KOSONG, hitung.pesertaAktif, undefined, perKel.get(row.id) ?? []);
 }
 
 /** Ubah sesi. Bentuk tidak boleh diganti menjadi asinkron/mandiri kalau sesi sudah punya catatan kehadiran. */
@@ -312,7 +383,11 @@ type HadirRow = { id: string; pesertaId: string; status: string; keterangan: str
 export async function getLembarKehadiran(sesiId: string): Promise<LembarKehadiran> {
   const sesi = await sesiOrThrow(sesiId);
   const [peserta, hadir]: [PesertaRow[], HadirRow[]] = await Promise.all([
-    prisma.peserta.findMany({ where: { trainingId: sesi.trainingId }, select: { id: true, nomor: true, nama: true, instansi: true, status: true }, orderBy: [{ nomor: "asc" }, { nama: "asc" }] }),
+    prisma.peserta.findMany({
+      where: { trainingId: sesi.trainingId },
+      select: { id: true, nomor: true, nama: true, instansi: true, status: true },
+      orderBy: [{ nomor: "asc" }, { nama: "asc" }],
+    }),
     prisma.kehadiran.findMany({ where: { sesiId }, select: { id: true, pesertaId: true, status: true, keterangan: true } }),
   ]);
   const catatan = new Map(hadir.map((h) => [h.pesertaId, h]));

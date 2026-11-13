@@ -477,8 +477,8 @@ export type DiklatSayaRecord = {
   /** % JP hadir dari JP wajib hadir yang sudah dicatat; null = belum ada catatan. */
   kehadiranPersen: number | null;
   tingkatKehadiran: "aman" | "peringatan" | "batas" | null;
-  sesiHariIni: { kegiatan: string; jamMulai?: string; bentuk: string; jp: number; tautan?: string }[];
-  sesiBerikutnya: { tanggal: string; jamMulai?: string; kegiatan: string; bentuk: string; tautan?: string } | null;
+  sesiHariIni: { kegiatan: string; jamMulai?: string; bentuk: string; jp: number; tautan?: string; pengajar?: string }[];
+  sesiBerikutnya: { tanggal: string; jamMulai?: string; kegiatan: string; bentuk: string; tautan?: string; pengajar?: string } | null;
   mandiri: MandiriRecord | null;
   /** Tahap kurikulum yang sedang berjalan (nama pendek), null bila belum mulai/selesai/tanpa kurikulum. */
   tahapKini: string | null;
@@ -527,6 +527,8 @@ export type RuangBelajarRecord = {
     wajibHadir: boolean;
     mataPelatihanNama?: string;
     tautan?: string;
+    /** Pengajar kelompok e-learning peserta ini untuk sesi tersebut (EB-052). */
+    pengajar?: string;
     kehadiran: StatusKehadiran | null;
   }[];
   rekap: RekapKehadiran;

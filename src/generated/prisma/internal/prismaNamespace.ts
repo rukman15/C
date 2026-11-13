@@ -399,6 +399,7 @@ export const ModelName = {
   Peserta: 'Peserta',
   KelompokPeserta: 'KelompokPeserta',
   SesiPembelajaran: 'SesiPembelajaran',
+  SesiKelompok: 'SesiKelompok',
   Kehadiran: 'Kehadiran',
   NilaiPeserta: 'NilaiPeserta',
   PengaturanJp: 'PengaturanJp',
@@ -463,7 +464,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman"
+    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "sesiKelompok" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1130,6 +1131,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SesiPembelajaranCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SesiPembelajaranCountAggregateOutputType> | number
+        }
+      }
+    }
+    SesiKelompok: {
+      payload: Prisma.$SesiKelompokPayload<ExtArgs>
+      fields: Prisma.SesiKelompokFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SesiKelompokFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SesiKelompokFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        findFirst: {
+          args: Prisma.SesiKelompokFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SesiKelompokFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        findMany: {
+          args: Prisma.SesiKelompokFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>[]
+        }
+        create: {
+          args: Prisma.SesiKelompokCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        createMany: {
+          args: Prisma.SesiKelompokCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SesiKelompokCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>[]
+        }
+        delete: {
+          args: Prisma.SesiKelompokDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        update: {
+          args: Prisma.SesiKelompokUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        deleteMany: {
+          args: Prisma.SesiKelompokDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SesiKelompokUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SesiKelompokUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>[]
+        }
+        upsert: {
+          args: Prisma.SesiKelompokUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SesiKelompokPayload>
+        }
+        aggregate: {
+          args: Prisma.SesiKelompokAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSesiKelompok>
+        }
+        groupBy: {
+          args: Prisma.SesiKelompokGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SesiKelompokGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SesiKelompokCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SesiKelompokCountAggregateOutputType> | number
         }
       }
     }
@@ -4988,6 +5063,20 @@ export const SesiPembelajaranScalarFieldEnum = {
 export type SesiPembelajaranScalarFieldEnum = (typeof SesiPembelajaranScalarFieldEnum)[keyof typeof SesiPembelajaranScalarFieldEnum]
 
 
+export const SesiKelompokScalarFieldEnum = {
+  id: 'id',
+  sesiId: 'sesiId',
+  kelompokId: 'kelompokId',
+  pengajarPegawaiId: 'pengajarPegawaiId',
+  pengajarNama: 'pengajarNama',
+  tautan: 'tautan',
+  diubahOleh: 'diubahOleh',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SesiKelompokScalarFieldEnum = (typeof SesiKelompokScalarFieldEnum)[keyof typeof SesiKelompokScalarFieldEnum]
+
+
 export const KehadiranScalarFieldEnum = {
   id: 'id',
   sesiId: 'sesiId',
@@ -6056,6 +6145,7 @@ export type GlobalOmitConfig = {
   peserta?: Prisma.PesertaOmit
   kelompokPeserta?: Prisma.KelompokPesertaOmit
   sesiPembelajaran?: Prisma.SesiPembelajaranOmit
+  sesiKelompok?: Prisma.SesiKelompokOmit
   kehadiran?: Prisma.KehadiranOmit
   nilaiPeserta?: Prisma.NilaiPesertaOmit
   pengaturanJp?: Prisma.PengaturanJpOmit

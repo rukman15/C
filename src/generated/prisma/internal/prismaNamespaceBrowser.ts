@@ -58,6 +58,7 @@ export const ModelName = {
   Peserta: 'Peserta',
   KelompokPeserta: 'KelompokPeserta',
   SesiPembelajaran: 'SesiPembelajaran',
+  SesiKelompok: 'SesiKelompok',
   Kehadiran: 'Kehadiran',
   NilaiPeserta: 'NilaiPeserta',
   PengaturanJp: 'PengaturanJp',
@@ -313,6 +314,20 @@ export const SesiPembelajaranScalarFieldEnum = {
 } as const
 
 export type SesiPembelajaranScalarFieldEnum = (typeof SesiPembelajaranScalarFieldEnum)[keyof typeof SesiPembelajaranScalarFieldEnum]
+
+
+export const SesiKelompokScalarFieldEnum = {
+  id: 'id',
+  sesiId: 'sesiId',
+  kelompokId: 'kelompokId',
+  pengajarPegawaiId: 'pengajarPegawaiId',
+  pengajarNama: 'pengajarNama',
+  tautan: 'tautan',
+  diubahOleh: 'diubahOleh',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SesiKelompokScalarFieldEnum = (typeof SesiKelompokScalarFieldEnum)[keyof typeof SesiKelompokScalarFieldEnum]
 
 
 export const KehadiranScalarFieldEnum = {

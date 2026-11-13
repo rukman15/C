@@ -78,6 +78,11 @@ export type KelompokPeserta = Prisma.KelompokPesertaModel
  */
 export type SesiPembelajaran = Prisma.SesiPembelajaranModel
 /**
+ * Model SesiKelompok
+ * 
+ */
+export type SesiKelompok = Prisma.SesiKelompokModel
+/**
  * Model Kehadiran
  * 
  */

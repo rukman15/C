@@ -123,6 +123,7 @@ export function BerandaPeserta({ nama, list }: { nama: string; list: DiklatSayaR
                               {s.jamMulai ? <span className="font-mono">{s.jamMulai} WIB · </span> : null}
                               {labelBentuk(s.bentuk)} · <span className="font-mono">{s.jp}</span> JP
                             </p>
+                            {s.pengajar ? <p className="mt-0.5 text-xs">Pengajar kelompok Anda: {s.pengajar}</p> : null}
                             {s.tautan ? (
                               <div className="mt-2.5">
                                 <SalinTautan tautan={s.tautan} />

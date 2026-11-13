@@ -25,6 +25,7 @@ import type { EvaluasiPesertaRecord } from "@/lib/server/repositories/evaluasi";
 import type { MentorSayaRecord } from "@/lib/server/repositories/penugasan-angkatan";
 import { labelProgram, periodeDiklat } from "./bagian";
 import { FolderPeserta, type RingkasTugasWi } from "./folder-peserta";
+import { KalenderSesi } from "@/components/absensi/kalender-sesi";
 import type { ItemBerkas } from "@/lib/server/repositories/berkas-peserta";
 
 type Props = {
@@ -107,6 +108,7 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
   const iAktif = Math.min(Math.max(data.tahapAktif, 0), Math.max(data.tahap.length - 1, 0));
   const [tahapDipilih, setTahapDipilih] = useState<number | null>(null);
   const [semuaSesi, setSemuaSesi] = useState(false);
+  const [tglJadwal, setTglJadwal] = useState<string | null>(null);
 
   const seminar = useMemo(() => infoSeminar(t.jenisPelatihan, t.modePelatihan, data.sesi, hariIni), [t.jenisPelatihan, t.modePelatihan, data.sesi, hariIni]);
   const materi = materiProgram(t.jenisPelatihan);
@@ -284,7 +286,17 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
 
         <TabsContent value="jadwal" className="mt-4 flex flex-col gap-4">
           <PanelKehadiran data={data} />
-          <PanelJadwal data={data} hariIni={hariIni} semua={semuaSesi} onSemua={() => setSemuaSesi((x) => !x)} />
+          {data.sesi.length ? (
+            <KalenderSesi
+              sesi={data.sesi}
+              mulai={t.startDate.slice(0, 10)}
+              selesai={t.endDate ? t.endDate.slice(0, 10) : null}
+              hariIni={hariIni}
+              dipilih={tglJadwal}
+              onPilih={(x) => setTglJadwal(x === tglJadwal ? null : x)}
+            />
+          ) : null}
+          <PanelJadwal data={data} hariIni={hariIni} semua={semuaSesi} tanggal={tglJadwal} onSemua={() => setSemuaSesi((x) => !x)} onSemuaTanggal={() => setTglJadwal(null)} />
         </TabsContent>
 
         {t.jenisPelatihan ? (
@@ -577,8 +589,22 @@ function PanelKehadiran({ data }: { data: RuangBelajarRecord }) {
   );
 }
 
-function PanelJadwal({ data, hariIni, semua, onSemua }: { data: RuangBelajarRecord; hariIni: string; semua: boolean; onSemua: () => void }) {
-  const tampil = data.sesi.filter((s) => semua || s.tanggal >= hariIni);
+function PanelJadwal({
+  data,
+  hariIni,
+  semua,
+  tanggal,
+  onSemua,
+  onSemuaTanggal,
+}: {
+  data: RuangBelajarRecord;
+  hariIni: string;
+  semua: boolean;
+  tanggal: string | null;
+  onSemua: () => void;
+  onSemuaTanggal: () => void;
+}) {
+  const tampil = data.sesi.filter((s) => (tanggal ? s.tanggal === tanggal : semua || s.tanggal >= hariIni));
   const lewat = data.sesi.filter((s) => s.tanggal < hariIni).length;
   const perHari: { tanggal: string; sesi: typeof tampil }[] = [];
   for (const s of tampil) {
@@ -588,9 +614,13 @@ function PanelJadwal({ data, hariIni, semua, onSemua }: { data: RuangBelajarReco
   }
   return (
     <Panel
-      judul="Jadwal saya"
+      judul={tanggal ? `Jadwal ${formatTanggalId(tanggal)}` : "Jadwal saya"}
       aksi={
-        lewat > 0 ? (
+        tanggal ? (
+          <Button size="sm" variant="ghost" onClick={onSemuaTanggal}>
+            Semua tanggal
+          </Button>
+        ) : lewat > 0 ? (
           <Button size="sm" variant="ghost" onClick={onSemua}>
             {semua ? "Sembunyikan yang sudah lewat" : `Tampilkan ${lewat} sesi yang sudah lewat`}
           </Button>
@@ -600,7 +630,7 @@ function PanelJadwal({ data, hariIni, semua, onSemua }: { data: RuangBelajarReco
       {data.sesi.length === 0 ? (
         <p className="text-sm text-muted-foreground">Jadwal pembelajaran belum disusun penyelenggara.</p>
       ) : perHari.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Tidak ada sesi mendatang.</p>
+        <p className="text-sm text-muted-foreground">{tanggal ? "Tidak ada sesi pada tanggal ini." : "Tidak ada sesi mendatang."}</p>
       ) : (
         <div className="flex flex-col gap-5">
           {perHari.map((h) => (
@@ -623,6 +653,7 @@ function PanelJadwal({ data, hariIni, semua, onSemua }: { data: RuangBelajarReco
                         {labelBentuk(s.bentuk)} · <span className="font-mono">{s.jp}</span> JP
                         {s.mataPelatihanNama && s.mataPelatihanNama !== s.kegiatan ? ` · ${s.mataPelatihanNama}` : ""}
                       </span>
+                      {s.pengajar ? <span className="block text-xs">Pengajar kelompok Anda: {s.pengajar}</span> : null}
                       {s.tautan && s.tanggal >= hariIni ? (
                         <a href={s.tautan} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline">
                           Gabung rapat daring <ExternalLink size={12} />

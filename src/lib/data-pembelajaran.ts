@@ -25,6 +25,8 @@ export type SesiPembelajaran = {
   ruang?: string;
   /** Pengampu mata pelatihan sesi ini (dari penugasan WI yang disetujui). */
   pengampu?: string[];
+  /** Pengajar & tautan Zoom per kelompok e-learning (EB-052); kosong bila belum diatur. */
+  perKelompok: PerKelompok[];
   diluarPeriode: boolean;
   hadir: number;
   tidakHadir: number;
@@ -33,6 +35,8 @@ export type SesiPembelajaran = {
   /** Semua catatan pada sesi ini, termasuk milik peserta yang sudah tidak aktif. */
   jumlahCatatan: number;
 };
+
+export type PerKelompok = { kelompokId: string; nomor: number; pengajarPegawaiId: string | null; pengajarNama: string | null; tautan: string | null };
 
 export type MasaTempatKerja = { id: string; jenis: string; label: string; mulai: string; selesai: string };
 
@@ -45,6 +49,10 @@ export type JadwalPembelajaran = {
   /** Hari kerja s.d. hari ini tanpa sesi sama sekali, di luar masa di tempat kerja. */
   presensiTanpaSesi: string[];
   masaTempatKerja: MasaTempatKerja[];
+  /** Kelompok e-learning jadwal ini (untuk pengajar & Zoom per kelompok). */
+  kelompokElearning: { id: string; nomor: number; label: string }[];
+  /** WI dengan penugasan disetujui di jadwal ini — pilihan pengajar per kelompok. */
+  wi: { id: string; nama: string }[];
 };
 
 export type BarisKehadiran = {
@@ -127,3 +135,26 @@ export function perubahanKehadiran(
 }
 
 export const pesanZod = (e: z.ZodError) => e.issues.map((i) => i.message).join("; ");
+
+export const skemaPerKelompok = z.object({
+  baris: z
+    .array(
+      z.object({
+        kelompokId: z.string().min(1).max(60),
+        pengajarPegawaiId: z.string().max(60).nullable().optional(),
+        pengajarNama: z.string().trim().max(150, "Nama pengajar maksimal 150 karakter").nullable().optional(),
+        tautan: z.string().trim().max(500, "Tautan maksimal 500 karakter").nullable().optional(),
+      }),
+    )
+    .max(12),
+});
+
+/** Isian per kelompok dianggap kosong bila tanpa pengajar dan tanpa tautan (barisnya dihapus). */
+export const perKelompokKosong = (b: { pengajarPegawaiId?: string | null; pengajarNama?: string | null; tautan?: string | null }) =>
+  !b.pengajarPegawaiId && !b.pengajarNama?.trim() && !b.tautan?.trim();
+
+/** Pengajar & tautan untuk satu peserta: isian kelompoknya bila ada, selain itu tautan umum sesi. */
+export function untukKelompok(s: { tautan?: string; perKelompok: PerKelompok[] }, kelompokId: string | null): { pengajar: string | null; tautan: string | null } {
+  const k = kelompokId ? s.perKelompok.find((x) => x.kelompokId === kelompokId) : undefined;
+  return { pengajar: k?.pengajarNama ?? null, tautan: k?.tautan ?? s.tautan ?? null };
+}

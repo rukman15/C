@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { CalendarPlus, ClipboardList, ClipboardPaste, ExternalLink, Pencil, Plus, Trash2, X } from "lucide-react";
+import { CalendarPlus, ClipboardList, ClipboardPaste, ExternalLink, Pencil, Plus, Printer, Trash2, Users, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/arc/dialog/dialog";
 import { Badge } from "@/components/arc/badge/badge";
 import { Alert } from "@/components/arc/alert/alert";
@@ -14,7 +14,7 @@ import { Select } from "@/components/arc/select/select";
 import { DatePicker } from "@/components/arc/date-picker/date-picker";
 import { ConfirmMorph } from "@/components/arc/confirm-morph/confirm-morph";
 import Toast from "@/components/arc/toast/toast";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { JENIS_MASA_TEMPAT_KERJA, labelBentuk, type JenisMasaTempatKerja } from "@/lib/kehadiran";
 import { formatTanggalId, totalJp } from "@/lib/sesi";
 import { dariIso, keIso } from "@/lib/jadwal";
@@ -23,6 +23,8 @@ import { cn } from "@/lib/utils";
 import { sesiPerHari, type JadwalPembelajaran, type SesiPembelajaran } from "@/lib/data-pembelajaran";
 import { FormSesi, FormTempel, Galat } from "./form-sesi";
 import { LembarKehadiranLaci } from "./lembar-kehadiran";
+import { KalenderSesi } from "./kalender-sesi";
+import { FormPerKelompok } from "./form-per-kelompok";
 
 type Saring = "semua" | "belum" | "lengkap";
 const namaHari = (iso: string) => new Date(`${iso}T00:00:00.000Z`).toLocaleDateString("id-ID", { weekday: "long", timeZone: "UTC" });
@@ -39,15 +41,21 @@ export function TabAbsensi({ data, bolehAtur }: { data: JadwalPembelajaran; bole
   const [ubah, setUbah] = useState<SesiPembelajaran | null>(null);
   const [lembar, setLembar] = useState<SesiPembelajaran | null>(null);
   const [saring, setSaring] = useState<Saring>("semua");
+  const [tampilan, setTampilan] = useState<"daftar" | "kalender">("daftar");
+  const [tanggal, setTanggal] = useState<string | null>(null);
+  const [perKel, setPerKel] = useState<SesiPembelajaran | null>(null);
+  const hariIni = new Date(Date.now() + 7 * 3600_000).toISOString().slice(0, 10);
   const [toast, setToast] = useState<{ judul: string; isi?: string } | null>(null);
 
   const sesi = data.sesi;
   const jpWajib = totalJp(sesi.filter((s) => s.wajibHadir));
   const sesiBelum = sesi.filter((s) => s.belumDicatat > 0).length;
   const hari = useMemo(() => {
-    const pilih = sesi.filter((s) => saring === "semua" || (saring === "belum" ? s.belumDicatat > 0 : s.belumDicatat === 0));
+    const pilih = sesi.filter(
+      (s) => (saring === "semua" || (saring === "belum" ? s.belumDicatat > 0 : s.belumDicatat === 0)) && (tampilan === "daftar" || !tanggal || s.tanggal === tanggal),
+    );
     return sesiPerHari(pilih);
-  }, [sesi, saring]);
+  }, [sesi, saring, tampilan, tanggal]);
   const jumlahHari = useMemo(() => new Set(sesi.map((s) => s.tanggal)).size, [sesi]);
 
   async function hapus(s: SesiPembelajaran) {
@@ -82,36 +90,68 @@ export function TabAbsensi({ data, bolehAtur }: { data: JadwalPembelajaran; bole
       ) : null}
       {data.presensiTanpaSesi.length ? (
         <Alert tone="warning" title={`${data.presensiTanpaSesi.length} hari kerja belum punya sesi`}>
-          {daftarTanggal(data.presensiTanpaSesi, 10)}. Presensi tidak bisa dicatat. Tambahkan sesinya, atau tandai sebagai masa di tempat kerja bila peserta sedang komitmen bersama atau aktualisasi.
+          {daftarTanggal(data.presensiTanpaSesi, 10)}. Presensi tidak bisa dicatat. Tambahkan sesinya, atau tandai sebagai masa di tempat kerja bila peserta sedang komitmen bersama
+          atau aktualisasi.
         </Alert>
       ) : null}
 
       <MasaTempatKerjaPanel data={data} bolehAtur={bolehAtur} onGalat={(isi) => setToast({ judul: "Masa di tempat kerja", isi })} />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <SegmentedControl
-          label="Saring sesi"
-          value={saring}
-          onValueChange={(v) => setSaring(v as Saring)}
-          options={[
-            { value: "semua", label: "Semua" },
-            { value: "belum", label: "Belum lengkap" },
-            { value: "lengkap", label: "Lengkap" },
-          ]}
-        />
-        {bolehAtur ? (
-          <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" onClick={() => setForm("tempel")}>
-              <ClipboardPaste size={16} /> Tempel dari Excel
-            </Button>
-            <Button onClick={() => setForm("satu")}>
-              <Plus size={16} /> Tambah sesi
-            </Button>
-          </div>
-        ) : null}
+        <div className="flex flex-wrap gap-2">
+          <SegmentedControl
+            label="Tampilan"
+            value={tampilan}
+            onValueChange={(v) => setTampilan(v as "daftar" | "kalender")}
+            options={[
+              { value: "daftar", label: "Daftar" },
+              { value: "kalender", label: "Kalender" },
+            ]}
+          />
+          <SegmentedControl
+            label="Saring sesi"
+            value={saring}
+            onValueChange={(v) => setSaring(v as Saring)}
+            options={[
+              { value: "semua", label: "Semua" },
+              { value: "belum", label: "Belum lengkap" },
+              { value: "lengkap", label: "Lengkap" },
+            ]}
+          />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {sesi.length ? (
+            <ButtonLink variant="ghost" href={`/cetak/jadwal/${data.training.id}`} target="_blank" rel="noopener">
+              <Printer size={16} /> Cetak jadwal
+            </ButtonLink>
+          ) : null}
+          {bolehAtur ? (
+            <>
+              <Button variant="secondary" onClick={() => setForm("tempel")}>
+                <ClipboardPaste size={16} /> Tempel dari Excel
+              </Button>
+              <Button onClick={() => setForm("satu")}>
+                <Plus size={16} /> Tambah sesi
+              </Button>
+            </>
+          ) : null}
+        </div>
       </div>
 
-      <p className="-mt-2 text-xs text-muted-foreground">Presensi dicatat untuk semua sesi. Sesi e-learning asinkron dan mandiri tidak dihitung dalam batas ketidakhadiran. Jadwal ini terpisah dari sesi mengajar WI.</p>
+      {tampilan === "kalender" && sesi.length ? (
+        <KalenderSesi
+          sesi={sesi}
+          mulai={data.training.startDate}
+          selesai={data.training.endDate}
+          hariIni={hariIni}
+          dipilih={tanggal}
+          onPilih={(t) => setTanggal(t === tanggal ? null : t)}
+        />
+      ) : null}
+
+      <p className="-mt-2 text-xs text-muted-foreground">
+        Presensi dicatat untuk semua sesi. Sesi e-learning asinkron dan mandiri tidak dihitung dalam batas ketidakhadiran. Jadwal ini terpisah dari sesi mengajar WI.
+      </p>
 
       {sesi.length === 0 ? (
         <EmptyState
@@ -120,7 +160,9 @@ export function TabAbsensi({ data, bolehAtur }: { data: JadwalPembelajaran; bole
           description={bolehAtur ? "Tambahkan sesi satu per satu atau tempel dari Excel." : "Ketua Diklat belum menyusun jadwalnya."}
         />
       ) : hari.length === 0 ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">Tidak ada sesi yang cocok dengan saringan.</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          {tampilan === "kalender" && tanggal ? `Tidak ada sesi pada ${formatTanggalId(tanggal)}.` : "Tidak ada sesi yang cocok dengan saringan."}
+        </p>
       ) : (
         <div className="flex flex-col gap-6">
           <AnimatePresence initial={false}>
@@ -132,7 +174,17 @@ export function TabAbsensi({ data, bolehAtur }: { data: JadwalPembelajaran; bole
                 </h2>
                 <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
                   {h.sesi.map((s) => (
-                    <BarisSesi key={s.id} s={s} pesertaAktif={data.pesertaAktif} bolehAtur={bolehAtur} onLembar={() => setLembar(s)} onUbah={() => setUbah(s)} onHapus={() => hapus(s)} />
+                    <BarisSesi
+                      key={s.id}
+                      s={s}
+                      pesertaAktif={data.pesertaAktif}
+                      bolehAtur={bolehAtur}
+                      adaKelompok={data.kelompokElearning.length > 0}
+                      onLembar={() => setLembar(s)}
+                      onUbah={() => setUbah(s)}
+                      onPerKelompok={() => setPerKel(s)}
+                      onHapus={() => hapus(s)}
+                    />
                   ))}
                 </ul>
               </motion.section>
@@ -155,6 +207,29 @@ export function TabAbsensi({ data, bolehAtur }: { data: JadwalPembelajaran; bole
               <FormSesi data={data} ubah={null} onSelesai={tutupForm} onTambah={(isi) => setToast({ judul: "Sesi ditambahkan", isi })} />
             ) : form === "tempel" ? (
               <FormTempel data={data} onSelesai={tutupForm} />
+            ) : null}
+          </DialogContent>
+        </Dialog>
+      ) : null}
+
+      {bolehAtur ? (
+        <Dialog open={perKel !== null} onOpenChange={(o) => !o && setPerKel(null)}>
+          <DialogContent
+            title="Pengajar & Zoom per kelompok"
+            description={perKel ? `${perKel.kegiatan} · ${formatTanggalId(perKel.tanggal)}` : undefined}
+            onPointerDownOutside={(e) => e.preventDefault()}
+            className="max-w-3xl"
+          >
+            {perKel ? (
+              <FormPerKelompok
+                key={perKel.id}
+                data={data}
+                sesi={perKel}
+                onSelesai={(pesan) => {
+                  setPerKel(null);
+                  if (pesan) setToast({ judul: "Jadwal diperbarui", isi: pesan });
+                }}
+              />
             ) : null}
           </DialogContent>
         </Dialog>
@@ -216,7 +291,25 @@ function RekapSesi({ s, pesertaAktif }: { s: SesiPembelajaran; pesertaAktif: num
   );
 }
 
-function BarisSesi({ s, pesertaAktif, bolehAtur, onLembar, onUbah, onHapus }: { s: SesiPembelajaran; pesertaAktif: number; bolehAtur: boolean; onLembar: () => void; onUbah: () => void; onHapus: () => Promise<void> }) {
+function BarisSesi({
+  s,
+  pesertaAktif,
+  bolehAtur,
+  adaKelompok,
+  onLembar,
+  onUbah,
+  onPerKelompok,
+  onHapus,
+}: {
+  s: SesiPembelajaran;
+  pesertaAktif: number;
+  bolehAtur: boolean;
+  adaKelompok: boolean;
+  onLembar: () => void;
+  onUbah: () => void;
+  onPerKelompok: () => void;
+  onHapus: () => Promise<void>;
+}) {
   const bisaDibuka = pesertaAktif > 0 || s.jumlahCatatan > 0;
   return (
     <li className="flex flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center">
@@ -238,6 +331,20 @@ function BarisSesi({ s, pesertaAktif, bolehAtur, onLembar, onUbah, onHapus }: { 
                 Tautan rapat <ExternalLink size={12} />
               </a>
             ) : null}
+            {s.perKelompok.length ? (
+              <span className="basis-full">
+                {s.perKelompok.map((k) => (
+                  <span key={k.kelompokId} className="mr-3 inline-flex items-center gap-1">
+                    Kel. <span className="font-mono">{k.nomor}</span> {k.pengajarNama ?? "–"}
+                    {k.tautan ? (
+                      <a href={k.tautan} target="_blank" rel="noopener noreferrer" aria-label={`Zoom kelompok ${k.nomor}`} className="text-primary">
+                        <ExternalLink size={11} />
+                      </a>
+                    ) : null}
+                  </span>
+                ))}
+              </span>
+            ) : null}
             {s.diluarPeriode ? (
               <Badge size="sm" tone="warning">
                 Di luar periode pelatihan
@@ -255,6 +362,11 @@ function BarisSesi({ s, pesertaAktif, bolehAtur, onLembar, onUbah, onHapus }: { 
         ) : null}
         {bolehAtur ? (
           <>
+            {adaKelompok && s.bentuk !== "MANDIRI" ? (
+              <Button size="sm" variant="ghost" onClick={onPerKelompok} aria-label={`Pengajar per kelompok ${s.kegiatan}`}>
+                <Users size={14} />
+              </Button>
+            ) : null}
             <Button size="sm" variant="ghost" onClick={onUbah} aria-label={`Ubah ${s.kegiatan}`}>
               <Pencil size={14} />
             </Button>
@@ -321,7 +433,10 @@ function MasaTempatKerjaPanel({ data, bolehAtur, onGalat }: { data: JadwalPembel
         <div className="flex flex-wrap gap-1.5 sm:ml-2">
           {data.masaTempatKerja.map((m) => (
             <span key={m.id} className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-0.5 text-xs">
-              {m.label}: <span className="font-mono">{formatTanggalId(m.mulai)} – {formatTanggalId(m.selesai)}</span>
+              {m.label}:{" "}
+              <span className="font-mono">
+                {formatTanggalId(m.mulai)} – {formatTanggalId(m.selesai)}
+              </span>
               {bolehAtur ? (
                 <button type="button" disabled={sibuk} onClick={() => hapus(m.id)} aria-label={`Hapus ${m.label}`} className="text-muted-foreground hover:text-destructive">
                   <X size={12} />
@@ -339,9 +454,21 @@ function MasaTempatKerjaPanel({ data, bolehAtur, onGalat }: { data: JadwalPembel
       </div>
       <AnimatePresence initial={false}>
         {buka ? (
-          <motion.form onSubmit={tambah} noValidate initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+          <motion.form
+            onSubmit={tambah}
+            noValidate
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
             <div className="grid gap-3 pt-4 sm:grid-cols-[1.4fr_1fr_1fr_auto] sm:items-end">
-              <Select label="Jenis" value={jenis} onValueChange={(v) => setJenis(v as JenisMasaTempatKerja)} options={JENIS_MASA_TEMPAT_KERJA.map((j) => ({ value: j.value, label: j.label }))} />
+              <Select
+                label="Jenis"
+                value={jenis}
+                onValueChange={(v) => setJenis(v as JenisMasaTempatKerja)}
+                options={JENIS_MASA_TEMPAT_KERJA.map((j) => ({ value: j.value, label: j.label }))}
+              />
               <DatePicker label="Mulai" value={dariIso(mulai)} onChange={(d) => setMulai(d ? keIso(d) : "")} minDate={min} maxDate={max} locale="id-ID" />
               <DatePicker label="Selesai" value={dariIso(selesai)} onChange={(d) => setSelesai(d ? keIso(d) : "")} minDate={dariIso(mulai) ?? min} maxDate={max} locale="id-ID" />
               <div className="flex gap-2">
