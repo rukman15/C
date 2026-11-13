@@ -43,3 +43,17 @@ export async function catatAktivitas(i: IsianAktivitas): Promise<void> {
     console.error("[aktivitas] gagal mencatat:", e);
   }
 }
+
+/** Catat aktivitas milik satu peserta (diklat & nama diambil dari data peserta). Kegagalan tidak dilempar. */
+export async function catatAktivitasPeserta(
+  pesertaId: string,
+  i: Omit<IsianAktivitas, "trainingId" | "ringkasan"> & { ringkasan: (namaPeserta: string) => string },
+): Promise<void> {
+  try {
+    const p = await prisma.peserta.findUnique({ where: { id: pesertaId }, select: { trainingId: true, nama: true } });
+    if (!p) return;
+    await catatAktivitas({ ...i, trainingId: p.trainingId, ringkasan: i.ringkasan(p.nama) });
+  } catch (e) {
+    console.error("[aktivitas] gagal mencatat:", e);
+  }
+}

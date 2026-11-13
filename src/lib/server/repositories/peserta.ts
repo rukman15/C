@@ -140,7 +140,7 @@ export async function hapusPeserta(id: string): Promise<void> {
 }
 
 /** Satu NIP = satu akun lintas angkatan; email sintetis `<NIP>@peserta.invalid`. */
-const emailPeserta = (nip: string) => `${nip}@peserta.invalid`;
+export const emailPeserta = (nip: string) => `${nip}@peserta.invalid`;
 
 /**
  * Buat/tautkan akun login peserta (sama dengan buatAkunPeserta aplikasi lama): pegawai balai memakai akun

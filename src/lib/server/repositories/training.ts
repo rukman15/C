@@ -5,6 +5,7 @@ import { TEMPAT_DEFAULT } from "@/lib/sesi";
 import { HARI_MS, awalHariWib, bacaTanggalIso, statusDariTanggal } from "@/lib/tanggal";
 import { isKodeJenis, isModePelatihan } from "@/lib/kurikulum";
 import type { IsianTraining } from "@/lib/skema-training";
+import type { TrainingRecord } from "@/lib/server/types";
 
 /**
  * Jadwal diklat (tabel `training`). Aturan disalin dari aplikasi lama
@@ -169,4 +170,49 @@ export async function deleteTraining(id: string): Promise<void> {
     if (kodePrisma(e) === "P2003") throw new ConflictError("Jadwal ini baru saja mendapat isian baru, jadi tidak bisa dihapus.");
     throw e;
   }
+}
+
+// --- Rekaman jadwal (dipakai ruang belajar peserta, tes, seminar), sama dengan aplikasi lama ---
+export type TrainingRow = {
+  id: string;
+  name: string;
+  category: string;
+  participants: number;
+  startDate: Date;
+  endDate: Date | null;
+  jpDibutuhkan: number;
+  tempat: string;
+  status: string;
+  jenisPelatihan: string | null;
+  modePelatihan: string | null;
+  angkatan: string | null;
+  timKerjaId?: string | null;
+  timKerja?: { nama: string } | null;
+};
+
+const SERTA_TIM = { timKerja: { select: { nama: true } } } as const;
+
+export function toTrainingRecord(row: TrainingRow): TrainingRecord {
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    participants: row.participants,
+    startDate: row.startDate.toISOString(),
+    endDate: row.endDate ? row.endDate.toISOString() : undefined,
+    jpDibutuhkan: row.jpDibutuhkan,
+    tempat: row.tempat,
+    status: row.status as TrainingRecord["status"],
+    jenisPelatihan: row.jenisPelatihan ?? undefined,
+    modePelatihan: row.modePelatihan ?? undefined,
+    angkatan: row.angkatan ?? undefined,
+    timKerjaId: row.timKerjaId ?? undefined,
+    timKerjaNama: row.timKerja?.nama ?? undefined,
+  };
+}
+
+export async function getTrainingByIdOrThrow(id: string): Promise<TrainingRow> {
+  const row: TrainingRow | null = await prisma.training.findUnique({ where: { id }, include: SERTA_TIM });
+  if (!row) throw new NotFoundError(`Training "${id}" tidak ditemukan`);
+  return row;
 }
