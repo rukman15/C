@@ -394,6 +394,8 @@ export type InstructorScheduleRecord = {
 export type SelNilaiRecord = NilaiAspek & {
   /** Isian penilai yang sedang login (WI) — null kalau belum mengisi. */
   milikSaya: number | null;
+  /** WI: boleh mengisi sel ini (nilai seminar hanya penguji & coach peserta itu, EB-056). */
+  bolehIsi?: boolean;
 };
 
 export type PesertaPenilaianRecord = {

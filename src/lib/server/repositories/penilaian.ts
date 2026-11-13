@@ -5,12 +5,15 @@ import { ConflictError, ForbiddenError, NotFoundError, ValidationError, kodePris
 import { getTrainingByIdOrThrow, toTrainingRecord } from "@/lib/server/repositories/training";
 import { listPeserta } from "@/lib/server/repositories/peserta";
 import type { JenisEvaluasi } from "@/lib/kurikulum";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 import {
   bacaNilai,
   daftarAspek,
   hitungHasil,
   jenisDariKodeRemedial,
   nilaiAspek,
+  bolehNilaiSeminar,
+  SEMINAR_EVALUASI,
   peringkat,
   EVALUASI,
   type AspekPenilaian,
@@ -53,17 +56,36 @@ async function aspekTraining(trainingId: string): Promise<AspekPenilaian[]> {
   return aspek;
 }
 
-/** WI boleh menilai kalau punya penugasan DISETUJUI pada jadwal ini. */
-async function pastikanWiDitugaskan(trainingId: string, pegawaiId: string | null): Promise<void> {
-  const ditugaskan: number = pegawaiId ? await prisma.penugasanApproval.count({ where: { trainingId, instructorId: pegawaiId, status: "disetujui" } }) : 0;
-  if (ditugaskan === 0) {
+/** Penguji (per jenis seminar) dan coach tiap peserta satu jadwal — penilai seminar (EB-056). */
+async function penilaiSeminar(trainingId: string) {
+  const [uji, kel] = await Promise.all([
+    prisma.seminarPeserta.findMany({ where: { trainingId }, select: { pesertaId: true, jenis: true, pengujiPegawaiId: true } }),
+    prisma.kelompokPeserta.findMany({ where: { trainingId, jenis: JENIS_KELOMPOK_COACH }, select: { coachPegawaiId: true, anggota: { select: { pesertaId: true } } } }),
+  ]);
+  const penguji = new Map<string, Partial<Record<"RAP" | "LAP", string | null>>>();
+  for (const u of uji) penguji.set(u.pesertaId, { ...penguji.get(u.pesertaId), [u.jenis as "RAP" | "LAP"]: u.pengujiPegawaiId });
+  const coach = new Map<string, string | null>();
+  for (const k of kel) for (const a of k.anggota) coach.set(a.pesertaId, k.coachPegawaiId);
+  return { penguji, coach };
+}
+
+/** WI boleh menilai kalau punya penugasan DISETUJUI pada jadwal ini, atau menjadi penguji/coach seminarnya (EB-056). */
+/** Hasil: true = punya penugasan mengajar disetujui (boleh aspek non-seminar); false = hanya penguji/coach. */
+async function pastikanWiDitugaskan(trainingId: string, pegawaiId: string | null): Promise<boolean> {
+  const mengajar: number = pegawaiId ? await prisma.penugasanApproval.count({ where: { trainingId, instructorId: pegawaiId, status: "disetujui" } }) : 0;
+  const seminar: number = pegawaiId
+    ? (await prisma.seminarPeserta.count({ where: { trainingId, pengujiPegawaiId: pegawaiId } })) +
+      (await prisma.kelompokPeserta.count({ where: { trainingId, jenis: JENIS_KELOMPOK_COACH, coachPegawaiId: pegawaiId } }))
+    : 0;
+  if (mengajar + seminar === 0) {
     throw new ForbiddenError("Anda belum ditugaskan (disetujui) pada jadwal diklat ini, jadi belum bisa menilai pesertanya");
   }
+  return mengajar > 0;
 }
 
 export async function getLembarPenilaian(trainingId: string, siapa: Penilai): Promise<LembarPenilaianRecord> {
   const aspek = await aspekTraining(trainingId);
-  if (siapa.peran === "WI") await pastikanWiDitugaskan(trainingId, siapa.pegawaiId);
+  const mengajar = siapa.peran === "WI" ? await pastikanWiDitugaskan(trainingId, siapa.pegawaiId) : true;
 
   const daftar = await listPeserta(trainingId);
   const rows: NilaiRow[] = await prisma.nilaiPeserta.findMany({
@@ -78,6 +100,8 @@ export async function getLembarPenilaian(trainingId: string, siapa: Penilai): Pr
   }
 
   const wi = siapa.peran === "WI";
+  const seminar = wi ? await penilaiSeminar(trainingId) : null;
+  const pegawaiWi = siapa.peran === "WI" ? siapa.pegawaiId : null;
   const aspekTampil = wi ? aspek.filter((a) => a.bisaDiisiWi) : aspek;
 
   const peserta: PesertaPenilaianRecord[] = daftar.peserta.map((p) => {
@@ -93,7 +117,15 @@ export async function getLembarPenilaian(trainingId: string, siapa: Penilai): Pr
       if (aspekTampil.includes(a)) {
         const sendiri = milik.find((r) => r.kodeAspek === a.kode && r.penilai === kunciPenilai(siapa));
         // WI hanya melihat isiannya sendiri, bukan isian penilai lain.
-        nilai[a.kode] = wi ? { nilai: sendiri?.nilai ?? null, dari: null, jumlahPenilai: 0, milikSaya: sendiri?.nilai ?? null } : { ...n, milikSaya: sendiri?.nilai ?? null };
+        nilai[a.kode] = wi
+          ? {
+              nilai: sendiri?.nilai ?? null,
+              dari: null,
+              jumlahPenilai: 0,
+              milikSaya: sendiri?.nilai ?? null,
+              bolehIsi: SEMINAR_EVALUASI[a.jenisEvaluasi] ? bolehNilaiSeminar({ jenisEvaluasi: a.jenisEvaluasi, pesertaId: p.id, pegawaiId: pegawaiWi, ...seminar! }) : mengajar,
+            }
+          : { ...n, milikSaya: sendiri?.nilai ?? null };
       }
     }
     const base: PesertaPenilaianRecord = {
@@ -146,8 +178,9 @@ export async function simpanNilai(trainingId: string, isian: IsianNilai[], siapa
   if (siapa.peran === "PIMPINAN") throw new ForbiddenError("Pimpinan hanya dapat melihat penilaian");
   if (isian.length === 0) throw new ValidationError("Tidak ada nilai yang dikirim");
   const aspek = await aspekTraining(trainingId);
-  if (siapa.peran === "WI") await pastikanWiDitugaskan(trainingId, siapa.pegawaiId);
+  const mengajar = siapa.peran === "WI" ? await pastikanWiDitugaskan(trainingId, siapa.pegawaiId) : true;
   const sumber: SumberNilai = siapa.peran === "PENYELENGGARA" ? "REKAP" : "PENILAI";
+  const seminarWi = siapa.peran === "WI" ? await penilaiSeminar(trainingId) : null;
 
   const pesertaRows: { id: string; nama: string; status: string }[] = await prisma.peserta.findMany({
     where: { trainingId },
@@ -163,6 +196,12 @@ export async function simpanNilai(trainingId: string, isian: IsianNilai[], siapa
     const a = aspek.find((y) => y.kode === x.kodeAspek);
     const jenisRemedial = jenisDariKodeRemedial(x.kodeAspek);
     if (!a && !jenisRemedial) throw new ValidationError(`${ke}: aspek "${x.kodeAspek}" tidak dikenal untuk program ini`);
+    if (siapa.peran === "WI" && a && a.bisaDiisiWi && !SEMINAR_EVALUASI[a.jenisEvaluasi] && !mengajar) {
+      throw new ForbiddenError(`${ke}: Anda hanya menilai seminar peserta yang Anda uji atau bimbing`);
+    }
+    if (siapa.peran === "WI" && a && a.bisaDiisiWi && !bolehNilaiSeminar({ jenisEvaluasi: a.jenisEvaluasi, pesertaId: x.pesertaId, pegawaiId: siapa.pegawaiId, ...seminarWi! })) {
+      throw new ForbiddenError(`${ke}: nilai seminar ${p.nama} diisi penguji dan coach peserta itu`);
+    }
     if (siapa.peran === "WI" && (!a || !a.bisaDiisiWi)) {
       throw new ForbiddenError(`${ke}: aspek ini diisi penyelenggara, bukan Widyaiswara`);
     }

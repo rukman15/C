@@ -119,7 +119,7 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
         r.split("\t").forEach((v, j) => {
           const a = aspekTab[kolom + j];
           const isi = v.replace(/ /g, "").trim();
-          if (a && isi !== "" && (!wi || a.bisaDiisiWi)) baru[kunci(p.id, a.kode)] = isi;
+          if (a && isi !== "" && (!wi || (a.bisaDiisiWi && p.nilai[a.kode]?.bolehIsi !== false))) baru[kunci(p.id, a.kode)] = isi;
         });
       });
     setDraft((d) => ({ ...d, ...baru }));
@@ -209,8 +209,9 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
       <div className="text-sm text-muted-foreground">
         {wi ? (
           <p>
-            Isi nilai <span className="font-mono">0–100</span> untuk aspek yang Anda nilai (pengampu materi, penguji, pendamping studi lapangan, coach). Bila beberapa Widyaiswara
-            menilai aspek yang sama, nilainya dirata-rata; Ketua Diklat dapat menetapkan nilai akhirnya.
+            Isi nilai <span className="font-mono">0–100</span> untuk aspek yang Anda nilai (pengampu materi, penguji, pendamping studi lapangan, coach). Nilai seminar RAP/LAP hanya
+            untuk peserta yang Anda uji atau bimbing sebagai coach. Bila beberapa Widyaiswara menilai aspek yang sama, nilainya dirata-rata; Ketua Diklat dapat menetapkan nilai
+            akhirnya.
           </p>
         ) : (
           <p>
@@ -287,7 +288,7 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
                         const sel = p.nilai[a.kode];
                         return (
                           <td key={a.kode} className="px-2 py-2">
-                            {data.bolehUbah && (!wi || a.bisaDiisiWi) ? (
+                            {data.bolehUbah && (!wi || (a.bisaDiisiWi && sel?.bolehIsi !== false)) ? (
                               <>
                                 <input
                                   className={cn(SEL, salah(p, a.kode) ? "border-destructive" : "border-border")}

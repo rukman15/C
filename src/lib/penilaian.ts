@@ -97,7 +97,10 @@ export const bulat2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 10
 /** "85", "85,5", "85.25" → angka 0–100 (2 desimal); "" → null; selain itu → undefined (tidak sah). */
 export function bacaNilai(teks: string | number | null | undefined): number | null | undefined {
   if (teks === null || teks === undefined) return null;
-  const s = String(teks).replace(/\u00a0/g, "").trim().replace(",", ".");
+  const s = String(teks)
+    .replace(/\u00a0/g, "")
+    .trim()
+    .replace(",", ".");
   if (s === "") return null;
   if (!/^\d{1,3}(\.\d{1,2})?$/.test(s)) return undefined;
   const n = Number(s);
@@ -195,11 +198,7 @@ export type HasilPeserta = {
  * remedial per jenis evaluasi. Remedial hanya dipakai bila status awal
  * "ditunda" dan jenis evaluasinya memang kurang baik.
  */
-export function hitungHasil(
-  aspek: AspekPenilaian[],
-  nilai: Map<string, number | null>,
-  remedial: Partial<Record<JenisEvaluasi, number | null>> = {},
-): HasilPeserta {
+export function hitungHasil(aspek: AspekPenilaian[], nilai: Map<string, number | null>, remedial: Partial<Record<JenisEvaluasi, number | null>> = {}): HasilPeserta {
   const awal = EVALUASI.filter((e) => aspek.some((a) => a.jenisEvaluasi === e.kode)).map((e) => {
     const isi = aspek.filter((a) => a.jenisEvaluasi === e.kode);
     const bobot = isi.reduce((s, a) => s + a.bobot, 0);
@@ -270,9 +269,7 @@ export function hitungHasil(
  * mendapat peringkat sama (1, 2, 2, 4). Yang lain tidak diberi peringkat.
  */
 export function peringkat(hasil: { id: string; nilaiAkhir: number | null; status: StatusKelulusan }[]): Map<string, number> {
-  const lulus = hasil
-    .filter((h) => h.status === "LULUS" && h.nilaiAkhir !== null)
-    .sort((a, b) => (b.nilaiAkhir as number) - (a.nilaiAkhir as number));
+  const lulus = hasil.filter((h) => h.status === "LULUS" && h.nilaiAkhir !== null).sort((a, b) => (b.nilaiAkhir as number) - (a.nilaiAkhir as number));
   const out = new Map<string, number>();
   lulus.forEach((h, i) => {
     const sebelum = lulus[i - 1];
@@ -286,3 +283,28 @@ export const JUMLAH_TERBAIK = ATURAN.jumlahPeringkatTerbaik; // PKA & PKP: 3
 /** Angka gaya Indonesia, 2 desimal: 85.5 → "85,50". */
 export const formatNilai = (n: number | null | undefined) =>
   n === null || n === undefined ? "-" : n.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// ------------------------------------------------------------------ PENILAI SEMINAR (EB-056)
+
+/** Evaluasi seminar aksi perubahan: RAP = aktualisasi rancangan, LAP = aktualisasi implementasi. */
+export const SEMINAR_EVALUASI: Partial<Record<JenisEvaluasi, "RAP" | "LAP">> = { AKTUALISASI_RANCANGAN: "RAP", AKTUALISASI_IMPLEMENTASI: "LAP" };
+
+/**
+ * Nilai seminar diberi penguji DAN coach peserta itu (keputusan pemilik repo 13 Nov, EB-056); keduanya dirata-rata
+ * (mekanisme rata-rata isian WI yang sudah ada; nilai rekap Ketua Diklat tetap didahulukan). WI lain tidak mengisi nilai
+ * seminar peserta tersebut. Aspek non-seminar tidak dibatasi.
+ */
+export function bolehNilaiSeminar(o: {
+  jenisEvaluasi: JenisEvaluasi;
+  pesertaId: string;
+  pegawaiId: string | null;
+  /** pesertaId → pegawai penguji per jenis seminar ("RAP"/"LAP"). */
+  penguji: Map<string, Partial<Record<"RAP" | "LAP", string | null>>>;
+  /** pesertaId → pegawai coach kelompok bimbingan & seminarnya. */
+  coach: Map<string, string | null>;
+}): boolean {
+  const s = SEMINAR_EVALUASI[o.jenisEvaluasi];
+  if (!s) return true;
+  if (!o.pegawaiId) return false;
+  return o.penguji.get(o.pesertaId)?.[s] === o.pegawaiId || o.coach.get(o.pesertaId) === o.pegawaiId;
+}
