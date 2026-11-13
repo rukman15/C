@@ -364,3 +364,8 @@ export type LokasiStula = Prisma.LokasiStulaModel
  * 
  */
 export type KunjunganStula = Prisma.KunjunganStulaModel
+/**
+ * Model SeminarKelompok
+ * 
+ */
+export type SeminarKelompok = Prisma.SeminarKelompokModel

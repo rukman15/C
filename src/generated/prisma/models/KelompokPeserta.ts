@@ -297,6 +297,7 @@ export type KelompokPesertaWhereInput = {
   bacaForum?: Prisma.BacaForumListRelationFilter
   sesiKelompok?: Prisma.SesiKelompokListRelationFilter
   lokasiStula?: Prisma.XOR<Prisma.LokasiStulaNullableScalarRelationFilter, Prisma.LokasiStulaWhereInput> | null
+  seminarKelompok?: Prisma.SeminarKelompokListRelationFilter
 }
 
 export type KelompokPesertaOrderByWithRelationInput = {
@@ -323,6 +324,7 @@ export type KelompokPesertaOrderByWithRelationInput = {
   bacaForum?: Prisma.BacaForumOrderByRelationAggregateInput
   sesiKelompok?: Prisma.SesiKelompokOrderByRelationAggregateInput
   lokasiStula?: Prisma.LokasiStulaOrderByWithRelationInput
+  seminarKelompok?: Prisma.SeminarKelompokOrderByRelationAggregateInput
 }
 
 export type KelompokPesertaWhereUniqueInput = Prisma.AtLeast<{
@@ -353,6 +355,7 @@ export type KelompokPesertaWhereUniqueInput = Prisma.AtLeast<{
   bacaForum?: Prisma.BacaForumListRelationFilter
   sesiKelompok?: Prisma.SesiKelompokListRelationFilter
   lokasiStula?: Prisma.XOR<Prisma.LokasiStulaNullableScalarRelationFilter, Prisma.LokasiStulaWhereInput> | null
+  seminarKelompok?: Prisma.SeminarKelompokListRelationFilter
 }, "id" | "trainingId_jenis_nomor">
 
 export type KelompokPesertaOrderByWithAggregationInput = {
@@ -420,6 +423,7 @@ export type KelompokPesertaCreateInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateInput = {
@@ -445,6 +449,7 @@ export type KelompokPesertaUncheckedCreateInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUpdateInput = {
@@ -470,6 +475,7 @@ export type KelompokPesertaUpdateInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateInput = {
@@ -495,6 +501,7 @@ export type KelompokPesertaUncheckedUpdateInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateManyInput = {
@@ -790,6 +797,20 @@ export type KelompokPesertaUpdateOneWithoutLokasiStulaNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KelompokPesertaUpdateToOneWithWhereWithoutLokasiStulaInput, Prisma.KelompokPesertaUpdateWithoutLokasiStulaInput>, Prisma.KelompokPesertaUncheckedUpdateWithoutLokasiStulaInput>
 }
 
+export type KelompokPesertaCreateNestedOneWithoutSeminarKelompokInput = {
+  create?: Prisma.XOR<Prisma.KelompokPesertaCreateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedCreateWithoutSeminarKelompokInput>
+  connectOrCreate?: Prisma.KelompokPesertaCreateOrConnectWithoutSeminarKelompokInput
+  connect?: Prisma.KelompokPesertaWhereUniqueInput
+}
+
+export type KelompokPesertaUpdateOneRequiredWithoutSeminarKelompokNestedInput = {
+  create?: Prisma.XOR<Prisma.KelompokPesertaCreateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedCreateWithoutSeminarKelompokInput>
+  connectOrCreate?: Prisma.KelompokPesertaCreateOrConnectWithoutSeminarKelompokInput
+  upsert?: Prisma.KelompokPesertaUpsertWithoutSeminarKelompokInput
+  connect?: Prisma.KelompokPesertaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KelompokPesertaUpdateToOneWithWhereWithoutSeminarKelompokInput, Prisma.KelompokPesertaUpdateWithoutSeminarKelompokInput>, Prisma.KelompokPesertaUncheckedUpdateWithoutSeminarKelompokInput>
+}
+
 export type KelompokPesertaCreateWithoutTrainingInput = {
   id?: string
   nomor: number
@@ -812,6 +833,7 @@ export type KelompokPesertaCreateWithoutTrainingInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutTrainingInput = {
@@ -836,6 +858,7 @@ export type KelompokPesertaUncheckedCreateWithoutTrainingInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutTrainingInput = {
@@ -906,6 +929,7 @@ export type KelompokPesertaCreateWithoutPesertaInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutPesertaInput = {
@@ -930,6 +954,7 @@ export type KelompokPesertaUncheckedCreateWithoutPesertaInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutPesertaInput = {
@@ -970,6 +995,7 @@ export type KelompokPesertaUpdateWithoutPesertaInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutPesertaInput = {
@@ -994,6 +1020,7 @@ export type KelompokPesertaUncheckedUpdateWithoutPesertaInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutSesiKelompokInput = {
@@ -1018,6 +1045,7 @@ export type KelompokPesertaCreateWithoutSesiKelompokInput = {
   topikForum?: Prisma.TopikForumCreateNestedManyWithoutKelompokInput
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutSesiKelompokInput = {
@@ -1042,6 +1070,7 @@ export type KelompokPesertaUncheckedCreateWithoutSesiKelompokInput = {
   topikForum?: Prisma.TopikForumUncheckedCreateNestedManyWithoutKelompokInput
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutSesiKelompokInput = {
@@ -1082,6 +1111,7 @@ export type KelompokPesertaUpdateWithoutSesiKelompokInput = {
   topikForum?: Prisma.TopikForumUpdateManyWithoutKelompokNestedInput
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutSesiKelompokInput = {
@@ -1106,6 +1136,7 @@ export type KelompokPesertaUncheckedUpdateWithoutSesiKelompokInput = {
   topikForum?: Prisma.TopikForumUncheckedUpdateManyWithoutKelompokNestedInput
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutAnggotaInput = {
@@ -1130,6 +1161,7 @@ export type KelompokPesertaCreateWithoutAnggotaInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutAnggotaInput = {
@@ -1154,6 +1186,7 @@ export type KelompokPesertaUncheckedCreateWithoutAnggotaInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutAnggotaInput = {
@@ -1194,6 +1227,7 @@ export type KelompokPesertaUpdateWithoutAnggotaInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutAnggotaInput = {
@@ -1218,6 +1252,7 @@ export type KelompokPesertaUncheckedUpdateWithoutAnggotaInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutSesiCoachingInput = {
@@ -1242,6 +1277,7 @@ export type KelompokPesertaCreateWithoutSesiCoachingInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutSesiCoachingInput = {
@@ -1266,6 +1302,7 @@ export type KelompokPesertaUncheckedCreateWithoutSesiCoachingInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutSesiCoachingInput = {
@@ -1306,6 +1343,7 @@ export type KelompokPesertaUpdateWithoutSesiCoachingInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutSesiCoachingInput = {
@@ -1330,6 +1368,7 @@ export type KelompokPesertaUncheckedUpdateWithoutSesiCoachingInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutVideoKelompokInput = {
@@ -1354,6 +1393,7 @@ export type KelompokPesertaCreateWithoutVideoKelompokInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutVideoKelompokInput = {
@@ -1378,6 +1418,7 @@ export type KelompokPesertaUncheckedCreateWithoutVideoKelompokInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutVideoKelompokInput = {
@@ -1418,6 +1459,7 @@ export type KelompokPesertaUpdateWithoutVideoKelompokInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutVideoKelompokInput = {
@@ -1442,6 +1484,7 @@ export type KelompokPesertaUncheckedUpdateWithoutVideoKelompokInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutTopikForumInput = {
@@ -1466,6 +1509,7 @@ export type KelompokPesertaCreateWithoutTopikForumInput = {
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutTopikForumInput = {
@@ -1490,6 +1534,7 @@ export type KelompokPesertaUncheckedCreateWithoutTopikForumInput = {
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutTopikForumInput = {
@@ -1530,6 +1575,7 @@ export type KelompokPesertaUpdateWithoutTopikForumInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutTopikForumInput = {
@@ -1554,6 +1600,7 @@ export type KelompokPesertaUncheckedUpdateWithoutTopikForumInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutBacaForumInput = {
@@ -1578,6 +1625,7 @@ export type KelompokPesertaCreateWithoutBacaForumInput = {
   topikForum?: Prisma.TopikForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutBacaForumInput = {
@@ -1602,6 +1650,7 @@ export type KelompokPesertaUncheckedCreateWithoutBacaForumInput = {
   topikForum?: Prisma.TopikForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
   lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutBacaForumInput = {
@@ -1642,6 +1691,7 @@ export type KelompokPesertaUpdateWithoutBacaForumInput = {
   topikForum?: Prisma.TopikForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutBacaForumInput = {
@@ -1666,6 +1716,7 @@ export type KelompokPesertaUncheckedUpdateWithoutBacaForumInput = {
   topikForum?: Prisma.TopikForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateWithoutLokasiStulaInput = {
@@ -1690,6 +1741,7 @@ export type KelompokPesertaCreateWithoutLokasiStulaInput = {
   topikForum?: Prisma.TopikForumCreateNestedManyWithoutKelompokInput
   bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaUncheckedCreateWithoutLokasiStulaInput = {
@@ -1714,6 +1766,7 @@ export type KelompokPesertaUncheckedCreateWithoutLokasiStulaInput = {
   topikForum?: Prisma.TopikForumUncheckedCreateNestedManyWithoutKelompokInput
   bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedCreateNestedManyWithoutKelompokInput
 }
 
 export type KelompokPesertaCreateOrConnectWithoutLokasiStulaInput = {
@@ -1754,6 +1807,7 @@ export type KelompokPesertaUpdateWithoutLokasiStulaInput = {
   topikForum?: Prisma.TopikForumUpdateManyWithoutKelompokNestedInput
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutLokasiStulaInput = {
@@ -1778,6 +1832,123 @@ export type KelompokPesertaUncheckedUpdateWithoutLokasiStulaInput = {
   topikForum?: Prisma.TopikForumUncheckedUpdateManyWithoutKelompokNestedInput
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
+}
+
+export type KelompokPesertaCreateWithoutSeminarKelompokInput = {
+  id?: string
+  nomor: number
+  nama?: string | null
+  coachNama?: string | null
+  coachPegawaiId?: string | null
+  tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
+  jenis?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  training: Prisma.TrainingCreateNestedOneWithoutKelompokInput
+  peserta?: Prisma.PesertaCreateNestedManyWithoutKelompokInput
+  anggota?: Prisma.AnggotaKelompokCreateNestedManyWithoutKelompokInput
+  sesiCoaching?: Prisma.SesiCoachingCreateNestedManyWithoutKelompokInput
+  videoKelompok?: Prisma.VideoKelompokCreateNestedManyWithoutKelompokInput
+  topikForum?: Prisma.TopikForumCreateNestedManyWithoutKelompokInput
+  bacaForum?: Prisma.BacaForumCreateNestedManyWithoutKelompokInput
+  sesiKelompok?: Prisma.SesiKelompokCreateNestedManyWithoutKelompokInput
+  lokasiStula?: Prisma.LokasiStulaCreateNestedOneWithoutKelompokInput
+}
+
+export type KelompokPesertaUncheckedCreateWithoutSeminarKelompokInput = {
+  id?: string
+  trainingId: string
+  nomor: number
+  nama?: string | null
+  coachNama?: string | null
+  coachPegawaiId?: string | null
+  tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
+  jenis?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  peserta?: Prisma.PesertaUncheckedCreateNestedManyWithoutKelompokInput
+  anggota?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutKelompokInput
+  sesiCoaching?: Prisma.SesiCoachingUncheckedCreateNestedManyWithoutKelompokInput
+  videoKelompok?: Prisma.VideoKelompokUncheckedCreateNestedManyWithoutKelompokInput
+  topikForum?: Prisma.TopikForumUncheckedCreateNestedManyWithoutKelompokInput
+  bacaForum?: Prisma.BacaForumUncheckedCreateNestedManyWithoutKelompokInput
+  sesiKelompok?: Prisma.SesiKelompokUncheckedCreateNestedManyWithoutKelompokInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedCreateNestedOneWithoutKelompokInput
+}
+
+export type KelompokPesertaCreateOrConnectWithoutSeminarKelompokInput = {
+  where: Prisma.KelompokPesertaWhereUniqueInput
+  create: Prisma.XOR<Prisma.KelompokPesertaCreateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedCreateWithoutSeminarKelompokInput>
+}
+
+export type KelompokPesertaUpsertWithoutSeminarKelompokInput = {
+  update: Prisma.XOR<Prisma.KelompokPesertaUpdateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedUpdateWithoutSeminarKelompokInput>
+  create: Prisma.XOR<Prisma.KelompokPesertaCreateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedCreateWithoutSeminarKelompokInput>
+  where?: Prisma.KelompokPesertaWhereInput
+}
+
+export type KelompokPesertaUpdateToOneWithWhereWithoutSeminarKelompokInput = {
+  where?: Prisma.KelompokPesertaWhereInput
+  data: Prisma.XOR<Prisma.KelompokPesertaUpdateWithoutSeminarKelompokInput, Prisma.KelompokPesertaUncheckedUpdateWithoutSeminarKelompokInput>
+}
+
+export type KelompokPesertaUpdateWithoutSeminarKelompokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jenis?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  training?: Prisma.TrainingUpdateOneRequiredWithoutKelompokNestedInput
+  peserta?: Prisma.PesertaUpdateManyWithoutKelompokNestedInput
+  anggota?: Prisma.AnggotaKelompokUpdateManyWithoutKelompokNestedInput
+  sesiCoaching?: Prisma.SesiCoachingUpdateManyWithoutKelompokNestedInput
+  videoKelompok?: Prisma.VideoKelompokUpdateManyWithoutKelompokNestedInput
+  topikForum?: Prisma.TopikForumUpdateManyWithoutKelompokNestedInput
+  bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
+  sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
+  lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+}
+
+export type KelompokPesertaUncheckedUpdateWithoutSeminarKelompokInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainingId?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jenis?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  peserta?: Prisma.PesertaUncheckedUpdateManyWithoutKelompokNestedInput
+  anggota?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutKelompokNestedInput
+  sesiCoaching?: Prisma.SesiCoachingUncheckedUpdateManyWithoutKelompokNestedInput
+  videoKelompok?: Prisma.VideoKelompokUncheckedUpdateManyWithoutKelompokNestedInput
+  topikForum?: Prisma.TopikForumUncheckedUpdateManyWithoutKelompokNestedInput
+  bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
+  sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
+  lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaCreateManyTrainingInput = {
@@ -1818,6 +1989,7 @@ export type KelompokPesertaUpdateWithoutTrainingInput = {
   bacaForum?: Prisma.BacaForumUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateWithoutTrainingInput = {
@@ -1842,6 +2014,7 @@ export type KelompokPesertaUncheckedUpdateWithoutTrainingInput = {
   bacaForum?: Prisma.BacaForumUncheckedUpdateManyWithoutKelompokNestedInput
   sesiKelompok?: Prisma.SesiKelompokUncheckedUpdateManyWithoutKelompokNestedInput
   lokasiStula?: Prisma.LokasiStulaUncheckedUpdateOneWithoutKelompokNestedInput
+  seminarKelompok?: Prisma.SeminarKelompokUncheckedUpdateManyWithoutKelompokNestedInput
 }
 
 export type KelompokPesertaUncheckedUpdateManyWithoutTrainingInput = {
@@ -1873,6 +2046,7 @@ export type KelompokPesertaCountOutputType = {
   topikForum: number
   bacaForum: number
   sesiKelompok: number
+  seminarKelompok: number
 }
 
 export type KelompokPesertaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1883,6 +2057,7 @@ export type KelompokPesertaCountOutputTypeSelect<ExtArgs extends runtime.Types.E
   topikForum?: boolean | KelompokPesertaCountOutputTypeCountTopikForumArgs
   bacaForum?: boolean | KelompokPesertaCountOutputTypeCountBacaForumArgs
   sesiKelompok?: boolean | KelompokPesertaCountOutputTypeCountSesiKelompokArgs
+  seminarKelompok?: boolean | KelompokPesertaCountOutputTypeCountSeminarKelompokArgs
 }
 
 /**
@@ -1944,6 +2119,13 @@ export type KelompokPesertaCountOutputTypeCountSesiKelompokArgs<ExtArgs extends 
   where?: Prisma.SesiKelompokWhereInput
 }
 
+/**
+ * KelompokPesertaCountOutputType without action
+ */
+export type KelompokPesertaCountOutputTypeCountSeminarKelompokArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SeminarKelompokWhereInput
+}
+
 
 export type KelompokPesertaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1969,6 +2151,7 @@ export type KelompokPesertaSelect<ExtArgs extends runtime.Types.Extensions.Inter
   bacaForum?: boolean | Prisma.KelompokPeserta$bacaForumArgs<ExtArgs>
   sesiKelompok?: boolean | Prisma.KelompokPeserta$sesiKelompokArgs<ExtArgs>
   lokasiStula?: boolean | Prisma.KelompokPeserta$lokasiStulaArgs<ExtArgs>
+  seminarKelompok?: boolean | Prisma.KelompokPeserta$seminarKelompokArgs<ExtArgs>
   _count?: boolean | Prisma.KelompokPesertaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kelompokPeserta"]>
 
@@ -2036,6 +2219,7 @@ export type KelompokPesertaInclude<ExtArgs extends runtime.Types.Extensions.Inte
   bacaForum?: boolean | Prisma.KelompokPeserta$bacaForumArgs<ExtArgs>
   sesiKelompok?: boolean | Prisma.KelompokPeserta$sesiKelompokArgs<ExtArgs>
   lokasiStula?: boolean | Prisma.KelompokPeserta$lokasiStulaArgs<ExtArgs>
+  seminarKelompok?: boolean | Prisma.KelompokPeserta$seminarKelompokArgs<ExtArgs>
   _count?: boolean | Prisma.KelompokPesertaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type KelompokPesertaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2057,6 +2241,7 @@ export type $KelompokPesertaPayload<ExtArgs extends runtime.Types.Extensions.Int
     bacaForum: Prisma.$BacaForumPayload<ExtArgs>[]
     sesiKelompok: Prisma.$SesiKelompokPayload<ExtArgs>[]
     lokasiStula: Prisma.$LokasiStulaPayload<ExtArgs> | null
+    seminarKelompok: Prisma.$SeminarKelompokPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2476,6 +2661,7 @@ export interface Prisma__KelompokPesertaClient<T, Null = never, ExtArgs extends 
   bacaForum<T extends Prisma.KelompokPeserta$bacaForumArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KelompokPeserta$bacaForumArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BacaForumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sesiKelompok<T extends Prisma.KelompokPeserta$sesiKelompokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KelompokPeserta$sesiKelompokArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SesiKelompokPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lokasiStula<T extends Prisma.KelompokPeserta$lokasiStulaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KelompokPeserta$lokasiStulaArgs<ExtArgs>>): Prisma.Prisma__LokasiStulaClient<runtime.Types.Result.GetResult<Prisma.$LokasiStulaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  seminarKelompok<T extends Prisma.KelompokPeserta$seminarKelompokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KelompokPeserta$seminarKelompokArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeminarKelompokPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3099,6 +3285,30 @@ export type KelompokPeserta$lokasiStulaArgs<ExtArgs extends runtime.Types.Extens
    */
   include?: Prisma.LokasiStulaInclude<ExtArgs> | null
   where?: Prisma.LokasiStulaWhereInput
+}
+
+/**
+ * KelompokPeserta.seminarKelompok
+ */
+export type KelompokPeserta$seminarKelompokArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SeminarKelompok
+   */
+  select?: Prisma.SeminarKelompokSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SeminarKelompok
+   */
+  omit?: Prisma.SeminarKelompokOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SeminarKelompokInclude<ExtArgs> | null
+  where?: Prisma.SeminarKelompokWhereInput
+  orderBy?: Prisma.SeminarKelompokOrderByWithRelationInput | Prisma.SeminarKelompokOrderByWithRelationInput[]
+  cursor?: Prisma.SeminarKelompokWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SeminarKelompokScalarFieldEnum | Prisma.SeminarKelompokScalarFieldEnum[]
 }
 
 /**

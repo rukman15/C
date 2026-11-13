@@ -450,7 +450,8 @@ export const ModelName = {
   KirimanTugas: 'KirimanTugas',
   RiwayatKiriman: 'RiwayatKiriman',
   LokasiStula: 'LokasiStula',
-  KunjunganStula: 'KunjunganStula'
+  KunjunganStula: 'KunjunganStula',
+  SeminarKelompok: 'SeminarKelompok'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -466,7 +467,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "sesiKelompok" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman" | "lokasiStula" | "kunjunganStula"
+    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "sesiKelompok" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman" | "lokasiStula" | "kunjunganStula" | "seminarKelompok"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4984,6 +4985,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SeminarKelompok: {
+      payload: Prisma.$SeminarKelompokPayload<ExtArgs>
+      fields: Prisma.SeminarKelompokFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SeminarKelompokFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SeminarKelompokFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        findFirst: {
+          args: Prisma.SeminarKelompokFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SeminarKelompokFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        findMany: {
+          args: Prisma.SeminarKelompokFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>[]
+        }
+        create: {
+          args: Prisma.SeminarKelompokCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        createMany: {
+          args: Prisma.SeminarKelompokCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SeminarKelompokCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>[]
+        }
+        delete: {
+          args: Prisma.SeminarKelompokDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        update: {
+          args: Prisma.SeminarKelompokUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        deleteMany: {
+          args: Prisma.SeminarKelompokDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SeminarKelompokUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SeminarKelompokUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>[]
+        }
+        upsert: {
+          args: Prisma.SeminarKelompokUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SeminarKelompokPayload>
+        }
+        aggregate: {
+          args: Prisma.SeminarKelompokAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeminarKelompok>
+        }
+        groupBy: {
+          args: Prisma.SeminarKelompokGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeminarKelompokGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SeminarKelompokCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SeminarKelompokCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -6115,6 +6190,32 @@ export const KunjunganStulaScalarFieldEnum = {
 export type KunjunganStulaScalarFieldEnum = (typeof KunjunganStulaScalarFieldEnum)[keyof typeof KunjunganStulaScalarFieldEnum]
 
 
+export const SeminarKelompokScalarFieldEnum = {
+  id: 'id',
+  trainingId: 'trainingId',
+  kelompokId: 'kelompokId',
+  jenis: 'jenis',
+  tanggal: 'tanggal',
+  jamMulai: 'jamMulai',
+  durasiMenit: 'durasiMenit',
+  istirahatMulai: 'istirahatMulai',
+  istirahatSelesai: 'istirahatSelesai',
+  ruang: 'ruang',
+  tautanDaring: 'tautanDaring',
+  penguji1PegawaiId: 'penguji1PegawaiId',
+  penguji1Nama: 'penguji1Nama',
+  penguji2PegawaiId: 'penguji2PegawaiId',
+  penguji2Nama: 'penguji2Nama',
+  evaluatorNama: 'evaluatorNama',
+  evaluatorPonsel: 'evaluatorPonsel',
+  diubahOleh: 'diubahOleh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeminarKelompokScalarFieldEnum = (typeof SeminarKelompokScalarFieldEnum)[keyof typeof SeminarKelompokScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6385,6 +6486,7 @@ export type GlobalOmitConfig = {
   riwayatKiriman?: Prisma.RiwayatKirimanOmit
   lokasiStula?: Prisma.LokasiStulaOmit
   kunjunganStula?: Prisma.KunjunganStulaOmit
+  seminarKelompok?: Prisma.SeminarKelompokOmit
 }
 
 /* Types for Logging */

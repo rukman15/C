@@ -33,7 +33,12 @@ export function jenisSeminar(kegiatan: string | null | undefined): JenisSeminar 
 
 const INFO: Record<JenisSeminar, { judul: string; tahap: string; evaluasi: JenisEvaluasi; aspekLabel: string }> = {
   RAP: { judul: "Seminar Rancangan Aksi Perubahan (RAP)", tahap: "Klasikal I", evaluasi: "AKTUALISASI_RANCANGAN", aspekLabel: "Perencanaan aksi perubahan" },
-  LAP: { judul: "Seminar Laporan Aksi Perubahan (LAP)", tahap: "Klasikal II, setelah aktualisasi di tempat kerja", evaluasi: "AKTUALISASI_IMPLEMENTASI", aspekLabel: "Implementasi aksi perubahan" },
+  LAP: {
+    judul: "Seminar Laporan Aksi Perubahan (LAP)",
+    tahap: "Klasikal II, setelah aktualisasi di tempat kerja",
+    evaluasi: "AKTUALISASI_IMPLEMENTASI",
+    aspekLabel: "Implementasi aksi perubahan",
+  },
 };
 
 export type StatusSeminar = "belum-dijadwalkan" | "akan-datang" | "hari-ini" | "selesai";
@@ -175,4 +180,83 @@ export function urutkanJadwalSeminar<T extends { tanggal: string | null; ruang: 
       (a.jamMulai ?? "99").localeCompare(b.jamMulai ?? "99") ||
       a.nama.localeCompare(b.nama, "id"),
   );
+}
+
+// ------------------------------------------------------------------ PER KELOMPOK (EB-055)
+
+/** Bawaan lembar "K RAP/K LAP" balai: 45 menit per peserta, istirahat 11.45–12.30. */
+export const DURASI_SEMINAR_BAWAAN = 45;
+export const ISTIRAHAT_SEMINAR_BAWAAN = { mulai: "11:45", selesai: "12:30" } as const;
+
+const keMenit = (j: string) => Number(j.slice(0, 2)) * 60 + Number(j.slice(3, 5));
+const keJam = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+export const isJamSeminar = (v: unknown): v is string => typeof v === "string" && JAM_SEMINAR.test(v);
+
+export type SlotSeminar = { mulai: string; selesai: string };
+
+/**
+ * Jam presentasi berurutan untuk `n` peserta satu kelas: tiap peserta `durasi` menit; slot yang jatuh di dalam istirahat
+ * atau melewati awal istirahat digeser ke akhir istirahat. Slot yang lewat pukul 24.00 → null.
+ * slotSeminar("08:00", 45, 6, {mulai:"11:45", selesai:"12:30"}) → 08:00, 08:45, 09:30, 10:15, 11:00, 12:30.
+ */
+export function slotSeminar(mulai: string, durasi: number, n: number, istirahat?: { mulai: string; selesai: string } | null): (SlotSeminar | null)[] {
+  if (!isJamSeminar(mulai) || !Number.isInteger(durasi) || durasi < 1) return Array(n).fill(null);
+  const ist =
+    istirahat && isJamSeminar(istirahat.mulai) && isJamSeminar(istirahat.selesai) && keMenit(istirahat.selesai) > keMenit(istirahat.mulai)
+      ? { m: keMenit(istirahat.mulai), s: keMenit(istirahat.selesai) }
+      : null;
+  let t = keMenit(mulai);
+  const hasil: (SlotSeminar | null)[] = [];
+  for (let i = 0; i < n; i++) {
+    if (ist && t < ist.s && t + durasi > ist.m) t = ist.s;
+    hasil.push(t + durasi > 24 * 60 ? null : { mulai: keJam(t), selesai: keJam(t + durasi) });
+    t += durasi;
+  }
+  return hasil;
+}
+
+/** Jam selesai satu presentasi (untuk tampilan dan cetak), atau null bila jam mulai tidak valid. */
+export const jamSelesai = (mulai: string | null, durasi: number) => (mulai && isJamSeminar(mulai) ? keJam(Math.min(keMenit(mulai) + durasi, 24 * 60 - 1)) : null);
+
+export type IsianSeminarKelompok = {
+  tanggal?: string | null;
+  jamMulai?: string | null;
+  durasiMenit?: number | null;
+  istirahatMulai?: string | null;
+  istirahatSelesai?: string | null;
+  ruang?: string | null;
+  tautanDaring?: string | null;
+  penguji1PegawaiId?: string | null;
+  penguji1Nama?: string | null;
+  penguji2PegawaiId?: string | null;
+  penguji2Nama?: string | null;
+  evaluatorNama?: string | null;
+  evaluatorPonsel?: string | null;
+};
+
+/** Periksa pengaturan seminar satu kelompok. Hasil: tautan rapi / galat. */
+export function periksaSeminarKelompok(i: IsianSeminarKelompok): { tautanDaring: string | null } | { galat: string } {
+  if (i.tanggal && !isTanggalIsoValid(i.tanggal)) return { galat: "Tanggal tidak valid" };
+  for (const [v, l] of [
+    [i.jamMulai, "Jam mulai"],
+    [i.istirahatMulai, "Awal istirahat"],
+    [i.istirahatSelesai, "Akhir istirahat"],
+  ] as const) {
+    if (v && !isJamSeminar(v)) return { galat: `${l} tidak valid (JJ:MM)` };
+  }
+  if (!!i.istirahatMulai !== !!i.istirahatSelesai) return { galat: "Isi awal dan akhir istirahat, atau kosongkan keduanya" };
+  if (i.istirahatMulai && i.istirahatSelesai && keMenit(i.istirahatSelesai) <= keMenit(i.istirahatMulai)) return { galat: "Akhir istirahat harus setelah awalnya" };
+  if (i.durasiMenit != null && (!Number.isInteger(i.durasiMenit) || i.durasiMenit < 10 || i.durasiMenit > 180)) return { galat: "Durasi per peserta 10–180 menit" };
+  if ((i.ruang ?? "").trim().length > RUANG_MAKS) return { galat: `Ruang maksimal ${RUANG_MAKS} karakter` };
+  for (const [v, l] of [
+    [i.penguji1Nama, "Nama penguji"],
+    [i.penguji2Nama, "Nama penguji kedua"],
+    [i.evaluatorNama, "Nama evaluator"],
+  ] as const) {
+    if ((v ?? "").trim().length > NAMA_SEMINAR_MAKS) return { galat: `${l} maksimal ${NAMA_SEMINAR_MAKS} karakter` };
+  }
+  if ((i.evaluatorPonsel ?? "").trim() && !/^[0-9+\-\s]{8,20}$/.test((i.evaluatorPonsel ?? "").trim())) return { galat: "Nomor HP evaluator tidak valid" };
+  const tautanDaring = bacaTautan(i.tautanDaring);
+  if (tautanDaring === undefined) return { galat: "Tautan daring harus alamat web (https://…)" };
+  return { tautanDaring };
 }

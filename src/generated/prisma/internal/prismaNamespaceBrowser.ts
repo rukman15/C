@@ -109,7 +109,8 @@ export const ModelName = {
   KirimanTugas: 'KirimanTugas',
   RiwayatKiriman: 'RiwayatKiriman',
   LokasiStula: 'LokasiStula',
-  KunjunganStula: 'KunjunganStula'
+  KunjunganStula: 'KunjunganStula',
+  SeminarKelompok: 'SeminarKelompok'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1218,6 +1219,32 @@ export const KunjunganStulaScalarFieldEnum = {
 } as const
 
 export type KunjunganStulaScalarFieldEnum = (typeof KunjunganStulaScalarFieldEnum)[keyof typeof KunjunganStulaScalarFieldEnum]
+
+
+export const SeminarKelompokScalarFieldEnum = {
+  id: 'id',
+  trainingId: 'trainingId',
+  kelompokId: 'kelompokId',
+  jenis: 'jenis',
+  tanggal: 'tanggal',
+  jamMulai: 'jamMulai',
+  durasiMenit: 'durasiMenit',
+  istirahatMulai: 'istirahatMulai',
+  istirahatSelesai: 'istirahatSelesai',
+  ruang: 'ruang',
+  tautanDaring: 'tautanDaring',
+  penguji1PegawaiId: 'penguji1PegawaiId',
+  penguji1Nama: 'penguji1Nama',
+  penguji2PegawaiId: 'penguji2PegawaiId',
+  penguji2Nama: 'penguji2Nama',
+  evaluatorNama: 'evaluatorNama',
+  evaluatorPonsel: 'evaluatorPonsel',
+  diubahOleh: 'diubahOleh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SeminarKelompokScalarFieldEnum = (typeof SeminarKelompokScalarFieldEnum)[keyof typeof SeminarKelompokScalarFieldEnum]
 
 
 export const SortOrder = {

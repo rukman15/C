@@ -204,6 +204,7 @@ model Training {
   peserta                 Peserta[]
   sesiPembelajaran        SesiPembelajaran[]
   lokasiStula             LokasiStula[]
+  seminarKelompok         SeminarKelompok[]
   tes                     Tes[]
   sasaranEvaluasi         SasaranEvaluasi[]
   evaluasi                EvaluasiPengajar[]
@@ -370,6 +371,7 @@ model KelompokPeserta {
   bacaForum      BacaForum[]
   sesiKelompok   SesiKelompok[]
   lokasiStula    LokasiStula?
+  seminarKelompok SeminarKelompok[]
 
   @@unique([trainingId, jenis, nomor])
   @@map("kelompok_peserta")
@@ -1575,4 +1577,35 @@ model KunjunganStula {
 
   @@index([lokasiId])
   @@map("kunjungan_stula")
+}
+
+// Pengaturan seminar RAP/LAP per kelompok bimbingan & seminar (EB-055): kelas/ruang, 2 penguji, evaluator kelas, jam
+// per peserta (bawaan 45 menit) dengan istirahat. Diterapkan ke seminar_peserta anggotanya; penguji 1 = penguji peserta.
+model SeminarKelompok {
+  id                String           @id @default(cuid())
+  trainingId        String
+  training          Training         @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  kelompokId        String
+  kelompok          KelompokPeserta  @relation(fields: [kelompokId], references: [id], onDelete: Cascade)
+  jenis             String // "RAP" | "LAP"
+  tanggal           DateTime?        @db.Date
+  jamMulai          String? // "HH:MM" WIB
+  durasiMenit       Int              @default(45)
+  istirahatMulai    String?
+  istirahatSelesai  String?
+  ruang             String?
+  tautanDaring      String?
+  penguji1PegawaiId String?
+  penguji1Nama      String?
+  penguji2PegawaiId String?
+  penguji2Nama      String?
+  evaluatorNama     String?
+  evaluatorPonsel   String?
+  diubahOleh        String
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([kelompokId, jenis])
+  @@index([trainingId])
+  @@map("seminar_kelompok")
 }
