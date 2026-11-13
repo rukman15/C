@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Clock, Pencil, Printer, Settings2, Video } from "lucide-react";
+import { Clock, Landmark, Pencil, Printer, Settings2, Video } from "lucide-react";
 import SegmentedControl from "@/components/arc/segmented-control/segmented-control";
 import { Dialog, DialogContent } from "@/components/arc/dialog/dialog";
 import { Alert } from "@/components/arc/alert/alert";
@@ -17,6 +17,9 @@ import { formatTanggalId } from "@/lib/sesi";
 import { kirimJson } from "@/lib/api-klien";
 import { cn } from "@/lib/utils";
 import type { BarisSeminarRecord, SeminarKelompokRecord, SeminarRecord } from "@/lib/server/repositories/seminar";
+import type { RekeningLengkapRecord } from "@/lib/server/repositories/rekening-mentor";
+import type { StatusRekening } from "@/lib/rekening-mentor";
+import { ambilJson } from "@/lib/api-klien";
 
 const LUAR = "__luar";
 const KOSONG = "__kosong";
@@ -34,12 +37,13 @@ const NADA_STATUS: Record<string, "neutral" | "info" | "warning" | "success" | "
  * tetap bisa disesuaikan (jam, urutan, mentor & kehadirannya). Evaluator mengubah status panggilan. Penguji hanya
  * melihat kelompok/peserta yang ia uji; pimpinan melihat saja.
  */
-export function TabSeminar({ data }: { data: SeminarRecord }) {
+export function TabSeminar({ data, rekening }: { data: SeminarRecord; rekening?: Record<string, StatusRekening> | null }) {
   const router = useRouter();
   const path = usePathname();
   const [atur, setAtur] = useState<SeminarKelompokRecord | null>(null);
   const [ubah, setUbah] = useState<BarisSeminarRecord | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [rek, setRek] = useState<{ nama: string; isi: RekeningLengkapRecord | null; galat: string } | null>(null);
   const [galat, setGalat] = useState("");
   const kelola = data.bolehKelola;
   const url = `/api/training/${encodeURIComponent(data.training.id)}/seminar`;
@@ -52,6 +56,27 @@ export function TabSeminar({ data }: { data: SeminarRecord }) {
     if (!res.ok) return setGalat(res.error);
     router.refresh();
   }
+
+  async function bukaRekening(b: BarisSeminarRecord) {
+    setRek({ nama: b.nama, isi: null, galat: "" });
+    const res = await ambilJson<RekeningLengkapRecord>(`${url}/rekening/${encodeURIComponent(b.pesertaId)}`);
+    setRek({ nama: b.nama, isi: res.ok ? res.data : null, galat: res.ok ? "" : res.error });
+  }
+  const tombolRekening = (b: BarisSeminarRecord) => {
+    const st = rekening?.[b.pesertaId];
+    if (!st || st === "TIDAK_PERLU") return null;
+    if (st === "BELUM" || st === "PERLU_ULANG")
+      return (
+        <Badge size="sm" tone="warning">
+          {st === "BELUM" ? "Rekening belum diisi" : "Rekening perlu diisi ulang"}
+        </Badge>
+      );
+    return (
+      <Button size="sm" variant="ghost" onClick={() => bukaRekening(b)}>
+        <Landmark size={14} /> Rekening
+      </Button>
+    );
+  };
 
   const baris = (b: BarisSeminarRecord, durasi: number) => (
     <li key={b.pesertaId} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 py-2.5">
@@ -68,6 +93,7 @@ export function TabSeminar({ data }: { data: SeminarRecord }) {
           {b.jamMulai ? ` · selesai ${jamSelesai(b.jamMulai, durasi)}` : ""}
         </span>
       </span>
+      {tombolRekening(b)}
       {b.nilai.jumlah ? (
         <span className="font-mono text-xs text-muted-foreground" title="Aspek nilai seminar yang sudah terisi">
           {b.nilai.terisi}/{b.nilai.jumlah}
@@ -211,6 +237,31 @@ export function TabSeminar({ data }: { data: SeminarRecord }) {
               }}
             />
           ) : null}
+        </DialogContent>
+      </Dialog>
+      <Dialog open={rek !== null} onOpenChange={(o) => !o && setRek(null)}>
+        <DialogContent
+          title={rek ? `Rekening mentor ${rek.nama}` : "Rekening mentor"}
+          description="Pembukaan ini tercatat di Log Audit. Jangan disalin ke tempat lain selain keperluan honor."
+        >
+          {rek?.galat ? <Alert tone="danger" title={rek.galat} /> : null}
+          {rek?.isi ? (
+            <dl className="grid grid-cols-[8rem_1fr] gap-x-4 gap-y-1 text-sm">
+              <dt className="text-muted-foreground">Mentor</dt>
+              <dd>{rek.isi.mentorNama}</dd>
+              <dt className="text-muted-foreground">Bank</dt>
+              <dd>{rek.isi.namaBank}</dd>
+              <dt className="text-muted-foreground">Nomor rekening</dt>
+              <dd className="font-mono select-all">{rek.isi.nomorRekening}</dd>
+              <dt className="text-muted-foreground">Atas nama</dt>
+              <dd>{rek.isi.atasNama}</dd>
+              <dt className="text-muted-foreground">HP mentor</dt>
+              <dd className="font-mono">{rek.isi.ponsel}</dd>
+            </dl>
+          ) : !rek?.galat ? (
+            <p className="text-sm text-muted-foreground">Memuat…</p>
+          ) : null}
+          {rek?.isi && !rek.isi.berlaku ? <Alert tone="warning" title="Milik mentor sebelumnya; peserta perlu mengisi ulang." /> : null}
         </DialogContent>
       </Dialog>
       <Toast title="Seminar" description={toast ?? undefined} open={toast !== null} onOpenChange={(o) => !o && setToast(null)} />

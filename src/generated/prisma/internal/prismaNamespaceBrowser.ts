@@ -110,7 +110,8 @@ export const ModelName = {
   RiwayatKiriman: 'RiwayatKiriman',
   LokasiStula: 'LokasiStula',
   KunjunganStula: 'KunjunganStula',
-  SeminarKelompok: 'SeminarKelompok'
+  SeminarKelompok: 'SeminarKelompok',
+  RekeningMentor: 'RekeningMentor'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1245,6 +1246,23 @@ export const SeminarKelompokScalarFieldEnum = {
 } as const
 
 export type SeminarKelompokScalarFieldEnum = (typeof SeminarKelompokScalarFieldEnum)[keyof typeof SeminarKelompokScalarFieldEnum]
+
+
+export const RekeningMentorScalarFieldEnum = {
+  id: 'id',
+  pesertaId: 'pesertaId',
+  trainingId: 'trainingId',
+  mentorNama: 'mentorNama',
+  namaBank: 'namaBank',
+  nomorRekening: 'nomorRekening',
+  atasNama: 'atasNama',
+  ponsel: 'ponsel',
+  diubahOleh: 'diubahOleh',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RekeningMentorScalarFieldEnum = (typeof RekeningMentorScalarFieldEnum)[keyof typeof RekeningMentorScalarFieldEnum]
 
 
 export const SortOrder = {

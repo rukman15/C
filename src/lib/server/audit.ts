@@ -56,6 +56,8 @@ export const AKSI_AUDIT = {
   WEWENANG_PENYELENGGARA: "Wewenang Admin Penyelenggara diubah",
   WEWENANG_DICABUT: "Wewenang Admin Penyelenggara dicabut",
   PENUGASAN_ANGKATAN: "Penugasan angkatan diubah",
+  // EB-045.
+  REKENING_MENTOR_DIBUKA: "Rekening mentor dibuka",
 } as const;
 
 export async function catatAudit(pelaku: Pelaku, aksi: string, sasaran?: string | null, rincian?: string | null): Promise<void> {

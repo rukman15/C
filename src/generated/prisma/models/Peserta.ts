@@ -333,6 +333,7 @@ export type PesertaWhereInput = {
   berkas?: Prisma.BerkasPesertaListRelationFilter
   anggotaKelompok?: Prisma.AnggotaKelompokListRelationFilter
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialListRelationFilter
+  rekeningMentor?: Prisma.XOR<Prisma.RekeningMentorNullableScalarRelationFilter, Prisma.RekeningMentorWhereInput> | null
   catatanCoaching?: Prisma.CatatanCoachingListRelationFilter
   seminar?: Prisma.SeminarPesertaListRelationFilter
   tontonVideo?: Prisma.TontonVideoListRelationFilter
@@ -371,6 +372,7 @@ export type PesertaOrderByWithRelationInput = {
   berkas?: Prisma.BerkasPesertaOrderByRelationAggregateInput
   anggotaKelompok?: Prisma.AnggotaKelompokOrderByRelationAggregateInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialOrderByRelationAggregateInput
+  rekeningMentor?: Prisma.RekeningMentorOrderByWithRelationInput
   catatanCoaching?: Prisma.CatatanCoachingOrderByRelationAggregateInput
   seminar?: Prisma.SeminarPesertaOrderByRelationAggregateInput
   tontonVideo?: Prisma.TontonVideoOrderByRelationAggregateInput
@@ -413,6 +415,7 @@ export type PesertaWhereUniqueInput = Prisma.AtLeast<{
   berkas?: Prisma.BerkasPesertaListRelationFilter
   anggotaKelompok?: Prisma.AnggotaKelompokListRelationFilter
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialListRelationFilter
+  rekeningMentor?: Prisma.XOR<Prisma.RekeningMentorNullableScalarRelationFilter, Prisma.RekeningMentorWhereInput> | null
   catatanCoaching?: Prisma.CatatanCoachingListRelationFilter
   seminar?: Prisma.SeminarPesertaListRelationFilter
   tontonVideo?: Prisma.TontonVideoListRelationFilter
@@ -498,6 +501,7 @@ export type PesertaCreateInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -533,6 +537,7 @@ export type PesertaUncheckedCreateInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -568,6 +573,7 @@ export type PesertaUpdateInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -603,6 +609,7 @@ export type PesertaUncheckedUpdateInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1082,6 +1089,20 @@ export type PesertaUpdateOneRequiredWithoutKirimanTugasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PesertaUpdateToOneWithWhereWithoutKirimanTugasInput, Prisma.PesertaUpdateWithoutKirimanTugasInput>, Prisma.PesertaUncheckedUpdateWithoutKirimanTugasInput>
 }
 
+export type PesertaCreateNestedOneWithoutRekeningMentorInput = {
+  create?: Prisma.XOR<Prisma.PesertaCreateWithoutRekeningMentorInput, Prisma.PesertaUncheckedCreateWithoutRekeningMentorInput>
+  connectOrCreate?: Prisma.PesertaCreateOrConnectWithoutRekeningMentorInput
+  connect?: Prisma.PesertaWhereUniqueInput
+}
+
+export type PesertaUpdateOneRequiredWithoutRekeningMentorNestedInput = {
+  create?: Prisma.XOR<Prisma.PesertaCreateWithoutRekeningMentorInput, Prisma.PesertaUncheckedCreateWithoutRekeningMentorInput>
+  connectOrCreate?: Prisma.PesertaCreateOrConnectWithoutRekeningMentorInput
+  upsert?: Prisma.PesertaUpsertWithoutRekeningMentorInput
+  connect?: Prisma.PesertaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PesertaUpdateToOneWithWhereWithoutRekeningMentorInput, Prisma.PesertaUpdateWithoutRekeningMentorInput>, Prisma.PesertaUncheckedUpdateWithoutRekeningMentorInput>
+}
+
 export type PesertaCreateWithoutTrainingInput = {
   id?: string
   nomor: number
@@ -1110,6 +1131,7 @@ export type PesertaCreateWithoutTrainingInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1144,6 +1166,7 @@ export type PesertaUncheckedCreateWithoutTrainingInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1228,6 +1251,7 @@ export type PesertaCreateWithoutKelompokInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1262,6 +1286,7 @@ export type PesertaUncheckedCreateWithoutKelompokInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1322,6 +1347,7 @@ export type PesertaCreateWithoutKehadiranInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1356,6 +1382,7 @@ export type PesertaUncheckedCreateWithoutKehadiranInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1406,6 +1433,7 @@ export type PesertaUpdateWithoutKehadiranInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -1440,6 +1468,7 @@ export type PesertaUncheckedUpdateWithoutKehadiranInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1474,6 +1503,7 @@ export type PesertaCreateWithoutNilaiInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1508,6 +1538,7 @@ export type PesertaUncheckedCreateWithoutNilaiInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1558,6 +1589,7 @@ export type PesertaUpdateWithoutNilaiInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -1592,6 +1624,7 @@ export type PesertaUncheckedUpdateWithoutNilaiInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1626,6 +1659,7 @@ export type PesertaCreateWithoutAkunInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1660,6 +1694,7 @@ export type PesertaUncheckedCreateWithoutAkunInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1720,6 +1755,7 @@ export type PesertaCreateWithoutTesInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1754,6 +1790,7 @@ export type PesertaUncheckedCreateWithoutTesInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1804,6 +1841,7 @@ export type PesertaUpdateWithoutTesInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -1838,6 +1876,7 @@ export type PesertaUncheckedUpdateWithoutTesInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1872,6 +1911,7 @@ export type PesertaCreateWithoutEvaluasiInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -1906,6 +1946,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -1956,6 +1997,7 @@ export type PesertaUpdateWithoutEvaluasiInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -1990,6 +2032,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2024,6 +2067,7 @@ export type PesertaCreateWithoutEvaluasiPenyelenggaraanInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2058,6 +2102,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiPenyelenggaraanInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2108,6 +2153,7 @@ export type PesertaUpdateWithoutEvaluasiPenyelenggaraanInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2142,6 +2188,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiPenyelenggaraanInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2176,6 +2223,7 @@ export type PesertaCreateWithoutSuratKeteranganInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2210,6 +2258,7 @@ export type PesertaUncheckedCreateWithoutSuratKeteranganInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2260,6 +2309,7 @@ export type PesertaUpdateWithoutSuratKeteranganInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2294,6 +2344,7 @@ export type PesertaUncheckedUpdateWithoutSuratKeteranganInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2328,6 +2379,7 @@ export type PesertaCreateWithoutAnggotaKelompokInput = {
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2362,6 +2414,7 @@ export type PesertaUncheckedCreateWithoutAnggotaKelompokInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2412,6 +2465,7 @@ export type PesertaUpdateWithoutAnggotaKelompokInput = {
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2446,6 +2500,7 @@ export type PesertaUncheckedUpdateWithoutAnggotaKelompokInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2480,6 +2535,7 @@ export type PesertaCreateWithoutDokumenInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2514,6 +2570,7 @@ export type PesertaUncheckedCreateWithoutDokumenInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2564,6 +2621,7 @@ export type PesertaUpdateWithoutDokumenInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2598,6 +2656,7 @@ export type PesertaUncheckedUpdateWithoutDokumenInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2632,6 +2691,7 @@ export type PesertaCreateWithoutBerkasInput = {
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2666,6 +2726,7 @@ export type PesertaUncheckedCreateWithoutBerkasInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2716,6 +2777,7 @@ export type PesertaUpdateWithoutBerkasInput = {
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2750,6 +2812,7 @@ export type PesertaUncheckedUpdateWithoutBerkasInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2784,6 +2847,7 @@ export type PesertaCreateWithoutPelaksanaanRemedialInput = {
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -2818,6 +2882,7 @@ export type PesertaUncheckedCreateWithoutPelaksanaanRemedialInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -2868,6 +2933,7 @@ export type PesertaUpdateWithoutPelaksanaanRemedialInput = {
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -2902,6 +2968,7 @@ export type PesertaUncheckedUpdateWithoutPelaksanaanRemedialInput = {
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2937,6 +3004,7 @@ export type PesertaCreateWithoutTontonVideoInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasCreateNestedManyWithoutPesertaInput
@@ -2971,6 +3039,7 @@ export type PesertaUncheckedCreateWithoutTontonVideoInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedCreateNestedManyWithoutPesertaInput
@@ -3021,6 +3090,7 @@ export type PesertaUpdateWithoutTontonVideoInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUpdateManyWithoutPesertaNestedInput
@@ -3055,6 +3125,7 @@ export type PesertaUncheckedUpdateWithoutTontonVideoInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3089,6 +3160,7 @@ export type PesertaCreateWithoutCatatanCoachingInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasCreateNestedManyWithoutPesertaInput
@@ -3123,6 +3195,7 @@ export type PesertaUncheckedCreateWithoutCatatanCoachingInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedCreateNestedManyWithoutPesertaInput
@@ -3173,6 +3246,7 @@ export type PesertaUpdateWithoutCatatanCoachingInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUpdateManyWithoutPesertaNestedInput
@@ -3207,6 +3281,7 @@ export type PesertaUncheckedUpdateWithoutCatatanCoachingInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3241,6 +3316,7 @@ export type PesertaCreateWithoutSeminarInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasCreateNestedManyWithoutPesertaInput
@@ -3275,6 +3351,7 @@ export type PesertaUncheckedCreateWithoutSeminarInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedCreateNestedManyWithoutPesertaInput
@@ -3325,6 +3402,7 @@ export type PesertaUpdateWithoutSeminarInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUpdateManyWithoutPesertaNestedInput
@@ -3359,6 +3437,7 @@ export type PesertaUncheckedUpdateWithoutSeminarInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
   kirimanTugas?: Prisma.KirimanTugasUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3393,6 +3472,7 @@ export type PesertaCreateWithoutKirimanTugasInput = {
   berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
@@ -3427,6 +3507,7 @@ export type PesertaUncheckedCreateWithoutKirimanTugasInput = {
   berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedCreateNestedOneWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
   tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
@@ -3477,6 +3558,7 @@ export type PesertaUpdateWithoutKirimanTugasInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -3511,9 +3593,166 @@ export type PesertaUncheckedUpdateWithoutKirimanTugasInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
+}
+
+export type PesertaCreateWithoutRekeningMentorInput = {
+  id?: string
+  nomor: number
+  nama: string
+  nip?: string | null
+  jabatan?: string | null
+  instansi?: string | null
+  status?: string
+  catatan?: string | null
+  jalurDaftar?: string
+  ukuranKaos?: string | null
+  judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
+  daftarUlangPada?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  training: Prisma.TrainingCreateNestedOneWithoutPesertaInput
+  akun?: Prisma.AkunCreateNestedOneWithoutPesertaInput
+  kelompok?: Prisma.KelompokPesertaCreateNestedOneWithoutPesertaInput
+  kehadiran?: Prisma.KehadiranCreateNestedManyWithoutPesertaInput
+  nilai?: Prisma.NilaiPesertaCreateNestedManyWithoutPesertaInput
+  tes?: Prisma.PengerjaanTesCreateNestedManyWithoutPesertaInput
+  evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutPesertaInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
+  suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
+  dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
+  anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
+  seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
+  tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
+  kirimanTugas?: Prisma.KirimanTugasCreateNestedManyWithoutPesertaInput
+}
+
+export type PesertaUncheckedCreateWithoutRekeningMentorInput = {
+  id?: string
+  trainingId: string
+  nomor: number
+  nama: string
+  nip?: string | null
+  jabatan?: string | null
+  instansi?: string | null
+  status?: string
+  catatan?: string | null
+  akunId?: string | null
+  kelompokId?: string | null
+  jalurDaftar?: string
+  ukuranKaos?: string | null
+  judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
+  daftarUlangPada?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kehadiran?: Prisma.KehadiranUncheckedCreateNestedManyWithoutPesertaInput
+  nilai?: Prisma.NilaiPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  tes?: Prisma.PengerjaanTesUncheckedCreateNestedManyWithoutPesertaInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutPesertaInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
+  dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
+  seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
+  kirimanTugas?: Prisma.KirimanTugasUncheckedCreateNestedManyWithoutPesertaInput
+}
+
+export type PesertaCreateOrConnectWithoutRekeningMentorInput = {
+  where: Prisma.PesertaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PesertaCreateWithoutRekeningMentorInput, Prisma.PesertaUncheckedCreateWithoutRekeningMentorInput>
+}
+
+export type PesertaUpsertWithoutRekeningMentorInput = {
+  update: Prisma.XOR<Prisma.PesertaUpdateWithoutRekeningMentorInput, Prisma.PesertaUncheckedUpdateWithoutRekeningMentorInput>
+  create: Prisma.XOR<Prisma.PesertaCreateWithoutRekeningMentorInput, Prisma.PesertaUncheckedCreateWithoutRekeningMentorInput>
+  where?: Prisma.PesertaWhereInput
+}
+
+export type PesertaUpdateToOneWithWhereWithoutRekeningMentorInput = {
+  where?: Prisma.PesertaWhereInput
+  data: Prisma.XOR<Prisma.PesertaUpdateWithoutRekeningMentorInput, Prisma.PesertaUncheckedUpdateWithoutRekeningMentorInput>
+}
+
+export type PesertaUpdateWithoutRekeningMentorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jabatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
+  ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  training?: Prisma.TrainingUpdateOneRequiredWithoutPesertaNestedInput
+  akun?: Prisma.AkunUpdateOneWithoutPesertaNestedInput
+  kelompok?: Prisma.KelompokPesertaUpdateOneWithoutPesertaNestedInput
+  kehadiran?: Prisma.KehadiranUpdateManyWithoutPesertaNestedInput
+  nilai?: Prisma.NilaiPesertaUpdateManyWithoutPesertaNestedInput
+  tes?: Prisma.PengerjaanTesUpdateManyWithoutPesertaNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutPesertaNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
+  dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
+  seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
+  tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
+  kirimanTugas?: Prisma.KirimanTugasUpdateManyWithoutPesertaNestedInput
+}
+
+export type PesertaUncheckedUpdateWithoutRekeningMentorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainingId?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jabatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  akunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelompokId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
+  ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kehadiran?: Prisma.KehadiranUncheckedUpdateManyWithoutPesertaNestedInput
+  nilai?: Prisma.NilaiPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  tes?: Prisma.PengerjaanTesUncheckedUpdateManyWithoutPesertaNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutPesertaNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
+  dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
+  seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
+  kirimanTugas?: Prisma.KirimanTugasUncheckedUpdateManyWithoutPesertaNestedInput
 }
 
 export type PesertaCreateManyTrainingInput = {
@@ -3564,6 +3803,7 @@ export type PesertaUpdateWithoutTrainingInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -3598,6 +3838,7 @@ export type PesertaUncheckedUpdateWithoutTrainingInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3672,6 +3913,7 @@ export type PesertaUpdateWithoutKelompokInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -3706,6 +3948,7 @@ export type PesertaUncheckedUpdateWithoutKelompokInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3780,6 +4023,7 @@ export type PesertaUpdateWithoutAkunInput = {
   berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
@@ -3814,6 +4058,7 @@ export type PesertaUncheckedUpdateWithoutAkunInput = {
   berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  rekeningMentor?: Prisma.RekeningMentorUncheckedUpdateOneWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
@@ -4011,6 +4256,7 @@ export type PesertaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   berkas?: boolean | Prisma.Peserta$berkasArgs<ExtArgs>
   anggotaKelompok?: boolean | Prisma.Peserta$anggotaKelompokArgs<ExtArgs>
   pelaksanaanRemedial?: boolean | Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>
+  rekeningMentor?: boolean | Prisma.Peserta$rekeningMentorArgs<ExtArgs>
   catatanCoaching?: boolean | Prisma.Peserta$catatanCoachingArgs<ExtArgs>
   seminar?: boolean | Prisma.Peserta$seminarArgs<ExtArgs>
   tontonVideo?: boolean | Prisma.Peserta$tontonVideoArgs<ExtArgs>
@@ -4102,6 +4348,7 @@ export type PesertaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   berkas?: boolean | Prisma.Peserta$berkasArgs<ExtArgs>
   anggotaKelompok?: boolean | Prisma.Peserta$anggotaKelompokArgs<ExtArgs>
   pelaksanaanRemedial?: boolean | Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>
+  rekeningMentor?: boolean | Prisma.Peserta$rekeningMentorArgs<ExtArgs>
   catatanCoaching?: boolean | Prisma.Peserta$catatanCoachingArgs<ExtArgs>
   seminar?: boolean | Prisma.Peserta$seminarArgs<ExtArgs>
   tontonVideo?: boolean | Prisma.Peserta$tontonVideoArgs<ExtArgs>
@@ -4135,6 +4382,7 @@ export type $PesertaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     berkas: Prisma.$BerkasPesertaPayload<ExtArgs>[]
     anggotaKelompok: Prisma.$AnggotaKelompokPayload<ExtArgs>[]
     pelaksanaanRemedial: Prisma.$PelaksanaanRemedialPayload<ExtArgs>[]
+    rekeningMentor: Prisma.$RekeningMentorPayload<ExtArgs> | null
     catatanCoaching: Prisma.$CatatanCoachingPayload<ExtArgs>[]
     seminar: Prisma.$SeminarPesertaPayload<ExtArgs>[]
     tontonVideo: Prisma.$TontonVideoPayload<ExtArgs>[]
@@ -4566,6 +4814,7 @@ export interface Prisma__PesertaClient<T, Null = never, ExtArgs extends runtime.
   berkas<T extends Prisma.Peserta$berkasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$berkasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BerkasPesertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   anggotaKelompok<T extends Prisma.Peserta$anggotaKelompokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$anggotaKelompokArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnggotaKelompokPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pelaksanaanRemedial<T extends Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PelaksanaanRemedialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rekeningMentor<T extends Prisma.Peserta$rekeningMentorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$rekeningMentorArgs<ExtArgs>>): Prisma.Prisma__RekeningMentorClient<runtime.Types.Result.GetResult<Prisma.$RekeningMentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   catatanCoaching<T extends Prisma.Peserta$catatanCoachingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$catatanCoachingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CatatanCoachingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   seminar<T extends Prisma.Peserta$seminarArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$seminarArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeminarPesertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tontonVideo<T extends Prisma.Peserta$tontonVideoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$tontonVideoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TontonVideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5283,6 +5532,25 @@ export type Peserta$pelaksanaanRemedialArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.PelaksanaanRemedialScalarFieldEnum | Prisma.PelaksanaanRemedialScalarFieldEnum[]
+}
+
+/**
+ * Peserta.rekeningMentor
+ */
+export type Peserta$rekeningMentorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RekeningMentor
+   */
+  select?: Prisma.RekeningMentorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RekeningMentor
+   */
+  omit?: Prisma.RekeningMentorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RekeningMentorInclude<ExtArgs> | null
+  where?: Prisma.RekeningMentorWhereInput
 }
 
 /**

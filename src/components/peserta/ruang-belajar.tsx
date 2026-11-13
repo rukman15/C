@@ -23,6 +23,7 @@ import type { RuangBelajarRecord } from "@/lib/server/types";
 import type { TesPesertaRecord } from "@/lib/server/repositories/tes";
 import type { EvaluasiPesertaRecord } from "@/lib/server/repositories/evaluasi";
 import type { MentorSayaRecord } from "@/lib/server/repositories/penugasan-angkatan";
+import type { RekeningSayaRecord } from "@/lib/server/repositories/rekening-mentor";
 import { labelProgram, periodeDiklat } from "./bagian";
 import { FolderPeserta, type RingkasTugasWi } from "./folder-peserta";
 import { KalenderSesi } from "@/components/absensi/kalender-sesi";
@@ -33,6 +34,7 @@ type Props = {
   tes: TesPesertaRecord[];
   evaluasi: EvaluasiPesertaRecord | null;
   mentor: MentorSayaRecord | null;
+  rekening?: RekeningSayaRecord | null;
   folder: ItemBerkas[];
   tugasWi: RingkasTugasWi;
 };
@@ -100,7 +102,7 @@ function Panel({ judul, aksi, className, children }: { judul?: React.ReactNode; 
  * Ruang belajar satu peserta. Isi sama dengan aplikasi lama; disusun dalam tab supaya ringkas di HP.
  * Pada hari seminar halaman dimuat ulang tiap 30 detik supaya panggilan evaluator terlihat.
  */
-export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: Props) {
+export function RuangBelajar({ data, tes, evaluasi, mentor, rekening, folder, tugasWi }: Props) {
   const router = useRouter();
   const t = data.training;
   const id = data.peserta.id;
@@ -267,7 +269,7 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
               ) : null}
             </Panel>
           ))}
-          {mentor && !data.pratinjau && t.jenisPelatihan ? <PanelMentor pesertaId={id} mentor={mentor} /> : null}
+          {mentor && !data.pratinjau && t.jenisPelatihan ? <PanelMentor pesertaId={id} mentor={mentor} rekening={rekening ?? null} /> : null}
           {data.dokumen && !data.dokumen.terkunci ? (
             <Panel
               judul="Dokumen persyaratan"
@@ -853,7 +855,7 @@ function PanelSeminar({
 }
 
 /** Mentor saya (EB-035): diusulkan peserta, disetujui penyelenggara di tab Penugasan. */
-function PanelMentor({ pesertaId, mentor: awal }: { pesertaId: string; mentor: MentorSayaRecord }) {
+function PanelMentor({ pesertaId, mentor: awal, rekening }: { pesertaId: string; mentor: MentorSayaRecord; rekening: RekeningSayaRecord | null }) {
   const [mentor, setMentor] = useState(awal);
   const [ubah, setUbah] = useState(false);
   const [isi, setIsi] = useState({
@@ -943,6 +945,84 @@ function PanelMentor({ pesertaId, mentor: awal }: { pesertaId: string; mentor: M
           {mentor.status === null ? "Usulkan mentor" : "Perbaiki usulan"}
         </Button>
       ) : null}
+      {rekening && rekening.status !== "TIDAK_PERLU" && !ubah ? <RekeningMentor pesertaId={pesertaId} awal={rekening} /> : null}
     </Panel>
+  );
+}
+
+/**
+ * Rekening mentor daring (EB-045): muncul bila mentor hadir daring (Zoom) pada seminar. Diisi/diubah peserta kapan saja;
+ * setelah tersimpan hanya tampil tersamar. Ganti mentor → isi ulang. Nomor lengkap hanya dibuka admin & Ketua Diklat.
+ */
+function RekeningMentor({ pesertaId, awal }: { pesertaId: string; awal: RekeningSayaRecord }) {
+  const [r, setR] = useState(awal);
+  const [isi, setIsi] = useState<{ namaBank: string; nomorRekening: string; atasNama: string; ponsel: string } | null>(null);
+  const [galat, setGalat] = useState("");
+  const [sibuk, setSibuk] = useState(false);
+  const atur = (k: "namaBank" | "nomorRekening" | "atasNama" | "ponsel") => (v: string) => setIsi((x) => (x ? { ...x, [k]: v } : x));
+  const buka = () => {
+    setGalat("");
+    setIsi({ namaBank: r.rekening?.namaBank ?? "", nomorRekening: "", atasNama: r.rekening?.atasNama ?? r.mentorNama ?? "", ponsel: "" });
+  };
+  async function simpan(e: FormEvent) {
+    e.preventDefault();
+    if (!isi) return;
+    setSibuk(true);
+    setGalat("");
+    const res = await kirimJson<RekeningSayaRecord>(`/api/belajar/${encodeURIComponent(pesertaId)}/rekening-mentor`, "PUT", isi);
+    setSibuk(false);
+    if (!res.ok) return setGalat(res.error);
+    setR(res.data);
+    setIsi(null);
+  }
+  return (
+    <div className="mt-4 border-t border-border pt-4">
+      <p className="text-sm font-medium">Rekening mentor (seminar daring)</p>
+      <p className="text-xs text-muted-foreground">
+        Mentor Anda hadir lewat Zoom. Isi rekening dan nomor HP mentor untuk keperluan honor; hanya admin dan Ketua Diklat yang dapat membuka nomor lengkapnya.
+      </p>
+      {r.status === "PERLU_ULANG" && !isi ? (
+        <Alert tone="warning" title="Mentor Anda berganti" className="mt-3">
+          Rekening yang tersimpan milik mentor sebelumnya. Isi rekening {r.mentorNama ?? "mentor baru"}.
+        </Alert>
+      ) : null}
+      {r.status === "TERISI" && r.rekening && !isi ? (
+        <dl className="mt-3 grid gap-x-4 gap-y-0.5 text-sm sm:grid-cols-[8rem_1fr]">
+          <dt className="text-muted-foreground">Bank</dt>
+          <dd>{r.rekening.namaBank}</dd>
+          <dt className="text-muted-foreground">Nomor rekening</dt>
+          <dd className="font-mono">{r.rekening.nomorSamar}</dd>
+          <dt className="text-muted-foreground">Atas nama</dt>
+          <dd>{r.rekening.atasNama}</dd>
+          <dt className="text-muted-foreground">HP mentor</dt>
+          <dd className="font-mono">{r.rekening.ponselSamar}</dd>
+        </dl>
+      ) : null}
+      {isi ? (
+        <form onSubmit={simpan} noValidate className="mt-3 grid gap-3 sm:grid-cols-2">
+          <Input label="Nama bank" value={isi.namaBank} onChange={atur("namaBank")} maxLength={80} placeholder="mis. Bank BJB" />
+          <Input label="Nomor rekening" value={isi.nomorRekening} onChange={atur("nomorRekening")} maxLength={30} inputMode="numeric" autoComplete="off" />
+          <Input label="Atas nama" value={isi.atasNama} onChange={atur("atasNama")} maxLength={120} />
+          <Input label="Nomor HP mentor" type="tel" value={isi.ponsel} onChange={atur("ponsel")} maxLength={20} placeholder="0812…" />
+          {galat ? (
+            <p role="alert" className="text-sm text-destructive sm:col-span-2">
+              {galat}
+            </p>
+          ) : null}
+          <div className="flex gap-2 sm:col-span-2">
+            <Button type="submit" disabled={sibuk}>
+              {sibuk ? "Menyimpan…" : "Simpan rekening"}
+            </Button>
+            <Button type="button" variant="ghost" onClick={() => setIsi(null)}>
+              Batal
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <Button size="sm" variant="secondary" className="mt-3" onClick={buka}>
+          {r.status === "TERISI" ? "Ubah rekening" : "Isi rekening mentor"}
+        </Button>
+      )}
+    </div>
   );
 }

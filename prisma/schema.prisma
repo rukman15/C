@@ -205,6 +205,7 @@ model Training {
   sesiPembelajaran        SesiPembelajaran[]
   lokasiStula             LokasiStula[]
   seminarKelompok         SeminarKelompok[]
+  rekeningMentor          RekeningMentor[]
   tes                     Tes[]
   sasaranEvaluasi         SasaranEvaluasi[]
   evaluasi                EvaluasiPengajar[]
@@ -329,6 +330,7 @@ model Peserta {
   berkas                  BerkasPeserta[]
   anggotaKelompok         AnggotaKelompok[]
   pelaksanaanRemedial     PelaksanaanRemedial[]
+  rekeningMentor          RekeningMentor?
   catatanCoaching         CatatanCoaching[]
   seminar                 SeminarPeserta[]
   tontonVideo             TontonVideo[]
@@ -1608,4 +1610,25 @@ model SeminarKelompok {
   @@unique([kelompokId, jenis])
   @@index([trainingId])
   @@map("seminar_kelompok")
+}
+
+// Rekening mentor daring (EB-045): diisi peserta; hanya admin & Ketua Diklat membuka nomor lengkap (tercatat di audit).
+// Melekat pada mentor: mentorNama berbeda dari mentor sekarang = isian lama tidak berlaku, peserta mengisi ulang.
+model RekeningMentor {
+  id            String   @id @default(cuid())
+  pesertaId     String   @unique
+  peserta       Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  trainingId    String
+  training      Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  mentorNama    String
+  namaBank      String
+  nomorRekening String
+  atasNama      String
+  ponsel        String
+  diubahOleh    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([trainingId])
+  @@map("rekening_mentor")
 }

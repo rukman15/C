@@ -369,3 +369,8 @@ export type KunjunganStula = Prisma.KunjunganStulaModel
  * 
  */
 export type SeminarKelompok = Prisma.SeminarKelompokModel
+/**
+ * Model RekeningMentor
+ * 
+ */
+export type RekeningMentor = Prisma.RekeningMentorModel

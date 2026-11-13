@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { muatHalamanDiklat } from "@/lib/server/diklat-halaman";
 import { AppError } from "@/lib/server/errors";
 import { aksesSeminar, getSeminar } from "@/lib/server/repositories/seminar";
+import { statusRekeningJadwal } from "@/lib/server/repositories/rekening-mentor";
+import { getPengguna } from "@/lib/server/pengguna";
 import { isJenisSeminar } from "@/lib/seminar";
 import { awalHariWib, isoTanggal } from "@/lib/tanggal";
 import { EmptyState } from "@/components/arc/empty-state/empty-state";
@@ -17,7 +19,10 @@ export default async function HalamanSeminar({ params, searchParams }: { params:
   try {
     const a = await aksesSeminar(id);
     const data = await getSeminar(id, isJenisSeminar(jenis) ? jenis : "RAP", a, isoTanggal(awalHariWib()));
-    return <TabSeminar data={data} />;
+    // Rekening mentor daring (EB-045): hanya admin & Ketua Diklat.
+    const role = (await getPengguna())?.role;
+    const rekening = role === "admin" || role === "ketua-diklat" ? await statusRekeningJadwal(id) : null;
+    return <TabSeminar data={data} rekening={rekening} />;
   } catch (e) {
     if (e instanceof AppError) return <EmptyState title="Seminar tidak tersedia" description={e.message} />;
     throw e;

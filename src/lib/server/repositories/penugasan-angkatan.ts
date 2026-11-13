@@ -66,8 +66,15 @@ async function muatTraining(trainingId: string) {
 async function semuaBaris(trainingId: string) {
   const [baru, kelompok, seminar, peserta] = await Promise.all([
     prisma.penugasanAngkatan.findMany({ where: { trainingId }, include: { pegawai: { select: { nama: true, jabatan: true } } }, orderBy: { createdAt: "asc" } }),
-    prisma.kelompokPeserta.findMany({ where: { trainingId }, select: { id: true, jenis: true, nomor: true, nama: true, coachNama: true, coachPegawaiId: true }, orderBy: { nomor: "asc" } }),
-    prisma.seminarPeserta.findMany({ where: { trainingId }, select: { pesertaId: true, jenis: true, pengujiPegawaiId: true, pengujiNama: true, mentorNama: true, mentorJabatan: true } }),
+    prisma.kelompokPeserta.findMany({
+      where: { trainingId },
+      select: { id: true, jenis: true, nomor: true, nama: true, coachNama: true, coachPegawaiId: true },
+      orderBy: { nomor: "asc" },
+    }),
+    prisma.seminarPeserta.findMany({
+      where: { trainingId },
+      select: { pesertaId: true, jenis: true, pengujiPegawaiId: true, pengujiNama: true, mentorNama: true, mentorJabatan: true },
+    }),
     prisma.peserta.findMany({ where: { trainingId, status: "AKTIF" }, select: { id: true, nomor: true, nama: true }, orderBy: { nomor: "asc" } }),
   ]);
   const namaPeserta = new Map((peserta as { id: string; nama: string }[]).map((p) => [p.id, p.nama]));
@@ -75,10 +82,7 @@ async function semuaBaris(trainingId: string) {
     (kelompok as { id: string; jenis: string; nomor: number; nama: string | null }[]).map((k) => [k.id, `${labelKelompok(k)} (${labelJenisKelompok(k.jenis)})`]),
   );
   const lingkupDari = (pesertaIds: string[], kelompokIds: string[]) => {
-    const bagian = [
-      ...kelompokIds.map((id) => labelKel.get(id) ?? "kelompok terhapus"),
-      ...pesertaIds.map((id) => namaPeserta.get(id) ?? "peserta tidak aktif"),
-    ];
+    const bagian = [...kelompokIds.map((id) => labelKel.get(id) ?? "kelompok terhapus"), ...pesertaIds.map((id) => namaPeserta.get(id) ?? "peserta tidak aktif")];
     return bagian.length ? bagian.join(", ") : "Seluruh angkatan";
   };
 
@@ -117,12 +121,15 @@ async function semuaBaris(trainingId: string) {
     ...o,
   });
   for (const k of kelompok as any[]) {
-    if (k.coachNama || k.coachPegawaiId) baris.push(lama({ sumber: "KELOMPOK", peran: "COACH", pegawaiId: k.coachPegawaiId, nama: k.coachNama ?? "(coach)", lingkup: labelKel.get(k.id) ?? "" }));
+    if (k.coachNama || k.coachPegawaiId)
+      baris.push(lama({ sumber: "KELOMPOK", peran: "COACH", pegawaiId: k.coachPegawaiId, nama: k.coachNama ?? "(coach)", lingkup: labelKel.get(k.id) ?? "" }));
   }
   for (const s of seminar as any[]) {
     const siapa = namaPeserta.get(s.pesertaId) ?? "peserta";
-    if (s.pengujiPegawaiId || s.pengujiNama) baris.push(lama({ sumber: "SEMINAR", peran: "PENGUJI", pegawaiId: s.pengujiPegawaiId, nama: s.pengujiNama ?? "(penguji)", lingkup: `${siapa} (seminar ${s.jenis})` }));
-    if (s.mentorNama) baris.push(lama({ sumber: "SEMINAR", peran: "MENTOR", pegawaiId: null, nama: s.mentorNama, jabatan: s.mentorJabatan, lingkup: `${siapa} (seminar ${s.jenis})` }));
+    if (s.pengujiPegawaiId || s.pengujiNama)
+      baris.push(lama({ sumber: "SEMINAR", peran: "PENGUJI", pegawaiId: s.pengujiPegawaiId, nama: s.pengujiNama ?? "(penguji)", lingkup: `${siapa} (seminar ${s.jenis})` }));
+    if (s.mentorNama)
+      baris.push(lama({ sumber: "SEMINAR", peran: "MENTOR", pegawaiId: null, nama: s.mentorNama, jabatan: s.mentorJabatan, lingkup: `${siapa} (seminar ${s.jenis})` }));
   }
   return { baris, kelompok, peserta, baru: baru as any[] };
 }
@@ -133,14 +140,21 @@ export async function getPenugasanAngkatan(trainingId: string, bolehKelola: bool
   const t = await muatTraining(trainingId);
   const { baris, kelompok, peserta } = await semuaBaris(trainingId);
   const pilihanPegawai = bolehKelola
-    ? ((await prisma.pegawai.findMany({ where: { status: "AKTIF" }, select: { id: true, nama: true, jabatan: true }, orderBy: { nama: "asc" } })) as { id: string; nama: string; jabatan: string | null }[])
+    ? ((await prisma.pegawai.findMany({ where: { status: "AKTIF" }, select: { id: true, nama: true, jabatan: true }, orderBy: { nama: "asc" } })) as {
+        id: string;
+        nama: string;
+        jabatan: string | null;
+      }[])
     : [];
   return {
     training: { id: t.id, name: t.name, jenisPelatihan: t.jenisPelatihan, mulai: isoTanggal(new Date(t.startDate)), selesai: tgl(t.endDate) },
     bolehKelola,
     baris,
     peserta: (peserta as { id: string; nomor: number; nama: string }[]).map((p) => ({ id: p.id, nomor: p.nomor, nama: p.nama })),
-    kelompok: (kelompok as { id: string; jenis: string; nomor: number; nama: string | null }[]).map((k) => ({ id: k.id, label: `${labelKelompok(k)} (${labelJenisKelompok(k.jenis)})` })),
+    kelompok: (kelompok as { id: string; jenis: string; nomor: number; nama: string | null }[]).map((k) => ({
+      id: k.id,
+      label: `${labelKelompok(k)} (${labelJenisKelompok(k.jenis)})`,
+    })),
     pilihanPegawai,
     usulanMenunggu: baris.filter((b) => b.status === "USULAN").length,
   };
@@ -175,7 +189,10 @@ export async function tambahPenugasan(trainingId: string, isian: IsianPenugasanS
     nama = p.nama;
   }
   const orang: OrangPenugasan = { pegawaiId: isian.pegawaiId || null, nama, email: isian.pegawaiId ? null : isian.emailLuar?.trim() || null };
-  const rangkap = periksaRangkap(baris.map((b) => ({ peran: b.peran, status: b.status, orang: orangDari(b) })), { peran: isian.peran as string, orang });
+  const rangkap = periksaRangkap(
+    baris.map((b) => ({ peran: b.peran, status: b.status, orang: orangDari(b) })),
+    { peran: isian.peran as string, orang },
+  );
   if (rangkap) throw new ConflictError(rangkap);
 
   const luar = !isian.pegawaiId;
@@ -214,10 +231,13 @@ export async function ubahStatusPenugasan(trainingId: string, id: string, aksi: 
     if (row.status !== "USULAN") throw new ConflictError("Hanya usulan yang bisa disetujui.");
     const { baris } = await semuaBaris(trainingId);
     const lain = baris.filter((b) => b.id !== id);
-    const rangkap = periksaRangkap(lain.map((b) => ({ peran: b.peran, status: b.status, orang: orangDari(b) })), {
-      peran: row.peran,
-      orang: { pegawaiId: row.pegawaiId, nama, email: row.emailLuar },
-    });
+    const rangkap = periksaRangkap(
+      lain.map((b) => ({ peran: b.peran, status: b.status, orang: orangDari(b) })),
+      {
+        peran: row.peran,
+        orang: { pegawaiId: row.pegawaiId, nama, email: row.emailLuar },
+      },
+    );
     if (rangkap) throw new ConflictError(rangkap);
     await prisma.penugasanAngkatan.update({ where: { id }, data: { status: "AKTIF", alasan: null, diubahOleh: oleh } });
     return `${ringkas} disetujui`;
@@ -258,11 +278,25 @@ async function pesertaSendiri(pesertaId: string, email: string): Promise<{ id: s
 
 export async function getMentorSaya(pesertaId: string, email: string): Promise<MentorSayaRecord> {
   const p = await pesertaSendiri(pesertaId, email);
-  const daftar: any[] = await prisma.penugasanAngkatan.findMany({ where: { trainingId: p.trainingId, peran: "MENTOR" }, orderBy: { updatedAt: "desc" } });
+  return mentorPeserta(p.trainingId, pesertaId);
+}
+
+/** Mentor satu peserta: penugasan MENTOR (aktif, lalu usulan), atau nama mentor di jadwal seminar (data lama). */
+export async function mentorPeserta(trainingId: string, pesertaId: string): Promise<MentorSayaRecord> {
+  const daftar: any[] = await prisma.penugasanAngkatan.findMany({ where: { trainingId, peran: "MENTOR" }, orderBy: { updatedAt: "desc" } });
   const milik = daftar.filter((b) => (b.pesertaIds ?? []).includes(pesertaId) && b.status !== "DICABUT");
   const pilih = milik.find((b) => b.status === "AKTIF") ?? milik.find((b) => b.status === "USULAN") ?? milik[0];
   if (pilih) {
-    return { status: pilih.status, nama: pilih.namaLuar, jabatan: pilih.jabatanLuar, instansi: pilih.instansiLuar, email: pilih.emailLuar, ponsel: pilih.ponselLuar, alasan: pilih.alasan, dariSeminar: false };
+    return {
+      status: pilih.status,
+      nama: pilih.namaLuar,
+      jabatan: pilih.jabatanLuar,
+      instansi: pilih.instansiLuar,
+      email: pilih.emailLuar,
+      ponsel: pilih.ponselLuar,
+      alasan: pilih.alasan,
+      dariSeminar: false,
+    };
   }
   const sem: { mentorNama: string | null; mentorJabatan: string | null } | null = await prisma.seminarPeserta.findFirst({
     where: { pesertaId, mentorNama: { not: null } },
@@ -297,5 +331,7 @@ export async function usulkanMentor(pesertaId: string, isian: IsianUsulanMentor,
     await prisma.penugasanAngkatan.update({ where: { id: usulan.id }, data });
     return;
   }
-  await prisma.penugasanAngkatan.create({ data: { trainingId: p.trainingId, peran: "MENTOR", pesertaIds: [pesertaId], kelompokIds: [], status: "USULAN", diusulkanOleh: email, ...data } });
+  await prisma.penugasanAngkatan.create({
+    data: { trainingId: p.trainingId, peran: "MENTOR", pesertaIds: [pesertaId], kelompokIds: [], status: "USULAN", diusulkanOleh: email, ...data },
+  });
 }
