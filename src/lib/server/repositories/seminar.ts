@@ -54,7 +54,7 @@ export async function aksesSeminar(trainingId: string): Promise<AksesSeminar> {
   if (!semua) {
     const menguji = a.pegawaiId
       ? ((await prisma.seminarPeserta.findFirst({ where: { trainingId, pengujiPegawaiId: a.pegawaiId }, select: { id: true } })) ??
-        (await prisma.seminarKelompok.findFirst({ where: { trainingId, OR: [{ penguji1PegawaiId: a.pegawaiId }, { penguji2PegawaiId: a.pegawaiId }] }, select: { id: true } })))
+        (await prisma.seminarKelompok.findFirst({ where: { trainingId, pengujiPegawaiId: a.pegawaiId }, select: { id: true } })))
       : null;
     if (!menguji) throw new ForbiddenError("Hanya penyelenggara, pimpinan, dan penguji seminar ini.");
   }
@@ -126,10 +126,8 @@ export type SeminarKelompokRecord = {
   istirahatSelesai: string | null;
   ruang: string | null;
   tautanDaring: string | null;
-  penguji1PegawaiId: string | null;
-  penguji1Nama: string | null;
-  penguji2PegawaiId: string | null;
-  penguji2Nama: string | null;
+  pengujiPegawaiId: string | null;
+  pengujiNama: string | null;
   evaluatorNama: string | null;
   evaluatorPonsel: string | null;
 };
@@ -231,10 +229,8 @@ export async function getSeminar(trainingId: string, jenis: JenisSeminar, a: Aks
       istirahatSelesai: x?.istirahatSelesai ?? null,
       ruang: x?.ruang ?? null,
       tautanDaring: x?.tautanDaring ?? null,
-      penguji1PegawaiId: x?.penguji1PegawaiId ?? null,
-      penguji1Nama: x?.penguji1Nama ?? null,
-      penguji2PegawaiId: x?.penguji2PegawaiId ?? null,
-      penguji2Nama: x?.penguji2Nama ?? null,
+      pengujiPegawaiId: x?.pengujiPegawaiId ?? null,
+      pengujiNama: x?.pengujiNama ?? null,
       evaluatorNama: x?.evaluatorNama ?? null,
       evaluatorPonsel: x?.evaluatorPonsel ?? null,
     };
@@ -242,8 +238,8 @@ export async function getSeminar(trainingId: string, jenis: JenisSeminar, a: Aks
   const hanyaMilikSaya = !a.semua;
   if (hanyaMilikSaya) {
     const pid = a.pegawaiId;
-    const kelSaya = new Set(kelompok.filter((k) => !!pid && (k.penguji1PegawaiId === pid || k.penguji2PegawaiId === pid)).map((k) => k.kelompokId));
-    baris = baris.filter((b) => !!pid && (b.pengujiPegawaiId === pid || (!!b.kelompokId && kelSaya.has(b.kelompokId))));
+    // 1 peserta 1 penguji (EB-018): penguji hanya melihat peserta yang ia uji.
+    baris = baris.filter((b) => !!pid && b.pengujiPegawaiId === pid);
     // Penguji tidak perlu nomor HP evaluator; kelompok lain disembunyikan.
     kelompok = kelompok.filter((k) => baris.some((b) => b.kelompokId === k.kelompokId)).map((k) => ({ ...k, evaluatorPonsel: null }));
   }
@@ -332,8 +328,9 @@ export async function simpanJadwal(trainingId: string, jenis: JenisSeminar, isia
 
 /**
  * Simpan pengaturan seminar satu kelompok (EB-055). `terapkan` = isi jadwal semua anggota aktif: tanggal, jam per
- * peserta (urut menurut urutan yang sudah ada, lalu nomor peserta), urutan, ruang, tautan, penguji 1 sebagai penguji
- * peserta (EB-018), dan evaluator. Isian mentor dan status panggilan tiap peserta tidak diubah.
+ * peserta (urut menurut urutan yang sudah ada, lalu nomor peserta), urutan, ruang, tautan, penguji, dan evaluator.
+ * Tiap peserta 1 penguji, 1 mentor, 1 coach (EB-018): penguji kelompok menjadi penguji bawaan, kecuali peserta yang
+ * pengujinya sudah diganti sendiri (berbeda dari penguji kelompok sebelumnya). Mentor & status panggilan tidak diubah.
  */
 export async function simpanSeminarKelompok(
   trainingId: string,
@@ -362,14 +359,16 @@ export async function simpanSeminarKelompok(
     istirahatSelesai: isian.istirahatSelesai || null,
     ruang: rapikan(isian.ruang) ?? k.kelas,
     tautanDaring: hasil.tautanDaring,
-    penguji1PegawaiId: isian.penguji1PegawaiId || null,
-    penguji1Nama: await namaPegawai(isian.penguji1PegawaiId, isian.penguji1Nama),
-    penguji2PegawaiId: isian.penguji2PegawaiId || null,
-    penguji2Nama: await namaPegawai(isian.penguji2PegawaiId, isian.penguji2Nama),
+    pengujiPegawaiId: isian.pengujiPegawaiId || null,
+    pengujiNama: await namaPegawai(isian.pengujiPegawaiId, isian.pengujiNama),
     evaluatorNama: rapikan(isian.evaluatorNama),
     evaluatorPonsel: rapikan(isian.evaluatorPonsel),
     diubahOleh: email,
   };
+  const lama: { pengujiPegawaiId: string | null; pengujiNama: string | null } | null = await prisma.seminarKelompok.findUnique({
+    where: { kelompokId_jenis: { kelompokId, jenis } },
+    select: { pengujiPegawaiId: true, pengujiNama: true },
+  });
   await prisma.seminarKelompok.upsert({ where: { kelompokId_jenis: { kelompokId, jenis } }, create: { trainingId, kelompokId, jenis, ...data }, update: data });
   if (!terapkan) return { diterapkan: 0 };
 
@@ -378,10 +377,13 @@ export async function simpanSeminarKelompok(
     select: { pesertaId: true, peserta: { select: { nomor: true, status: true } } },
   });
   const aktif = anggota.filter((x) => x.peserta.status === "AKTIF");
-  const ada: { id: string; pesertaId: string; urutan: number | null }[] = await prisma.seminarPeserta.findMany({
+  const ada: { id: string; pesertaId: string; urutan: number | null; pengujiPegawaiId: string | null; pengujiNama: string | null }[] = await prisma.seminarPeserta.findMany({
     where: { jenis, pesertaId: { in: aktif.map((x) => x.pesertaId) } },
-    select: { id: true, pesertaId: true, urutan: true },
+    select: { id: true, pesertaId: true, urutan: true, pengujiPegawaiId: true, pengujiNama: true },
   });
+  // Penguji pilihan sendiri = terisi dan berbeda dari penguji kelompok sebelumnya.
+  const pilihanSendiri = (r: (typeof ada)[number] | undefined) =>
+    !!r && !!(r.pengujiPegawaiId || r.pengujiNama) && (r.pengujiPegawaiId ?? r.pengujiNama) !== (lama?.pengujiPegawaiId ?? lama?.pengujiNama ?? null);
   const n = (v: number | null | undefined) => (v == null ? Number.MAX_SAFE_INTEGER : v);
   const urut = [...aktif].sort(
     (a, b) => n(ada.find((r) => r.pesertaId === a.pesertaId)?.urutan) - n(ada.find((r) => r.pesertaId === b.pesertaId)?.urutan) || a.peserta.nomor - b.peserta.nomor,
@@ -389,18 +391,19 @@ export async function simpanSeminarKelompok(
   const ist = data.istirahatMulai && data.istirahatSelesai ? { mulai: data.istirahatMulai, selesai: data.istirahatSelesai } : null;
   const slot = data.jamMulai ? slotSeminar(data.jamMulai, data.durasiMenit, urut.length, ist) : [];
   for (const [i, x] of urut.entries()) {
+    const r = ada.find((y) => y.pesertaId === x.pesertaId);
+    const sendiri = pilihanSendiri(r);
     const baris = {
       tanggal: data.tanggal,
       jamMulai: slot[i]?.mulai ?? null,
       urutan: i + 1,
       ruang: data.ruang,
       tautanDaring: data.tautanDaring,
-      pengujiPegawaiId: data.penguji1PegawaiId,
-      pengujiNama: data.penguji1Nama,
+      pengujiPegawaiId: sendiri ? r!.pengujiPegawaiId : data.pengujiPegawaiId,
+      pengujiNama: sendiri ? r!.pengujiNama : data.pengujiNama,
       evaluatorNama: data.evaluatorNama,
       diubahOleh: email,
     };
-    const r = ada.find((y) => y.pesertaId === x.pesertaId);
     if (r) await prisma.seminarPeserta.update({ where: { id: r.id }, data: baris });
     else await prisma.seminarPeserta.create({ data: { ...baris, trainingId, pesertaId: x.pesertaId, jenis } });
   }

@@ -226,10 +226,8 @@ export type IsianSeminarKelompok = {
   istirahatSelesai?: string | null;
   ruang?: string | null;
   tautanDaring?: string | null;
-  penguji1PegawaiId?: string | null;
-  penguji1Nama?: string | null;
-  penguji2PegawaiId?: string | null;
-  penguji2Nama?: string | null;
+  pengujiPegawaiId?: string | null;
+  pengujiNama?: string | null;
   evaluatorNama?: string | null;
   evaluatorPonsel?: string | null;
 };
@@ -249,8 +247,7 @@ export function periksaSeminarKelompok(i: IsianSeminarKelompok): { tautanDaring:
   if (i.durasiMenit != null && (!Number.isInteger(i.durasiMenit) || i.durasiMenit < 10 || i.durasiMenit > 180)) return { galat: "Durasi per peserta 10–180 menit" };
   if ((i.ruang ?? "").trim().length > RUANG_MAKS) return { galat: `Ruang maksimal ${RUANG_MAKS} karakter` };
   for (const [v, l] of [
-    [i.penguji1Nama, "Nama penguji"],
-    [i.penguji2Nama, "Nama penguji kedua"],
+    [i.pengujiNama, "Nama penguji"],
     [i.evaluatorNama, "Nama evaluator"],
   ] as const) {
     if ((v ?? "").trim().length > NAMA_SEMINAR_MAKS) return { galat: `${l} maksimal ${NAMA_SEMINAR_MAKS} karakter` };

@@ -46,10 +46,8 @@ export type SeminarKelompokMinAggregateOutputType = {
   istirahatSelesai: string | null
   ruang: string | null
   tautanDaring: string | null
-  penguji1PegawaiId: string | null
-  penguji1Nama: string | null
-  penguji2PegawaiId: string | null
-  penguji2Nama: string | null
+  pengujiPegawaiId: string | null
+  pengujiNama: string | null
   evaluatorNama: string | null
   evaluatorPonsel: string | null
   diubahOleh: string | null
@@ -69,10 +67,8 @@ export type SeminarKelompokMaxAggregateOutputType = {
   istirahatSelesai: string | null
   ruang: string | null
   tautanDaring: string | null
-  penguji1PegawaiId: string | null
-  penguji1Nama: string | null
-  penguji2PegawaiId: string | null
-  penguji2Nama: string | null
+  pengujiPegawaiId: string | null
+  pengujiNama: string | null
   evaluatorNama: string | null
   evaluatorPonsel: string | null
   diubahOleh: string | null
@@ -92,10 +88,8 @@ export type SeminarKelompokCountAggregateOutputType = {
   istirahatSelesai: number
   ruang: number
   tautanDaring: number
-  penguji1PegawaiId: number
-  penguji1Nama: number
-  penguji2PegawaiId: number
-  penguji2Nama: number
+  pengujiPegawaiId: number
+  pengujiNama: number
   evaluatorNama: number
   evaluatorPonsel: number
   diubahOleh: number
@@ -125,10 +119,8 @@ export type SeminarKelompokMinAggregateInputType = {
   istirahatSelesai?: true
   ruang?: true
   tautanDaring?: true
-  penguji1PegawaiId?: true
-  penguji1Nama?: true
-  penguji2PegawaiId?: true
-  penguji2Nama?: true
+  pengujiPegawaiId?: true
+  pengujiNama?: true
   evaluatorNama?: true
   evaluatorPonsel?: true
   diubahOleh?: true
@@ -148,10 +140,8 @@ export type SeminarKelompokMaxAggregateInputType = {
   istirahatSelesai?: true
   ruang?: true
   tautanDaring?: true
-  penguji1PegawaiId?: true
-  penguji1Nama?: true
-  penguji2PegawaiId?: true
-  penguji2Nama?: true
+  pengujiPegawaiId?: true
+  pengujiNama?: true
   evaluatorNama?: true
   evaluatorPonsel?: true
   diubahOleh?: true
@@ -171,10 +161,8 @@ export type SeminarKelompokCountAggregateInputType = {
   istirahatSelesai?: true
   ruang?: true
   tautanDaring?: true
-  penguji1PegawaiId?: true
-  penguji1Nama?: true
-  penguji2PegawaiId?: true
-  penguji2Nama?: true
+  pengujiPegawaiId?: true
+  pengujiNama?: true
   evaluatorNama?: true
   evaluatorPonsel?: true
   diubahOleh?: true
@@ -281,10 +269,8 @@ export type SeminarKelompokGroupByOutputType = {
   istirahatSelesai: string | null
   ruang: string | null
   tautanDaring: string | null
-  penguji1PegawaiId: string | null
-  penguji1Nama: string | null
-  penguji2PegawaiId: string | null
-  penguji2Nama: string | null
+  pengujiPegawaiId: string | null
+  pengujiNama: string | null
   evaluatorNama: string | null
   evaluatorPonsel: string | null
   diubahOleh: string
@@ -327,10 +313,8 @@ export type SeminarKelompokWhereInput = {
   istirahatSelesai?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   ruang?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   tautanDaring?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiPegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorPonsel?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   diubahOleh?: Prisma.StringFilter<"SeminarKelompok"> | string
@@ -352,10 +336,8 @@ export type SeminarKelompokOrderByWithRelationInput = {
   istirahatSelesai?: Prisma.SortOrderInput | Prisma.SortOrder
   ruang?: Prisma.SortOrderInput | Prisma.SortOrder
   tautanDaring?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji1PegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji1Nama?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji2PegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji2Nama?: Prisma.SortOrderInput | Prisma.SortOrder
+  pengujiPegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
+  pengujiNama?: Prisma.SortOrderInput | Prisma.SortOrder
   evaluatorNama?: Prisma.SortOrderInput | Prisma.SortOrder
   evaluatorPonsel?: Prisma.SortOrderInput | Prisma.SortOrder
   diubahOleh?: Prisma.SortOrder
@@ -381,10 +363,8 @@ export type SeminarKelompokWhereUniqueInput = Prisma.AtLeast<{
   istirahatSelesai?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   ruang?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   tautanDaring?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiPegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorPonsel?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   diubahOleh?: Prisma.StringFilter<"SeminarKelompok"> | string
@@ -406,10 +386,8 @@ export type SeminarKelompokOrderByWithAggregationInput = {
   istirahatSelesai?: Prisma.SortOrderInput | Prisma.SortOrder
   ruang?: Prisma.SortOrderInput | Prisma.SortOrder
   tautanDaring?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji1PegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji1Nama?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji2PegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
-  penguji2Nama?: Prisma.SortOrderInput | Prisma.SortOrder
+  pengujiPegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
+  pengujiNama?: Prisma.SortOrderInput | Prisma.SortOrder
   evaluatorNama?: Prisma.SortOrderInput | Prisma.SortOrder
   evaluatorPonsel?: Prisma.SortOrderInput | Prisma.SortOrder
   diubahOleh?: Prisma.SortOrder
@@ -437,10 +415,8 @@ export type SeminarKelompokScalarWhereWithAggregatesInput = {
   istirahatSelesai?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
   ruang?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
   tautanDaring?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
-  penguji1PegawaiId?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
-  penguji1Nama?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
-  penguji2PegawaiId?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
-  penguji2Nama?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
+  pengujiPegawaiId?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
+  pengujiNama?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
   evaluatorNama?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
   evaluatorPonsel?: Prisma.StringNullableWithAggregatesFilter<"SeminarKelompok"> | string | null
   diubahOleh?: Prisma.StringWithAggregatesFilter<"SeminarKelompok"> | string
@@ -458,10 +434,8 @@ export type SeminarKelompokCreateInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -483,10 +457,8 @@ export type SeminarKelompokUncheckedCreateInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -504,10 +476,8 @@ export type SeminarKelompokUpdateInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -529,10 +499,8 @@ export type SeminarKelompokUncheckedUpdateInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -552,10 +520,8 @@ export type SeminarKelompokCreateManyInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -573,10 +539,8 @@ export type SeminarKelompokUpdateManyMutationInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -596,10 +560,8 @@ export type SeminarKelompokUncheckedUpdateManyInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -634,10 +596,8 @@ export type SeminarKelompokCountOrderByAggregateInput = {
   istirahatSelesai?: Prisma.SortOrder
   ruang?: Prisma.SortOrder
   tautanDaring?: Prisma.SortOrder
-  penguji1PegawaiId?: Prisma.SortOrder
-  penguji1Nama?: Prisma.SortOrder
-  penguji2PegawaiId?: Prisma.SortOrder
-  penguji2Nama?: Prisma.SortOrder
+  pengujiPegawaiId?: Prisma.SortOrder
+  pengujiNama?: Prisma.SortOrder
   evaluatorNama?: Prisma.SortOrder
   evaluatorPonsel?: Prisma.SortOrder
   diubahOleh?: Prisma.SortOrder
@@ -661,10 +621,8 @@ export type SeminarKelompokMaxOrderByAggregateInput = {
   istirahatSelesai?: Prisma.SortOrder
   ruang?: Prisma.SortOrder
   tautanDaring?: Prisma.SortOrder
-  penguji1PegawaiId?: Prisma.SortOrder
-  penguji1Nama?: Prisma.SortOrder
-  penguji2PegawaiId?: Prisma.SortOrder
-  penguji2Nama?: Prisma.SortOrder
+  pengujiPegawaiId?: Prisma.SortOrder
+  pengujiNama?: Prisma.SortOrder
   evaluatorNama?: Prisma.SortOrder
   evaluatorPonsel?: Prisma.SortOrder
   diubahOleh?: Prisma.SortOrder
@@ -684,10 +642,8 @@ export type SeminarKelompokMinOrderByAggregateInput = {
   istirahatSelesai?: Prisma.SortOrder
   ruang?: Prisma.SortOrder
   tautanDaring?: Prisma.SortOrder
-  penguji1PegawaiId?: Prisma.SortOrder
-  penguji1Nama?: Prisma.SortOrder
-  penguji2PegawaiId?: Prisma.SortOrder
-  penguji2Nama?: Prisma.SortOrder
+  pengujiPegawaiId?: Prisma.SortOrder
+  pengujiNama?: Prisma.SortOrder
   evaluatorNama?: Prisma.SortOrder
   evaluatorPonsel?: Prisma.SortOrder
   diubahOleh?: Prisma.SortOrder
@@ -793,10 +749,8 @@ export type SeminarKelompokCreateWithoutTrainingInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -816,10 +770,8 @@ export type SeminarKelompokUncheckedCreateWithoutTrainingInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -868,10 +820,8 @@ export type SeminarKelompokScalarWhereInput = {
   istirahatSelesai?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   ruang?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   tautanDaring?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji1Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2PegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
-  penguji2Nama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiPegawaiId?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
+  pengujiNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorNama?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   evaluatorPonsel?: Prisma.StringNullableFilter<"SeminarKelompok"> | string | null
   diubahOleh?: Prisma.StringFilter<"SeminarKelompok"> | string
@@ -889,10 +839,8 @@ export type SeminarKelompokCreateWithoutKelompokInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -912,10 +860,8 @@ export type SeminarKelompokUncheckedCreateWithoutKelompokInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -960,10 +906,8 @@ export type SeminarKelompokCreateManyTrainingInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -981,10 +925,8 @@ export type SeminarKelompokUpdateWithoutTrainingInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1004,10 +946,8 @@ export type SeminarKelompokUncheckedUpdateWithoutTrainingInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1026,10 +966,8 @@ export type SeminarKelompokUncheckedUpdateManyWithoutTrainingInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1048,10 +986,8 @@ export type SeminarKelompokCreateManyKelompokInput = {
   istirahatSelesai?: string | null
   ruang?: string | null
   tautanDaring?: string | null
-  penguji1PegawaiId?: string | null
-  penguji1Nama?: string | null
-  penguji2PegawaiId?: string | null
-  penguji2Nama?: string | null
+  pengujiPegawaiId?: string | null
+  pengujiNama?: string | null
   evaluatorNama?: string | null
   evaluatorPonsel?: string | null
   diubahOleh: string
@@ -1069,10 +1005,8 @@ export type SeminarKelompokUpdateWithoutKelompokInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1092,10 +1026,8 @@ export type SeminarKelompokUncheckedUpdateWithoutKelompokInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1114,10 +1046,8 @@ export type SeminarKelompokUncheckedUpdateManyWithoutKelompokInput = {
   istirahatSelesai?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ruang?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautanDaring?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji1Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2PegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  penguji2Nama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pengujiNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluatorPonsel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diubahOleh?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1139,10 +1069,8 @@ export type SeminarKelompokSelect<ExtArgs extends runtime.Types.Extensions.Inter
   istirahatSelesai?: boolean
   ruang?: boolean
   tautanDaring?: boolean
-  penguji1PegawaiId?: boolean
-  penguji1Nama?: boolean
-  penguji2PegawaiId?: boolean
-  penguji2Nama?: boolean
+  pengujiPegawaiId?: boolean
+  pengujiNama?: boolean
   evaluatorNama?: boolean
   evaluatorPonsel?: boolean
   diubahOleh?: boolean
@@ -1164,10 +1092,8 @@ export type SeminarKelompokSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   istirahatSelesai?: boolean
   ruang?: boolean
   tautanDaring?: boolean
-  penguji1PegawaiId?: boolean
-  penguji1Nama?: boolean
-  penguji2PegawaiId?: boolean
-  penguji2Nama?: boolean
+  pengujiPegawaiId?: boolean
+  pengujiNama?: boolean
   evaluatorNama?: boolean
   evaluatorPonsel?: boolean
   diubahOleh?: boolean
@@ -1189,10 +1115,8 @@ export type SeminarKelompokSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   istirahatSelesai?: boolean
   ruang?: boolean
   tautanDaring?: boolean
-  penguji1PegawaiId?: boolean
-  penguji1Nama?: boolean
-  penguji2PegawaiId?: boolean
-  penguji2Nama?: boolean
+  pengujiPegawaiId?: boolean
+  pengujiNama?: boolean
   evaluatorNama?: boolean
   evaluatorPonsel?: boolean
   diubahOleh?: boolean
@@ -1214,10 +1138,8 @@ export type SeminarKelompokSelectScalar = {
   istirahatSelesai?: boolean
   ruang?: boolean
   tautanDaring?: boolean
-  penguji1PegawaiId?: boolean
-  penguji1Nama?: boolean
-  penguji2PegawaiId?: boolean
-  penguji2Nama?: boolean
+  pengujiPegawaiId?: boolean
+  pengujiNama?: boolean
   evaluatorNama?: boolean
   evaluatorPonsel?: boolean
   diubahOleh?: boolean
@@ -1225,7 +1147,7 @@ export type SeminarKelompokSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SeminarKelompokOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "kelompokId" | "jenis" | "tanggal" | "jamMulai" | "durasiMenit" | "istirahatMulai" | "istirahatSelesai" | "ruang" | "tautanDaring" | "penguji1PegawaiId" | "penguji1Nama" | "penguji2PegawaiId" | "penguji2Nama" | "evaluatorNama" | "evaluatorPonsel" | "diubahOleh" | "createdAt" | "updatedAt", ExtArgs["result"]["seminarKelompok"]>
+export type SeminarKelompokOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "kelompokId" | "jenis" | "tanggal" | "jamMulai" | "durasiMenit" | "istirahatMulai" | "istirahatSelesai" | "ruang" | "tautanDaring" | "pengujiPegawaiId" | "pengujiNama" | "evaluatorNama" | "evaluatorPonsel" | "diubahOleh" | "createdAt" | "updatedAt", ExtArgs["result"]["seminarKelompok"]>
 export type SeminarKelompokInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   training?: boolean | Prisma.TrainingDefaultArgs<ExtArgs>
   kelompok?: boolean | Prisma.KelompokPesertaDefaultArgs<ExtArgs>
@@ -1257,10 +1179,8 @@ export type $SeminarKelompokPayload<ExtArgs extends runtime.Types.Extensions.Int
     istirahatSelesai: string | null
     ruang: string | null
     tautanDaring: string | null
-    penguji1PegawaiId: string | null
-    penguji1Nama: string | null
-    penguji2PegawaiId: string | null
-    penguji2Nama: string | null
+    pengujiPegawaiId: string | null
+    pengujiNama: string | null
     evaluatorNama: string | null
     evaluatorPonsel: string | null
     diubahOleh: string
@@ -1702,10 +1622,8 @@ export interface SeminarKelompokFieldRefs {
   readonly istirahatSelesai: Prisma.FieldRef<"SeminarKelompok", 'String'>
   readonly ruang: Prisma.FieldRef<"SeminarKelompok", 'String'>
   readonly tautanDaring: Prisma.FieldRef<"SeminarKelompok", 'String'>
-  readonly penguji1PegawaiId: Prisma.FieldRef<"SeminarKelompok", 'String'>
-  readonly penguji1Nama: Prisma.FieldRef<"SeminarKelompok", 'String'>
-  readonly penguji2PegawaiId: Prisma.FieldRef<"SeminarKelompok", 'String'>
-  readonly penguji2Nama: Prisma.FieldRef<"SeminarKelompok", 'String'>
+  readonly pengujiPegawaiId: Prisma.FieldRef<"SeminarKelompok", 'String'>
+  readonly pengujiNama: Prisma.FieldRef<"SeminarKelompok", 'String'>
   readonly evaluatorNama: Prisma.FieldRef<"SeminarKelompok", 'String'>
   readonly evaluatorPonsel: Prisma.FieldRef<"SeminarKelompok", 'String'>
   readonly diubahOleh: Prisma.FieldRef<"SeminarKelompok", 'String'>

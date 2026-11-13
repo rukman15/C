@@ -1581,8 +1581,8 @@ model KunjunganStula {
   @@map("kunjungan_stula")
 }
 
-// Pengaturan seminar RAP/LAP per kelompok bimbingan & seminar (EB-055): kelas/ruang, 2 penguji, evaluator kelas, jam
-// per peserta (bawaan 45 menit) dengan istirahat. Diterapkan ke seminar_peserta anggotanya; penguji 1 = penguji peserta.
+// Pengaturan seminar RAP/LAP per kelompok bimbingan & seminar (EB-055): kelas/ruang, penguji, evaluator kelas, jam per
+// peserta (bawaan 45 menit) dengan istirahat. Diterapkan ke seminar_peserta anggotanya (1 peserta 1 penguji, EB-018).
 model SeminarKelompok {
   id                String           @id @default(cuid())
   trainingId        String
@@ -1597,10 +1597,8 @@ model SeminarKelompok {
   istirahatSelesai  String?
   ruang             String?
   tautanDaring      String?
-  penguji1PegawaiId String?
-  penguji1Nama      String?
-  penguji2PegawaiId String?
-  penguji2Nama      String?
+  pengujiPegawaiId  String?
+  pengujiNama       String?
   evaluatorNama     String?
   evaluatorPonsel   String?
   diubahOleh        String

@@ -4,7 +4,7 @@ import { pesanZod } from "@/lib/server/skema-lms";
 import { simpanSeminarKelompok, wajibKelolaSeminar } from "@/lib/server/repositories/seminar";
 
 /**
- * Pengaturan seminar satu kelompok bimbingan & seminar (EB-055): kelas/ruang, 2 penguji, evaluator, jam per peserta,
+ * Pengaturan seminar satu kelompok bimbingan & seminar (EB-055): kelas/ruang, penguji, evaluator, jam per peserta,
  * istirahat. `terapkan: true` sekaligus mengisi jadwal anggotanya. Penyelenggara pemegang diklat (admin selalu boleh).
  */
 type Ctx = { params: Promise<{ id: string }> };
@@ -20,10 +20,8 @@ const skema = z.object({
   istirahatSelesai: teks(5),
   ruang: teks(300),
   tautanDaring: teks(600),
-  penguji1PegawaiId: teks(60),
-  penguji1Nama: teks(300),
-  penguji2PegawaiId: teks(60),
-  penguji2Nama: teks(300),
+  pengujiPegawaiId: teks(60),
+  pengujiNama: teks(300),
   evaluatorNama: teks(300),
   evaluatorPonsel: teks(30),
 });

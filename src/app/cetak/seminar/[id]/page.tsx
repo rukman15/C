@@ -31,7 +31,7 @@ export default async function CetakSeminar({ params, searchParams }: { params: P
     const a = await aksesSeminar(id);
     const d = await getSeminar(id, jenis, a, isoTanggal(awalHariWib()));
     const t = await prisma.training.findUnique({ where: { id }, select: { jenisPelatihan: true, angkatan: true, startDate: true } });
-    const ids = d.kelompok.flatMap((k) => [k.penguji1PegawaiId, k.penguji2PegawaiId]).filter((x): x is string => !!x);
+    const ids = [...new Set([...d.kelompok.map((k) => k.pengujiPegawaiId), ...d.baris.map((b) => b.pengujiPegawaiId)].filter((x): x is string => !!x))];
     const nip = new Map((ids.length ? await prisma.pegawai.findMany({ where: { id: { in: ids } }, select: { id: true, nip: true } }) : []).map((p) => [p.id, p.nip]));
     const program = (namaProgram(t?.jenisPelatihan ?? null, t?.angkatan ?? null) || d.training.name).toUpperCase();
     const tahun = t?.startDate ? isoTanggal(t.startDate).slice(0, 4) : "";
@@ -45,10 +45,15 @@ export default async function CetakSeminar({ params, searchParams }: { params: P
           const tanggal = k.tanggal ?? baris.find((b) => b.tanggal)?.tanggal ?? null;
           const ist = k.istirahatMulai && k.istirahatSelesai ? k.istirahatMulai : null;
           const sisip = ist ? baris.findIndex((b) => !!b.jamMulai && b.jamMulai >= (k.istirahatSelesai ?? "")) : -1;
-          const penguji: [string, string | null, string | null][] = [
-            [k.penguji2Nama ? "PENGUJI I" : "PENGUJI", k.penguji1Nama, nipRapi(k.penguji1PegawaiId ? nip.get(k.penguji1PegawaiId) : null)],
-            ...(k.penguji2Nama ? ([["PENGUJI II", k.penguji2Nama, nipRapi(k.penguji2PegawaiId ? nip.get(k.penguji2PegawaiId) : null)]] as [string, string, string][]) : []),
-          ];
+          // 1 peserta 1 penguji (EB-018): biasanya satu penguji per kelas; bila ada peserta diuji orang lain, semua dicantumkan.
+          const daftar = new Map<string, { nama: string; pegawaiId: string | null }>();
+          for (const b of baris) if (b.pengujiNama) daftar.set(b.pengujiPegawaiId ?? b.pengujiNama, { nama: b.pengujiNama, pegawaiId: b.pengujiPegawaiId });
+          if (!daftar.size && k.pengujiNama) daftar.set(k.pengujiPegawaiId ?? k.pengujiNama, { nama: k.pengujiNama, pegawaiId: k.pengujiPegawaiId });
+          const penguji: [string, string | null, string | null][] = daftar.size
+            ? [...daftar.values()].map((p, n) => [daftar.size > 1 ? `PENGUJI ${ROMAWI[n]}` : "PENGUJI", p.nama, nipRapi(p.pegawaiId ? nip.get(p.pegawaiId) : null)])
+            : [["PENGUJI", null, null]];
+          // Lebih dari satu penguji di kelas ini: tabel diberi kolom penguji per peserta.
+          const banyak = daftar.size > 1;
           return (
             <section key={k.kelompokId} className="kertas-halaman" style={{ breakAfter: i < kel.length - 1 ? "page" : "auto", fontSize: "10pt" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, borderBottom: "3px double #000", paddingBottom: 6 }}>
@@ -79,7 +84,16 @@ export default async function CetakSeminar({ params, searchParams }: { params: P
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ textAlign: "center", fontWeight: 700 }}>
-                    {["NO.", "WAKTU PELAKSANAAN", "NAMA PESERTA", "NAMA MENTOR", "JABATAN/INSTANSI MENTOR", "JUDUL AKSI PERUBAHAN", "KEHADIRAN MENTOR"].map((h) => (
+                    {[
+                      "NO.",
+                      "WAKTU PELAKSANAAN",
+                      "NAMA PESERTA",
+                      ...(banyak ? ["PENGUJI"] : []),
+                      "NAMA MENTOR",
+                      "JABATAN/INSTANSI MENTOR",
+                      "JUDUL AKSI PERUBAHAN",
+                      "KEHADIRAN MENTOR",
+                    ].map((h) => (
                       <th key={h} style={sel}>
                         {h}
                       </th>
@@ -88,10 +102,11 @@ export default async function CetakSeminar({ params, searchParams }: { params: P
                 </thead>
                 <tbody>
                   {baris.map((b, n) => (
-                    <FragmenBaris key={b.pesertaId} istirahat={n === sisip && ist ? `${jam(ist)} - ${jam(k.istirahatSelesai!)}` : null} sel={sel}>
+                    <FragmenBaris key={b.pesertaId} istirahat={n === sisip && ist ? `${jam(ist)} - ${jam(k.istirahatSelesai!)}` : null} kolom={banyak ? 6 : 5} sel={sel}>
                       <td style={{ ...sel, textAlign: "center" }}>{n + 1}</td>
                       <td style={{ ...sel, whiteSpace: "nowrap" }}>{b.jamMulai ? `${jam(b.jamMulai)} - ${jam(jamSelesai(b.jamMulai, k.durasiMenit)!)}` : ""}</td>
                       <td style={sel}>{b.nama}</td>
+                      {banyak ? <td style={sel}>{b.pengujiNama ?? ""}</td> : null}
                       <td style={sel}>{b.mentorNama ?? ""}</td>
                       <td style={sel}>{b.mentorJabatan ?? ""}</td>
                       <td style={sel}>{b.judulAksiPerubahan ?? ""}</td>
@@ -130,14 +145,14 @@ function Info({ label, isi }: { label: string; isi: string }) {
   );
 }
 
-function FragmenBaris({ istirahat, sel, children }: { istirahat: string | null; sel: React.CSSProperties; children: React.ReactNode }) {
+function FragmenBaris({ istirahat, kolom, sel, children }: { istirahat: string | null; kolom: number; sel: React.CSSProperties; children: React.ReactNode }) {
   return (
     <>
       {istirahat ? (
         <tr>
           <td style={sel} />
           <td style={{ ...sel, whiteSpace: "nowrap" }}>{istirahat}</td>
-          <td colSpan={5} style={{ ...sel, textAlign: "center", fontWeight: 700, letterSpacing: "0.4em" }}>
+          <td colSpan={kolom} style={{ ...sel, textAlign: "center", fontWeight: 700, letterSpacing: "0.4em" }}>
             ISTIRAHAT
           </td>
         </tr>

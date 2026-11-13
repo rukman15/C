@@ -88,7 +88,7 @@ export function TabSeminar({ data, rekening }: { data: SeminarRecord; rekening?:
         </span>
         <span className="block truncate text-xs text-muted-foreground">{b.judulAksiPerubahan ?? "Judul aksi perubahan belum diisi"}</span>
         <span className="block truncate text-xs text-muted-foreground">
-          Mentor: {b.mentorNama ?? "belum diisi"}
+          Penguji: {b.pengujiNama ?? "belum diisi"} · Mentor: {b.mentorNama ?? "belum diisi"}
           {b.mentorHadir ? ` · ${b.mentorHadir === "DARING" ? "daring (Zoom)" : "hadir langsung"}` : ""}
           {b.jamMulai ? ` · selesai ${jamSelesai(b.jamMulai, durasi)}` : ""}
         </span>
@@ -172,7 +172,7 @@ export function TabSeminar({ data, rekening }: { data: SeminarRecord; rekening?:
                       ) : null}
                     </p>
                     <dl className="mt-2 grid gap-x-6 gap-y-0.5 text-sm sm:grid-cols-2">
-                      <Info label="Penguji" isi={[k.penguji1Nama, k.penguji2Nama].filter(Boolean).join(" · ") || null} />
+                      <Info label="Penguji" isi={k.pengujiNama} />
                       <Info label="Coach" isi={k.coachNama} />
                       <Info label="Evaluator" isi={k.evaluatorNama ? `${k.evaluatorNama}${k.evaluatorPonsel ? ` · ${k.evaluatorPonsel}` : ""}` : null} />
                       <Info label="Ketua" isi={k.ketuaNama} />
@@ -231,6 +231,7 @@ export function TabSeminar({ data, rekening }: { data: SeminarRecord; rekening?:
               url={url}
               jenis={data.jenis}
               b={ubah}
+              penguji={data.pilihanPenguji}
               onSelesai={(p) => {
                 setUbah(null);
                 if (p) setToast(p);
@@ -294,10 +295,8 @@ function FormKelompok({ url, data, k, jumlah, onSelesai }: { url: string; data: 
     istirahatSelesai: k.istirahatSelesai ?? ISTIRAHAT_SEMINAR_BAWAAN.selesai,
     ruang: k.ruang ?? k.kelas ?? "",
     tautan: k.tautanDaring ?? "",
-    p1: pilihan(k.penguji1PegawaiId, k.penguji1Nama),
-    p1Nama: k.penguji1PegawaiId ? "" : (k.penguji1Nama ?? ""),
-    p2: pilihan(k.penguji2PegawaiId, k.penguji2Nama),
-    p2Nama: k.penguji2PegawaiId ? "" : (k.penguji2Nama ?? ""),
+    p1: pilihan(k.pengujiPegawaiId, k.pengujiNama),
+    p1Nama: k.pengujiPegawaiId ? "" : (k.pengujiNama ?? ""),
     evaluator: k.evaluatorNama ?? "",
     evaluatorPonsel: k.evaluatorPonsel ?? "",
   });
@@ -329,10 +328,8 @@ function FormKelompok({ url, data, k, jumlah, onSelesai }: { url: string; data: 
       istirahatSelesai: f.istirahat ? f.istirahatSelesai : null,
       ruang: f.ruang.trim() || null,
       tautanDaring: f.tautan.trim() || null,
-      penguji1PegawaiId: f.p1 && f.p1 !== LUAR && f.p1 !== KOSONG ? f.p1 : null,
-      penguji1Nama: f.p1 === LUAR ? f.p1Nama.trim() || null : null,
-      penguji2PegawaiId: f.p2 && f.p2 !== LUAR && f.p2 !== KOSONG ? f.p2 : null,
-      penguji2Nama: f.p2 === LUAR ? f.p2Nama.trim() || null : null,
+      pengujiPegawaiId: f.p1 && f.p1 !== LUAR && f.p1 !== KOSONG ? f.p1 : null,
+      pengujiNama: f.p1 === LUAR ? f.p1Nama.trim() || null : null,
       evaluatorNama: f.evaluator.trim() || null,
       evaluatorPonsel: f.evaluatorPonsel.trim() || null,
     });
@@ -373,15 +370,12 @@ function FormKelompok({ url, data, k, jumlah, onSelesai }: { url: string; data: 
         <Input label="Kelas/ruang" value={f.ruang} onChange={set("ruang")} maxLength={100} placeholder="mis. E" />
         <Input label="Tautan Zoom (bila daring)" value={f.tautan} onChange={set("tautan")} maxLength={500} inputMode="url" placeholder="https://zoom.us/j/…" />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <Select label="Penguji I (penguji peserta)" value={f.p1 || KOSONG} onValueChange={(v) => set("p1")(v === KOSONG ? "" : v)} options={opsiPenguji} />
-          {f.p1 === LUAR ? <Input label="Nama penguji I" value={f.p1Nama} onChange={set("p1Nama")} maxLength={150} /> : null}
-        </div>
-        <div className="flex flex-col gap-2">
-          <Select label="Penguji II (opsional)" value={f.p2 || KOSONG} onValueChange={(v) => set("p2")(v === KOSONG ? "" : v)} options={opsiPenguji} />
-          {f.p2 === LUAR ? <Input label="Nama penguji II" value={f.p2Nama} onChange={set("p2Nama")} maxLength={150} /> : null}
-        </div>
+      <div className="flex flex-col gap-2">
+        <Select label="Penguji kelas" value={f.p1 || KOSONG} onValueChange={(v) => set("p1")(v === KOSONG ? "" : v)} options={opsiPenguji} />
+        {f.p1 === LUAR ? <Input label="Nama penguji" value={f.p1Nama} onChange={set("p1Nama")} maxLength={150} /> : null}
+        <p className="text-xs text-muted-foreground">
+          Tiap peserta 1 penguji, 1 mentor, 1 coach. Penguji ini dipakai semua anggota; bila ada peserta yang diuji orang lain, ganti di jadwal peserta itu.
+        </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Input label="Evaluator kelas" value={f.evaluator} onChange={set("evaluator")} maxLength={150} />
@@ -389,7 +383,10 @@ function FormKelompok({ url, data, k, jumlah, onSelesai }: { url: string; data: 
       </div>
       <label className="flex items-start gap-2 text-sm">
         <input type="checkbox" className="mt-1" checked={terapkan} onChange={(e) => setTerapkan(e.target.checked)} />
-        <span>Terapkan ke {jumlah} anggota: tanggal, jam berurutan, kelas, tautan, penguji I, dan evaluator. Mentor dan status panggilan tiap peserta tidak berubah.</span>
+        <span>
+          Terapkan ke {jumlah} anggota: tanggal, jam berurutan, kelas, tautan, penguji, dan evaluator. Penguji yang sudah diganti per peserta, mentor, dan status panggilan tidak
+          berubah.
+        </span>
       </label>
       <Galat teks={galat} />
       <div className="flex justify-end gap-2 border-t border-border pt-4">
@@ -404,7 +401,19 @@ function FormKelompok({ url, data, k, jumlah, onSelesai }: { url: string; data: 
   );
 }
 
-function FormPeserta({ url, jenis, b, onSelesai }: { url: string; jenis: string; b: BarisSeminarRecord; onSelesai: (p: string) => void }) {
+function FormPeserta({
+  url,
+  jenis,
+  b,
+  penguji,
+  onSelesai,
+}: {
+  url: string;
+  jenis: string;
+  b: BarisSeminarRecord;
+  penguji: { id: string; nama: string }[];
+  onSelesai: (p: string) => void;
+}) {
   const router = useRouter();
   const [f, setF] = useState({
     tanggal: b.tanggal ?? "",
@@ -413,6 +422,8 @@ function FormPeserta({ url, jenis, b, onSelesai }: { url: string; jenis: string;
     mentorNama: b.mentorNama ?? "",
     mentorJabatan: b.mentorJabatan ?? "",
     mentorHadir: b.mentorHadir ?? "",
+    penguji: b.pengujiPegawaiId ?? (b.pengujiNama ? LUAR : ""),
+    pengujiNama: b.pengujiPegawaiId ? "" : (b.pengujiNama ?? ""),
   });
   const [galat, setGalat] = useState("");
   const [sibuk, setSibuk] = useState(false);
@@ -432,8 +443,8 @@ function FormPeserta({ url, jenis, b, onSelesai }: { url: string; jenis: string;
           urutan: f.urutan ? Number(f.urutan) : null,
           ruang: b.ruang,
           tautanDaring: b.tautanDaring,
-          pengujiPegawaiId: b.pengujiPegawaiId,
-          pengujiNama: b.pengujiPegawaiId ? null : b.pengujiNama,
+          pengujiPegawaiId: f.penguji && f.penguji !== LUAR ? f.penguji : null,
+          pengujiNama: f.penguji === LUAR ? f.pengujiNama.trim() || null : null,
           mentorNama: f.mentorNama.trim() || null,
           mentorJabatan: f.mentorJabatan.trim() || null,
           mentorHadir: f.mentorHadir || null,
@@ -464,7 +475,21 @@ function FormPeserta({ url, jenis, b, onSelesai }: { url: string; jenis: string;
         onValueChange={(v) => set("mentorHadir")(v === KOSONG ? "" : v)}
         options={[{ value: KOSONG, label: "Belum dikonfirmasi" }, ...MENTOR_HADIR.map((m) => ({ value: m.kode, label: m.label }))]}
       />
-      <p className="text-xs text-muted-foreground">Kelas, penguji, tautan, dan evaluator mengikuti pengaturan kelompok.</p>
+      <div className="flex flex-col gap-2">
+        <Select
+          label="Penguji"
+          value={f.penguji || KOSONG}
+          onValueChange={(v) => set("penguji")(v === KOSONG ? "" : v)}
+          options={[
+            { value: KOSONG, label: "Belum ditentukan" },
+            ...(b.pengujiPegawaiId && !penguji.some((p) => p.id === b.pengujiPegawaiId) ? [{ value: b.pengujiPegawaiId, label: b.pengujiNama ?? "Penguji" }] : []),
+            ...penguji.map((p) => ({ value: p.id, label: p.nama })),
+            { value: LUAR, label: "Penguji dari luar balai…" },
+          ]}
+        />
+        {f.penguji === LUAR ? <Input label="Nama penguji" value={f.pengujiNama} onChange={set("pengujiNama")} maxLength={150} /> : null}
+      </div>
+      <p className="text-xs text-muted-foreground">Satu peserta satu penguji. Kelas, tautan, dan evaluator mengikuti pengaturan kelompok.</p>
       <Galat teks={galat} />
       <div className="flex justify-end gap-2 border-t border-border pt-4">
         <Button type="button" variant="ghost" onClick={() => onSelesai("")}>
