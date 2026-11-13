@@ -1,8 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BookOpen, ChevronRight, GraduationCap, Info, UserRound } from "lucide-react";
+import { BookOpen, CalendarClock, ChevronRight, GraduationCap, Info, Plus, Trash2, UserRound } from "lucide-react";
+import { ConfirmMorph } from "@/components/arc/confirm-morph/confirm-morph";
+import Toast from "@/components/arc/toast/toast";
+import { Button } from "@/components/ui/button";
+import { kirimJson } from "@/lib/api-klien";
+import { PilihPengampu } from "./pilih-pengampu";
+import { SesiMengajar } from "./sesi-mengajar";
 import { MetricCard } from "@/components/arc/metric-card/metric-card";
 import { Progress } from "@/components/arc/progress/progress";
 import { Badge } from "@/components/arc/badge/badge";
@@ -17,7 +24,40 @@ import { cn } from "@/lib/utils";
 
 type SaringMp = "semua" | "kosong" | "terisi";
 
-export function IsiRincian({ rincian: d, bolehAtur }: { rincian: RincianDiklat; bolehAtur: boolean }) {
+type Aksi = {
+  bolehAtur: boolean;
+  bolehLihatSesi: boolean;
+  bolehCatatSesi: boolean;
+  /** Buka dialog tetapkan pengampu (kode mata pelatihan terpilih, boleh kosong). */
+  tetapkan: (kodeMp: string) => void;
+  bukaSesi: (p: Pengampu) => void;
+  kabar: (judul: string, isi?: string) => void;
+};
+
+export function IsiRincian({
+  rincian: d,
+  bolehAtur,
+  bolehLihatSesi,
+  bolehCatatSesi,
+}: {
+  rincian: RincianDiklat;
+  bolehAtur: boolean;
+  bolehLihatSesi: boolean;
+  bolehCatatSesi: boolean;
+}) {
+  const [pilih, setPilih] = useState<{ kodeMp: string } | null>(null);
+  const [sesiUntuk, setSesiUntuk] = useState<Pengampu | null>(null);
+  const [toast, setToast] = useState<{ judul: string; isi?: string } | null>(null);
+  const aksi: Aksi = {
+    bolehAtur,
+    bolehLihatSesi,
+    bolehCatatSesi,
+    tetapkan: (kodeMp) => setPilih({ kodeMp }),
+    bukaSesi: setSesiUntuk,
+    kabar: (judul, isi) => setToast({ judul, isi }),
+  };
+  // Data pengampu terbaru untuk laci sesi (setelah router.refresh).
+  const sesiTerkini = sesiUntuk ? (d.penugasan.find((p) => p.id === sesiUntuk.id) ?? sesiUntuk) : null;
   const r = rekapPengampu(d);
   const butuhWi = masihButuhWi(d, r.wiDisetujui, r.jpDisetujui);
   const jenjang = getJenjang(d.jenisPelatihan);
@@ -49,8 +89,23 @@ export function IsiRincian({ rincian: d, bolehAtur }: { rincian: RincianDiklat; 
       ) : null}
 
       {jenjang ? <Kurikulum d={d} /> : null}
-      {jenjang ? <MataPelatihan d={d} aktif={r.aktif} /> : null}
-      <DaftarPengampu daftar={d.penugasan} bolehAtur={bolehAtur} />
+      {jenjang ? <MataPelatihan d={d} aktif={r.aktif} aksi={aksi} /> : null}
+      <DaftarPengampu daftar={d.penugasan} aksi={aksi} />
+
+      {bolehAtur ? (
+        <PilihPengampu
+          d={d}
+          kodeMp={pilih?.kodeMp ?? ""}
+          buka={pilih !== null}
+          onTutup={() => setPilih(null)}
+          onTersimpan={(pesan) => {
+            setPilih(null);
+            setToast({ judul: "Pengampu ditetapkan", isi: pesan });
+          }}
+        />
+      ) : null}
+      {bolehLihatSesi ? <SesiMengajar d={d} pengampu={sesiTerkini} bolehCatat={bolehCatatSesi} onTutup={() => setSesiUntuk(null)} /> : null}
+      <Toast title={toast?.judul ?? ""} description={toast?.isi} open={toast !== null} onOpenChange={(o) => !o && setToast(null)} />
     </div>
   );
 }
@@ -196,7 +251,7 @@ function BarisTahap({ t, nomor }: { t: TahapData; nomor: number }) {
 
 /* ------------------------------------------------------- Mata pelatihan */
 
-function MataPelatihan({ d, aktif }: { d: RincianDiklat; aktif: Pengampu[] }) {
+function MataPelatihan({ d, aktif, aksi }: { d: RincianDiklat; aktif: Pengampu[]; aksi: Aksi }) {
   const [saring, setSaring] = useState<SaringMp>("semua");
   const kelompok = useMemo(() => {
     const grup: { nama: string; baris: { kode: string; nama: string; pengampu: Pengampu[] }[] }[] = [];
@@ -260,7 +315,19 @@ function MataPelatihan({ d, aktif }: { d: RincianDiklat; aktif: Pengampu[] }) {
                       exit={{ opacity: 0, scale: 0.98 }}
                       className="rounded-2xl border border-border p-4"
                     >
-                      <p className="text-sm font-medium">{b.nama}</p>
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="text-sm font-medium">{b.nama}</p>
+                        {aksi.bolehAtur ? (
+                          <button
+                            type="button"
+                            onClick={() => aksi.tetapkan(b.kode)}
+                            aria-label={`Tetapkan pengampu ${b.nama}`}
+                            className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+                          >
+                            <Plus className="size-3.5" />
+                          </button>
+                        ) : null}
+                      </div>
                       {b.pengampu.length > 0 ? (
                         <ul className="mt-2 flex flex-wrap gap-1.5">
                           {b.pengampu.map((p) => (
@@ -288,63 +355,128 @@ function MataPelatihan({ d, aktif }: { d: RincianDiklat; aktif: Pengampu[] }) {
 
 /* --------------------------------------------------------- Daftar pengampu */
 
-function DaftarPengampu({ daftar, bolehAtur }: { daftar: Pengampu[]; bolehAtur: boolean }) {
+function DaftarPengampu({ daftar, aksi }: { daftar: Pengampu[]; aksi: Aksi }) {
+  const router = useRouter();
+  const [sibuk, setSibuk] = useState<string | null>(null);
+
+  async function tetapkanLama(p: Pengampu) {
+    setSibuk(p.id);
+    const res = await kirimJson(`/api/penugasan-wi/${encodeURIComponent(p.id)}`, "PATCH");
+    setSibuk(null);
+    if (!res.ok) return aksi.kabar("Gagal menetapkan", res.error);
+    aksi.kabar("Pengampu ditetapkan", `${p.instructorName} ditetapkan sebagai pengampu.`);
+    router.refresh();
+  }
+
+  async function hapus(p: Pengampu) {
+    const res = await kirimJson(`/api/penugasan-wi/${encodeURIComponent(p.id)}`, "DELETE");
+    if (!res.ok) {
+      aksi.kabar("Pengampu tidak dihapus", res.error);
+      throw new Error(res.error);
+    }
+    aksi.kabar("Pengampu dihapus", `${p.instructorName} dihapus dari pengampu.`);
+    router.refresh();
+  }
+
   return (
     <section aria-labelledby="judul-pengampu">
-      <div id="judul-pengampu">
+      <div id="judul-pengampu" className="flex flex-wrap items-end justify-between gap-3">
         <Judul
           ikon={<UserRound className="size-4" />}
           judul={`Pengampu (${daftar.length})`}
           keterangan="Pengampu langsung berlaku begitu ditetapkan; formalitasnya surat tugas. Sesi mengajar dicatat per pengampu."
         />
+        {aksi.bolehAtur ? (
+          <Button className="mb-4" onClick={() => aksi.tetapkan("")}>
+            <Plus className="size-4" aria-hidden />
+            Tetapkan pengampu
+          </Button>
+        ) : null}
       </div>
-      {bolehAtur ? (
-        <Alert tone="info" title="Menetapkan pengampu dan mencatat sesi menyusul" className="mb-4">
-          Di versi baru ini daftar pengampu baru bisa dilihat. Untuk menetapkan pengampu, mencatat sesi mengajar, dan surat tugas, pakai aplikasi lama sementara waktu.
+      {aksi.bolehAtur ? (
+        <Alert tone="info" title="Surat tugas masih di aplikasi lama" className="mb-4">
+          Pembuatan surat tugas mengajar belum dibangun ulang. Pengampu dan sesi mengajar yang dicatat di sini langsung terbaca di aplikasi lama.
         </Alert>
       ) : null}
       {daftar.length === 0 ? (
         <EmptyState icon={<Info size={20} />} title="Belum ada pengampu" description="Pengampu jadwal ini akan tampil di sini setelah ditetapkan." />
       ) : (
-        <ul className="grid gap-2">
-          {daftar.map((p) => (
-            <li key={p.id} className="flex flex-col gap-2 rounded-2xl border border-border p-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="min-w-0">
-                <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
-                  {p.instructorName}
-                  {p.status === "menunggu" ? (
-                    <Badge size="sm" tone="warning">
-                      Pengajuan lama · belum ditetapkan
-                    </Badge>
-                  ) : null}
-                  {p.status === "ditolak" ? (
-                    <Badge size="sm" tone="danger">
-                      Ditolak
-                    </Badge>
-                  ) : null}
-                  {p.overCapacity ? (
-                    <Badge size="sm" tone="danger" outline>
-                      Melebihi batas JP bulanan
-                    </Badge>
-                  ) : null}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  <span className="font-mono">{p.jp}</span> JP{p.mataPelatihanNama ? ` · ${p.mataPelatihanNama}` : ""} · dicatat {p.diajukanOleh}
-                </p>
-                {p.catatan ? <p className="mt-1 text-xs break-words text-muted-foreground">Catatan: {p.catatan}</p> : null}
-                {p.alasanTolak ? <p className="mt-1 text-xs break-words text-destructive">Alasan ditolak: {p.alasanTolak}</p> : null}
-              </div>
-              {p.status === "disetujui" ? (
-                <div className="w-full shrink-0 sm:w-48">
-                  <p className="mb-1 text-right text-xs text-muted-foreground">
-                    <span className="font-mono">{p.jpSesi}</span>/<span className="font-mono">{p.jp}</span> JP di {p.jmlSesi} sesi
+        <motion.ul layout className="grid gap-2">
+          <AnimatePresence initial={false}>
+            {daftar.map((p) => (
+              <motion.li
+                key={p.id}
+                layout
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                className="flex flex-col gap-3 rounded-2xl border border-border p-4 lg:flex-row lg:items-center lg:justify-between"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
+                    {p.instructorName}
+                    {p.status === "menunggu" ? (
+                      <Badge size="sm" tone="warning">
+                        Pengajuan lama · belum ditetapkan
+                      </Badge>
+                    ) : null}
+                    {p.status === "ditolak" ? (
+                      <Badge size="sm" tone="danger">
+                        Ditolak
+                      </Badge>
+                    ) : null}
+                    {p.overCapacity ? (
+                      <Badge size="sm" tone="danger" outline>
+                        Melebihi batas JP bulanan
+                      </Badge>
+                    ) : null}
                   </p>
-                  <Progress value={p.jp > 0 ? Math.min(100, Math.round((p.jpSesi / p.jp) * 100)) : 0} aria-label={`Sesi mengajar ${p.instructorName}`} />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    <span className="font-mono">{p.jp}</span> JP{p.mataPelatihanNama ? ` · ${p.mataPelatihanNama}` : ""} · dicatat {p.diajukanOleh}
+                  </p>
+                  {p.catatan ? <p className="mt-1 text-xs break-words text-muted-foreground">Catatan: {p.catatan}</p> : null}
+                  {p.alasanTolak ? <p className="mt-1 text-xs break-words text-destructive">Alasan ditolak: {p.alasanTolak}</p> : null}
+                  {p.status === "disetujui" ? (
+                    <div className="mt-2 flex max-w-sm items-center gap-3">
+                      <Progress value={p.jp > 0 ? Math.min(100, Math.round((p.jpSesi / p.jp) * 100)) : 0} aria-label={`Sesi mengajar ${p.instructorName}`} className="flex-1" />
+                      <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                        {p.jpSesi}/{p.jp} JP · {p.jmlSesi} sesi
+                      </span>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  {aksi.bolehLihatSesi && p.status === "disetujui" ? (
+                    <Button variant="secondary" size="sm" onClick={() => aksi.bukaSesi(p)}>
+                      <CalendarClock className="size-3.5" aria-hidden />
+                      {aksi.bolehCatatSesi ? "Sesi mengajar" : "Lihat sesi"}
+                    </Button>
+                  ) : null}
+                  {aksi.bolehAtur && p.status === "menunggu" ? (
+                    <Button size="sm" disabled={sibuk === p.id} onClick={() => tetapkanLama(p)}>
+                      Tetapkan
+                    </Button>
+                  ) : null}
+                  {aksi.bolehAtur && p.status !== "ditolak" ? (
+                    <ConfirmMorph
+                      label="Hapus"
+                      icon={<Trash2 size={14} />}
+                      prompt={`Hapus ${p.instructorName}?`}
+                      confirmLabel="Ya, hapus"
+                      cancelLabel="Batal"
+                      pendingLabel="Menghapus"
+                      doneLabel="Dihapus"
+                      errorLabel="Gagal"
+                      retryLabel="Coba lagi"
+                      tone="danger"
+                      onConfirm={() => hapus(p)}
+                    />
+                  ) : null}
+                </div>
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
       )}
     </section>
   );

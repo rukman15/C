@@ -19,5 +19,5 @@ export default async function HalamanRincian({ params }: Props) {
   if (!h.lihatPenuh) {
     return <EmptyState title="Bagian ini bukan untuk Anda" description="Sebagai pengampu, buka bagian Tugas, Seminar, atau Penilaian." />;
   }
-  return <IsiRincian rincian={h.rincian} bolehAtur={h.bolehAtur} />;
+  return <IsiRincian rincian={h.rincian} bolehAtur={h.bolehAtur} bolehLihatSesi={h.bolehLihatSesi} bolehCatatSesi={h.bolehCatatSesi} />;
 }

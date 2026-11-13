@@ -11,7 +11,9 @@ Bangun ulang e-Balai dengan Next.js + React. Aplikasi lama (SvelteKit) ada di re
 - **Beranda**: sapaan, data akun dan keanggotaan, pintasan.
 - **Akun & Kata Sandi**: ganti kata sandi (sesi lain gugur), keluar, keluar dari semua perangkat.
 - **Jadwal Diklat** (tahap 2): daftar per status (berlangsung, akan datang, baru selesai) dengan kemajuan hari, saring status dan kategori, pencarian, kalender bulanan (batang diklat per minggu, pilih hari), panel rincian, jadwal mengajar milik sendiri (sesi dan JP tercatat), dan tambah jadwal (program PKA/PKP dengan saran nama dan JP dari kurikulum, tim pemegang). Aturan data dan hak akses sama dengan aplikasi lama; ubah dan hapus jadwal tetap di Rincian Diklat.
-- **Rincian Diklat** (tahap 3): kepala halaman (lencana program, angkatan, kategori, tim, status), ubah jadwal, hapus jadwal kosong (konfirmasi berubah bentuk), tab ke 12 bagian, ringkasan angka beranimasi, kemajuan JP pengampu, kurikulum LAN per tahap (batang komposisi JP, rincian kegiatan bisa dibuka), mata pelatihan & pengampu (saring yang belum/sudah ada), dan daftar pengampu dengan JP sesi tercatat. Hak akses sama dengan aplikasi lama. Menetapkan pengampu, mencatat sesi mengajar, dan surat tugas masih di aplikasi lama; 11 tab lain tampil "belum dibangun ulang".
+- **Rincian Diklat** (tahap 3): kepala halaman (lencana program, angkatan, kategori, tim, status), ubah jadwal, hapus jadwal kosong (konfirmasi berubah bentuk), tab ke 12 bagian, ringkasan angka beranimasi, kemajuan JP pengampu, kurikulum LAN per tahap (batang komposisi JP, rincian kegiatan bisa dibuka), mata pelatihan & pengampu (saring yang belum/sudah ada), dan daftar pengampu dengan JP sesi tercatat. Hak akses sama dengan aplikasi lama. Surat tugas mengajar masih di aplikasi lama; 10 tab lain tampil "belum dibangun ulang".
+- **Pengampu** (tahap 4): tetapkan pengampu (WI per jenjang dengan beban JP bulan mulai diklat, pratinjau jadwal beririsan, peringatan melebihi batas JP), tetapkan pengajuan lama, hapus pengampu, dan sesi mengajar (catat/hapus, total JP dijaga). Penolakan sama dengan aplikasi lama: WI cuti, cuti disetujui beririsan, bentrok surat tugas, pengampu kembar, hapus pengampu yang sudah punya sesi atau surat tugas bernomor.
+- **Tab Peserta** (tahap 4): ringkasan, cari dan saring, tambah satu, tempel dari Excel dengan pratinjau dan baris bermasalah, ubah (termasuk status), hapus (hanya yang belum punya kehadiran/nilai), rekap tidak hadir per peserta, dan buat akun login peserta (kata sandi sementara tampil sekali, tercatat di Log Audit).
 - Halaman menu lain menampilkan "Belum dibangun ulang".
 - Tema terang/gelap, tampilan HP (menu laci).
 
@@ -33,7 +35,7 @@ npm run dev             # http://localhost:3001
 |---|---|
 | `npm run dev` | Server pengembangan di port 3001 |
 | `npm run check` | Pemeriksaan TypeScript |
-| `npm run uji` | Uji sesi, kata sandi, pembatas, menu, dan jadwal |
+| `npm run uji` | Uji sesi, kata sandi, pembatas, menu, jadwal, bentrok, dan peserta |
 | `npm run build` | Build produksi |
 | `npm run db:generate` | `prisma generate` ke `src/generated/prisma` (ikut di-commit) |
 

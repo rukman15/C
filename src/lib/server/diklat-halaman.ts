@@ -19,6 +19,9 @@ export type HalamanDiklat =
       hanyaPenilaian: boolean;
       bolehAtur: boolean;
       bolehHapus: boolean;
+      /** Melihat / mencatat sesi mengajar (aplikasi lama: Ketua Diklat, Kepala Balai, Koordinator WI; mencatat tanpa Kepala Balai). */
+      bolehLihatSesi: boolean;
+      bolehCatatSesi: boolean;
       global: boolean;
       pilihanTim: TimDiklat[];
     };
@@ -51,6 +54,8 @@ export const muatHalamanDiklat = cache(async (id: string): Promise<HalamanDiklat
     hanyaPenilaian,
     bolehAtur,
     bolehHapus: a.role === "ketua-diklat" || a.role === "admin",
+    bolehLihatSesi: a.role === "admin" || a.role === "ketua-diklat" || a.role === "kepala-balai" || a.koordinatorWi,
+    bolehCatatSesi: a.role === "admin" || a.role === "ketua-diklat" || a.koordinatorWi,
     global: a.global,
     pilihanTim: bolehAtur ? await pilihanTimDiklatAkses(a) : [],
   };

@@ -15,3 +15,14 @@ export async function kirimJson<T>(url: string, method: "POST" | "PUT" | "PATCH"
     return { ok: false, error: "Tidak bisa terhubung ke server. Periksa koneksi Anda.", status: 0 };
   }
 }
+
+export async function ambilJson<T>(url: string): Promise<Hasil<T>> {
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    const json = (await res.json().catch(() => null)) as { ok: boolean; data?: T; error?: string } | null;
+    if (json?.ok) return { ok: true, data: json.data as T };
+    return { ok: false, error: json?.error ?? "Terjadi kesalahan. Coba lagi.", status: res.status };
+  } catch {
+    return { ok: false, error: "Tidak bisa terhubung ke server. Periksa koneksi Anda.", status: 0 };
+  }
+}
