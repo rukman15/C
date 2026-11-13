@@ -12,6 +12,7 @@ import { kirimJson } from "@/lib/api-klien";
 import { cn } from "@/lib/utils";
 import type { ItemBerkas } from "@/lib/server/repositories/berkas-peserta";
 import type { RuangBelajarRecord } from "@/lib/server/types";
+import { kirimBerkas } from "@/lib/unggah";
 
 export type RingkasTugasWi = { jumlah: number; perlu: number; diterima: number } | null;
 
@@ -46,13 +47,8 @@ export function FolderPeserta({
   async function unggah(it: ItemBerkas, f: File) {
     setGalat((g) => ({ ...g, [it.jenis]: "" }));
     if (f.size > UKURAN_MAKS_BERKAS) return setGalat((g) => ({ ...g, [it.jenis]: "Ukuran berkas maksimal 20 MB." }));
-    const form = new FormData();
-    form.set("jenis", it.jenis);
-    form.set("berkas", f);
     setSibuk(it.jenis);
-    const res = await fetch(base, { method: "POST", body: form })
-      .then((x) => x.json() as Promise<{ ok: boolean; error?: string }>)
-      .catch(() => ({ ok: false, error: "Tidak bisa terhubung ke server. Periksa koneksi Anda." }));
+    const res = await kirimBerkas(base, "berkas-peserta", { jenis: it.jenis }, f);
     setSibuk(null);
     if (!res.ok) return setGalat((g) => ({ ...g, [it.jenis]: res.error ?? "Gagal mengunggah" }));
     setToast(`${it.label} tersimpan.`);

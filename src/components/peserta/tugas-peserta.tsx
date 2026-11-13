@@ -11,6 +11,7 @@ import { LABEL_BELUM, TERIMA_BERKAS_TUGAS, UKURAN_MAKS_TUGAS } from "@/lib/tugas
 import { formatTanggalId } from "@/lib/sesi";
 import { kirimJson } from "@/lib/api-klien";
 import type { TugasPesertaRecord } from "@/lib/server/repositories/tugas";
+import { kirimBerkas } from "@/lib/unggah";
 
 const NADA: Record<string, BadgeTone> = { DRAF: "neutral", DIKIRIM: "warning", DITINJAU: "info", PERLU_REVISI: "danger", DITERIMA: "success" };
 const AKSI: Record<string, string> = {
@@ -41,15 +42,10 @@ export function TugasPeserta({ pesertaId, awal }: { pesertaId: string; awal: Tug
   async function unggah(tugasId: string, berkas: File) {
     setGalat((g) => ({ ...g, [tugasId]: "" }));
     if (berkas.size > UKURAN_MAKS_TUGAS) return setGalat((g) => ({ ...g, [tugasId]: "Ukuran berkas maksimal 10 MB." }));
-    const form = new FormData();
-    form.set("tugasId", tugasId);
-    form.set("berkas", berkas);
     setSibuk(tugasId);
-    const res = await fetch(url, { method: "POST", body: form })
-      .then((x) => x.json() as Promise<{ ok: boolean; data?: TugasPesertaRecord; error?: string }>)
-      .catch(() => ({ ok: false, error: "Tidak bisa terhubung ke server. Periksa koneksi Anda." }) as { ok: boolean; data?: TugasPesertaRecord; error?: string });
+    const res = await kirimBerkas<TugasPesertaRecord>(url, "tugas", { tugasId }, berkas);
     setSibuk(null);
-    if (!res.ok || !res.data) return setGalat((g) => ({ ...g, [tugasId]: res.error ?? "Gagal mengunggah" }));
+    if (!res.ok) return setGalat((g) => ({ ...g, [tugasId]: res.error }));
     setData(res.data);
     setToast({ j: "Berkas tersimpan", i: "Tersimpan sebagai draf. Tekan Kirim bila sudah siap ditinjau." });
   }

@@ -16,6 +16,7 @@ import { STATUS_LOKASI, batasPenetapan, labelStatusLokasi } from "@/lib/stula";
 import { formatTanggalId } from "@/lib/sesi";
 import { kirimJson } from "@/lib/api-klien";
 import type { LokasiRecord, StulaRecord } from "@/lib/server/repositories/stula";
+import { kirimBerkas } from "@/lib/unggah";
 
 const AREA = "w-full rounded-2xl border border-border bg-transparent p-3 text-sm outline-none focus:border-border-strong";
 const TANPA = "__tanpa";
@@ -338,17 +339,9 @@ function FormKunjungan({ url, lokasi, onSelesai }: { url: string; lokasi: Lokasi
     if (berkas && berkas.size > 10 * 1024 * 1024) return setGalat("Ukuran berkas maksimal 10 MB");
     setSibuk(true);
     setGalat("");
-    const form = new FormData();
-    form.set("lokasiId", lokasi.id);
-    form.set("tanggal", tanggal);
-    form.set("petugas", petugas.trim());
-    form.set("hasil", hasil.trim());
-    if (berkas) form.set("berkas", berkas);
-    const res = await fetch(`${url}/kunjungan`, { method: "POST", body: form })
-      .then((r) => r.json() as Promise<{ ok: boolean; error?: string }>)
-      .catch(() => ({ ok: false, error: "Gagal terhubung ke server" }));
+    const res = await kirimBerkas(`${url}/kunjungan`, "kunjungan", { lokasiId: lokasi.id, tanggal, petugas: petugas.trim(), hasil: hasil.trim() }, berkas);
     setSibuk(false);
-    if (!res.ok) return setGalat(res.error ?? "Gagal menyimpan");
+    if (!res.ok) return setGalat(res.error);
     router.refresh();
     onSelesai(`Kunjungan ke ${lokasi.nama} dicatat.`);
   }

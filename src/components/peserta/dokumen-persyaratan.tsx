@@ -12,6 +12,7 @@ import { formatTanggalId } from "@/lib/sesi";
 import { kirimJson } from "@/lib/api-klien";
 import { cn } from "@/lib/utils";
 import type { DokumenPesertaRecord, ItemDokumen } from "@/lib/server/repositories/dokumen-peserta";
+import { kirimBerkas } from "@/lib/unggah";
 
 const NADA: Record<string, BadgeTone> = { BELUM: "neutral", DIUNGGAH: "info", DITERIMA: "success", DITOLAK: "danger" };
 const MAKS = 2 * 1024 * 1024;
@@ -34,13 +35,8 @@ export function DokumenPersyaratan({ pesertaId, data }: { pesertaId: string; dat
   async function unggah(it: ItemDokumen, berkas: File) {
     setGalat((g) => ({ ...g, [it.jenis]: "" }));
     if (berkas.size > MAKS) return setGalat((g) => ({ ...g, [it.jenis]: "Ukuran berkas maksimal 2 MB" }));
-    const form = new FormData();
-    form.set("jenis", it.jenis);
-    form.set("berkas", berkas);
     setSibuk(it.jenis);
-    const res = await fetch(base, { method: "POST", body: form })
-      .then((x) => x.json() as Promise<{ ok: boolean; error?: string }>)
-      .catch(() => ({ ok: false, error: "Tidak bisa terhubung ke server. Periksa koneksi Anda." }));
+    const res = await kirimBerkas(base, "dokumen", { jenis: it.jenis }, berkas);
     setSibuk(null);
     if (!res.ok) return setGalat((g) => ({ ...g, [it.jenis]: res.error ?? "Gagal mengunggah" }));
     setToast(`${it.label} terunggah, menunggu diperiksa penyelenggara.`);
