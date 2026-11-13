@@ -23,12 +23,16 @@ import type { TesPesertaRecord } from "@/lib/server/repositories/tes";
 import type { EvaluasiPesertaRecord } from "@/lib/server/repositories/evaluasi";
 import type { MentorSayaRecord } from "@/lib/server/repositories/penugasan-angkatan";
 import { labelProgram, periodeDiklat } from "./bagian";
+import { FolderPeserta, type RingkasTugasWi } from "./folder-peserta";
+import type { ItemBerkas } from "@/lib/server/repositories/berkas-peserta";
 
 type Props = {
   data: RuangBelajarRecord;
   tes: TesPesertaRecord[];
   evaluasi: EvaluasiPesertaRecord | null;
   mentor: MentorSayaRecord | null;
+  folder: ItemBerkas[];
+  tugasWi: RingkasTugasWi;
 };
 
 const hariIniWib = () => new Date(Date.now() + 7 * 3600_000).toISOString().slice(0, 10);
@@ -94,7 +98,7 @@ function Panel({ judul, aksi, className, children }: { judul?: React.ReactNode; 
  * Ruang belajar satu peserta. Isi sama dengan aplikasi lama; disusun dalam tab supaya ringkas di HP.
  * Pada hari seminar halaman dimuat ulang tiap 30 detik supaya panggilan evaluator terlihat.
  */
-export function RuangBelajar({ data, tes, evaluasi, mentor }: Props) {
+export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: Props) {
   const router = useRouter();
   const t = data.training;
   const id = data.peserta.id;
@@ -123,6 +127,7 @@ export function RuangBelajar({ data, tes, evaluasi, mentor }: Props) {
 
   const tab = [
     { v: "ringkasan", l: "Ringkasan" },
+    ...(t.jenisPelatihan ? [{ v: "folder", l: "Folder" }] : []),
     { v: "jadwal", l: "Jadwal" },
     { v: "tugas", l: t.jenisPelatihan ? "Tugas & tes" : "Evaluasi" },
     ...(seminar.length ? [{ v: "seminar", l: "Seminar" }] : []),
@@ -264,6 +269,12 @@ export function RuangBelajar({ data, tes, evaluasi, mentor }: Props) {
           <PanelKehadiran data={data} />
           <PanelJadwal data={data} hariIni={hariIni} semua={semuaSesi} onSemua={() => setSemuaSesi((x) => !x)} />
         </TabsContent>
+
+        {t.jenisPelatihan ? (
+          <TabsContent value="folder" className="mt-4">
+            <FolderPeserta pesertaId={id} pratinjau={data.pratinjau} dokumen={data.dokumen} tugasWi={tugasWi} berkas={folder} />
+          </TabsContent>
+        ) : null}
 
         <TabsContent value="tugas" className="mt-4 flex flex-col gap-4">
           {t.jenisPelatihan ? (

@@ -72,13 +72,26 @@ export function TugasPeserta({ pesertaId, awal }: { pesertaId: string; awal: Tug
       <h1 className="mt-4 font-display text-2xl font-medium tracking-tight">Tugas</h1>
       <p className="mt-1 text-sm text-muted-foreground">{data.training.name}</p>
       {data.tugas.length === 0 ? (
-        <EmptyState className="mt-8" title="Belum ada tugas" description="Tugas dari penyelenggara akan tampil di sini." />
+        <EmptyState className="mt-8" title="Belum ada tugas" description="Tugas dari widyaiswara dan penyelenggara akan tampil di sini." />
       ) : (
-        <ul className="mt-6 flex flex-col gap-3">
-          {data.tugas.map((t) => (
-            <KartuTugas key={t.id} t={t} sibuk={sibuk} galat={galat[t.id] ?? ""} onUnggah={(f) => unggah(t.id, f)} onKirim={() => kirim(t.id)} />
-          ))}
-        </ul>
+        // Dua kelompok (EB-051): tugas pembelajaran dari WI pengampu, lalu tugas aksi perubahan (RAP, laporan progres).
+        [
+          { id: "wi", judul: "Tugas dari WI", isi: data.tugas.filter((t) => t.jenis === "TUGAS_PEMBELAJARAN") },
+          { id: "aksi", judul: "Tugas aksi perubahan", isi: data.tugas.filter((t) => t.jenis !== "TUGAS_PEMBELAJARAN") },
+        ]
+          .filter((g) => g.isi.length)
+          .map((g) => (
+            <section key={g.id} id={g.id} className="mt-6 scroll-mt-20">
+              <h2 className="mb-3 text-sm text-muted-foreground">
+                {g.judul} · <span className="font-mono">{g.isi.length}</span>
+              </h2>
+              <ul className="flex flex-col gap-3">
+                {g.isi.map((t) => (
+                  <KartuTugas key={t.id} t={t} sibuk={sibuk} galat={galat[t.id] ?? ""} onUnggah={(f) => unggah(t.id, f)} onKirim={() => kirim(t.id)} />
+                ))}
+              </ul>
+            </section>
+          ))
       )}
       <Toast title={toast?.j ?? ""} description={toast?.i} open={toast !== null} onOpenChange={(o) => !o && setToast(null)} />
     </div>

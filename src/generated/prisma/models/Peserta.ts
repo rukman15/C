@@ -322,6 +322,7 @@ export type PesertaWhereInput = {
   evaluasiPenyelenggaraan?: Prisma.XOR<Prisma.EvaluasiPenyelenggaraanNullableScalarRelationFilter, Prisma.EvaluasiPenyelenggaraanWhereInput> | null
   suratKeterangan?: Prisma.SuratKeteranganListRelationFilter
   dokumen?: Prisma.DokumenPesertaListRelationFilter
+  berkas?: Prisma.BerkasPesertaListRelationFilter
   anggotaKelompok?: Prisma.AnggotaKelompokListRelationFilter
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialListRelationFilter
   catatanCoaching?: Prisma.CatatanCoachingListRelationFilter
@@ -358,6 +359,7 @@ export type PesertaOrderByWithRelationInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanOrderByWithRelationInput
   suratKeterangan?: Prisma.SuratKeteranganOrderByRelationAggregateInput
   dokumen?: Prisma.DokumenPesertaOrderByRelationAggregateInput
+  berkas?: Prisma.BerkasPesertaOrderByRelationAggregateInput
   anggotaKelompok?: Prisma.AnggotaKelompokOrderByRelationAggregateInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialOrderByRelationAggregateInput
   catatanCoaching?: Prisma.CatatanCoachingOrderByRelationAggregateInput
@@ -398,6 +400,7 @@ export type PesertaWhereUniqueInput = Prisma.AtLeast<{
   evaluasiPenyelenggaraan?: Prisma.XOR<Prisma.EvaluasiPenyelenggaraanNullableScalarRelationFilter, Prisma.EvaluasiPenyelenggaraanWhereInput> | null
   suratKeterangan?: Prisma.SuratKeteranganListRelationFilter
   dokumen?: Prisma.DokumenPesertaListRelationFilter
+  berkas?: Prisma.BerkasPesertaListRelationFilter
   anggotaKelompok?: Prisma.AnggotaKelompokListRelationFilter
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialListRelationFilter
   catatanCoaching?: Prisma.CatatanCoachingListRelationFilter
@@ -479,6 +482,7 @@ export type PesertaCreateInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -512,6 +516,7 @@ export type PesertaUncheckedCreateInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -545,6 +550,7 @@ export type PesertaUpdateInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -578,6 +584,7 @@ export type PesertaUncheckedUpdateInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -969,6 +976,20 @@ export type PesertaUpdateOneRequiredWithoutDokumenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PesertaUpdateToOneWithWhereWithoutDokumenInput, Prisma.PesertaUpdateWithoutDokumenInput>, Prisma.PesertaUncheckedUpdateWithoutDokumenInput>
 }
 
+export type PesertaCreateNestedOneWithoutBerkasInput = {
+  create?: Prisma.XOR<Prisma.PesertaCreateWithoutBerkasInput, Prisma.PesertaUncheckedCreateWithoutBerkasInput>
+  connectOrCreate?: Prisma.PesertaCreateOrConnectWithoutBerkasInput
+  connect?: Prisma.PesertaWhereUniqueInput
+}
+
+export type PesertaUpdateOneRequiredWithoutBerkasNestedInput = {
+  create?: Prisma.XOR<Prisma.PesertaCreateWithoutBerkasInput, Prisma.PesertaUncheckedCreateWithoutBerkasInput>
+  connectOrCreate?: Prisma.PesertaCreateOrConnectWithoutBerkasInput
+  upsert?: Prisma.PesertaUpsertWithoutBerkasInput
+  connect?: Prisma.PesertaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PesertaUpdateToOneWithWhereWithoutBerkasInput, Prisma.PesertaUpdateWithoutBerkasInput>, Prisma.PesertaUncheckedUpdateWithoutBerkasInput>
+}
+
 export type PesertaCreateNestedOneWithoutPelaksanaanRemedialInput = {
   create?: Prisma.XOR<Prisma.PesertaCreateWithoutPelaksanaanRemedialInput, Prisma.PesertaUncheckedCreateWithoutPelaksanaanRemedialInput>
   connectOrCreate?: Prisma.PesertaCreateOrConnectWithoutPelaksanaanRemedialInput
@@ -1063,6 +1084,7 @@ export type PesertaCreateWithoutTrainingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1095,6 +1117,7 @@ export type PesertaUncheckedCreateWithoutTrainingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1176,6 +1199,7 @@ export type PesertaCreateWithoutKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1208,6 +1232,7 @@ export type PesertaUncheckedCreateWithoutKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1266,6 +1291,7 @@ export type PesertaCreateWithoutKehadiranInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1298,6 +1324,7 @@ export type PesertaUncheckedCreateWithoutKehadiranInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1346,6 +1373,7 @@ export type PesertaUpdateWithoutKehadiranInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -1378,6 +1406,7 @@ export type PesertaUncheckedUpdateWithoutKehadiranInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1410,6 +1439,7 @@ export type PesertaCreateWithoutNilaiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1442,6 +1472,7 @@ export type PesertaUncheckedCreateWithoutNilaiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1490,6 +1521,7 @@ export type PesertaUpdateWithoutNilaiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -1522,6 +1554,7 @@ export type PesertaUncheckedUpdateWithoutNilaiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1554,6 +1587,7 @@ export type PesertaCreateWithoutAkunInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1586,6 +1620,7 @@ export type PesertaUncheckedCreateWithoutAkunInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1644,6 +1679,7 @@ export type PesertaCreateWithoutTesInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1676,6 +1712,7 @@ export type PesertaUncheckedCreateWithoutTesInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1724,6 +1761,7 @@ export type PesertaUpdateWithoutTesInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -1756,6 +1794,7 @@ export type PesertaUncheckedUpdateWithoutTesInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1788,6 +1827,7 @@ export type PesertaCreateWithoutEvaluasiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1820,6 +1860,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -1868,6 +1909,7 @@ export type PesertaUpdateWithoutEvaluasiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -1900,6 +1942,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -1932,6 +1975,7 @@ export type PesertaCreateWithoutEvaluasiPenyelenggaraanInput = {
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -1964,6 +2008,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiPenyelenggaraanInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -2012,6 +2057,7 @@ export type PesertaUpdateWithoutEvaluasiPenyelenggaraanInput = {
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -2044,6 +2090,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiPenyelenggaraanInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2076,6 +2123,7 @@ export type PesertaCreateWithoutSuratKeteranganInput = {
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutPesertaInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -2108,6 +2156,7 @@ export type PesertaUncheckedCreateWithoutSuratKeteranganInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutPesertaInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -2156,6 +2205,7 @@ export type PesertaUpdateWithoutSuratKeteranganInput = {
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutPesertaNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -2188,6 +2238,7 @@ export type PesertaUncheckedUpdateWithoutSuratKeteranganInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutPesertaNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2221,6 +2272,7 @@ export type PesertaCreateWithoutAnggotaKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
@@ -2253,6 +2305,7 @@ export type PesertaUncheckedCreateWithoutAnggotaKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
@@ -2301,6 +2354,7 @@ export type PesertaUpdateWithoutAnggotaKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
@@ -2333,6 +2387,7 @@ export type PesertaUncheckedUpdateWithoutAnggotaKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2364,6 +2419,7 @@ export type PesertaCreateWithoutDokumenInput = {
   evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutPesertaInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -2396,6 +2452,7 @@ export type PesertaUncheckedCreateWithoutDokumenInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutPesertaInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -2444,6 +2501,7 @@ export type PesertaUpdateWithoutDokumenInput = {
   evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutPesertaNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -2476,6 +2534,155 @@ export type PesertaUncheckedUpdateWithoutDokumenInput = {
   evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutPesertaNestedInput
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
+  catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
+  seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  tontonVideo?: Prisma.TontonVideoUncheckedUpdateManyWithoutPesertaNestedInput
+  kirimanTugas?: Prisma.KirimanTugasUncheckedUpdateManyWithoutPesertaNestedInput
+}
+
+export type PesertaCreateWithoutBerkasInput = {
+  id?: string
+  nomor: number
+  nama: string
+  nip?: string | null
+  jabatan?: string | null
+  instansi?: string | null
+  status?: string
+  catatan?: string | null
+  jalurDaftar?: string
+  ukuranKaos?: string | null
+  judulAksiPerubahan?: string | null
+  daftarUlangPada?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  training: Prisma.TrainingCreateNestedOneWithoutPesertaInput
+  akun?: Prisma.AkunCreateNestedOneWithoutPesertaInput
+  kelompok?: Prisma.KelompokPesertaCreateNestedOneWithoutPesertaInput
+  kehadiran?: Prisma.KehadiranCreateNestedManyWithoutPesertaInput
+  nilai?: Prisma.NilaiPesertaCreateNestedManyWithoutPesertaInput
+  tes?: Prisma.PengerjaanTesCreateNestedManyWithoutPesertaInput
+  evaluasi?: Prisma.EvaluasiPengajarCreateNestedManyWithoutPesertaInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
+  suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
+  dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
+  catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
+  seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
+  tontonVideo?: Prisma.TontonVideoCreateNestedManyWithoutPesertaInput
+  kirimanTugas?: Prisma.KirimanTugasCreateNestedManyWithoutPesertaInput
+}
+
+export type PesertaUncheckedCreateWithoutBerkasInput = {
+  id?: string
+  trainingId: string
+  nomor: number
+  nama: string
+  nip?: string | null
+  jabatan?: string | null
+  instansi?: string | null
+  status?: string
+  catatan?: string | null
+  akunId?: string | null
+  kelompokId?: string | null
+  jalurDaftar?: string
+  ukuranKaos?: string | null
+  judulAksiPerubahan?: string | null
+  daftarUlangPada?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kehadiran?: Prisma.KehadiranUncheckedCreateNestedManyWithoutPesertaInput
+  nilai?: Prisma.NilaiPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  tes?: Prisma.PengerjaanTesUncheckedCreateNestedManyWithoutPesertaInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedCreateNestedManyWithoutPesertaInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
+  dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
+  catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
+  seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  tontonVideo?: Prisma.TontonVideoUncheckedCreateNestedManyWithoutPesertaInput
+  kirimanTugas?: Prisma.KirimanTugasUncheckedCreateNestedManyWithoutPesertaInput
+}
+
+export type PesertaCreateOrConnectWithoutBerkasInput = {
+  where: Prisma.PesertaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PesertaCreateWithoutBerkasInput, Prisma.PesertaUncheckedCreateWithoutBerkasInput>
+}
+
+export type PesertaUpsertWithoutBerkasInput = {
+  update: Prisma.XOR<Prisma.PesertaUpdateWithoutBerkasInput, Prisma.PesertaUncheckedUpdateWithoutBerkasInput>
+  create: Prisma.XOR<Prisma.PesertaCreateWithoutBerkasInput, Prisma.PesertaUncheckedCreateWithoutBerkasInput>
+  where?: Prisma.PesertaWhereInput
+}
+
+export type PesertaUpdateToOneWithWhereWithoutBerkasInput = {
+  where?: Prisma.PesertaWhereInput
+  data: Prisma.XOR<Prisma.PesertaUpdateWithoutBerkasInput, Prisma.PesertaUncheckedUpdateWithoutBerkasInput>
+}
+
+export type PesertaUpdateWithoutBerkasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jabatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
+  ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  training?: Prisma.TrainingUpdateOneRequiredWithoutPesertaNestedInput
+  akun?: Prisma.AkunUpdateOneWithoutPesertaNestedInput
+  kelompok?: Prisma.KelompokPesertaUpdateOneWithoutPesertaNestedInput
+  kehadiran?: Prisma.KehadiranUpdateManyWithoutPesertaNestedInput
+  nilai?: Prisma.NilaiPesertaUpdateManyWithoutPesertaNestedInput
+  tes?: Prisma.PengerjaanTesUpdateManyWithoutPesertaNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUpdateManyWithoutPesertaNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
+  dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
+  pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
+  catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
+  seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
+  tontonVideo?: Prisma.TontonVideoUpdateManyWithoutPesertaNestedInput
+  kirimanTugas?: Prisma.KirimanTugasUpdateManyWithoutPesertaNestedInput
+}
+
+export type PesertaUncheckedUpdateWithoutBerkasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainingId?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor?: Prisma.IntFieldUpdateOperationsInput | number
+  nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jabatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  catatan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  akunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelompokId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
+  ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kehadiran?: Prisma.KehadiranUncheckedUpdateManyWithoutPesertaNestedInput
+  nilai?: Prisma.NilaiPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  tes?: Prisma.PengerjaanTesUncheckedUpdateManyWithoutPesertaNestedInput
+  evaluasi?: Prisma.EvaluasiPengajarUncheckedUpdateManyWithoutPesertaNestedInput
+  evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
+  suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
+  dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2509,6 +2716,7 @@ export type PesertaCreateWithoutPelaksanaanRemedialInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
@@ -2541,6 +2749,7 @@ export type PesertaUncheckedCreateWithoutPelaksanaanRemedialInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
@@ -2589,6 +2798,7 @@ export type PesertaUpdateWithoutPelaksanaanRemedialInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
@@ -2621,6 +2831,7 @@ export type PesertaUncheckedUpdateWithoutPelaksanaanRemedialInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2653,6 +2864,7 @@ export type PesertaCreateWithoutTontonVideoInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -2685,6 +2897,7 @@ export type PesertaUncheckedCreateWithoutTontonVideoInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -2733,6 +2946,7 @@ export type PesertaUpdateWithoutTontonVideoInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -2765,6 +2979,7 @@ export type PesertaUncheckedUpdateWithoutTontonVideoInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2797,6 +3012,7 @@ export type PesertaCreateWithoutCatatanCoachingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaCreateNestedManyWithoutPesertaInput
@@ -2829,6 +3045,7 @@ export type PesertaUncheckedCreateWithoutCatatanCoachingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   seminar?: Prisma.SeminarPesertaUncheckedCreateNestedManyWithoutPesertaInput
@@ -2877,6 +3094,7 @@ export type PesertaUpdateWithoutCatatanCoachingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUpdateManyWithoutPesertaNestedInput
@@ -2909,6 +3127,7 @@ export type PesertaUncheckedUpdateWithoutCatatanCoachingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   seminar?: Prisma.SeminarPesertaUncheckedUpdateManyWithoutPesertaNestedInput
@@ -2941,6 +3160,7 @@ export type PesertaCreateWithoutSeminarInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -2973,6 +3193,7 @@ export type PesertaUncheckedCreateWithoutSeminarInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -3021,6 +3242,7 @@ export type PesertaUpdateWithoutSeminarInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -3053,6 +3275,7 @@ export type PesertaUncheckedUpdateWithoutSeminarInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3085,6 +3308,7 @@ export type PesertaCreateWithoutKirimanTugasInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingCreateNestedManyWithoutPesertaInput
@@ -3117,6 +3341,7 @@ export type PesertaUncheckedCreateWithoutKirimanTugasInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedCreateNestedOneWithoutPesertaInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedCreateNestedManyWithoutPesertaInput
   dokumen?: Prisma.DokumenPesertaUncheckedCreateNestedManyWithoutPesertaInput
+  berkas?: Prisma.BerkasPesertaUncheckedCreateNestedManyWithoutPesertaInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedCreateNestedManyWithoutPesertaInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedCreateNestedManyWithoutPesertaInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedCreateNestedManyWithoutPesertaInput
@@ -3165,6 +3390,7 @@ export type PesertaUpdateWithoutKirimanTugasInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -3197,6 +3423,7 @@ export type PesertaUncheckedUpdateWithoutKirimanTugasInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3247,6 +3474,7 @@ export type PesertaUpdateWithoutTrainingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -3279,6 +3507,7 @@ export type PesertaUncheckedUpdateWithoutTrainingInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3349,6 +3578,7 @@ export type PesertaUpdateWithoutKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -3381,6 +3611,7 @@ export type PesertaUncheckedUpdateWithoutKelompokInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3451,6 +3682,7 @@ export type PesertaUpdateWithoutAkunInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUpdateManyWithoutPesertaNestedInput
@@ -3483,6 +3715,7 @@ export type PesertaUncheckedUpdateWithoutAkunInput = {
   evaluasiPenyelenggaraan?: Prisma.EvaluasiPenyelenggaraanUncheckedUpdateOneWithoutPesertaNestedInput
   suratKeterangan?: Prisma.SuratKeteranganUncheckedUpdateManyWithoutPesertaNestedInput
   dokumen?: Prisma.DokumenPesertaUncheckedUpdateManyWithoutPesertaNestedInput
+  berkas?: Prisma.BerkasPesertaUncheckedUpdateManyWithoutPesertaNestedInput
   anggotaKelompok?: Prisma.AnggotaKelompokUncheckedUpdateManyWithoutPesertaNestedInput
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialUncheckedUpdateManyWithoutPesertaNestedInput
   catatanCoaching?: Prisma.CatatanCoachingUncheckedUpdateManyWithoutPesertaNestedInput
@@ -3522,6 +3755,7 @@ export type PesertaCountOutputType = {
   evaluasi: number
   suratKeterangan: number
   dokumen: number
+  berkas: number
   anggotaKelompok: number
   pelaksanaanRemedial: number
   catatanCoaching: number
@@ -3537,6 +3771,7 @@ export type PesertaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   evaluasi?: boolean | PesertaCountOutputTypeCountEvaluasiArgs
   suratKeterangan?: boolean | PesertaCountOutputTypeCountSuratKeteranganArgs
   dokumen?: boolean | PesertaCountOutputTypeCountDokumenArgs
+  berkas?: boolean | PesertaCountOutputTypeCountBerkasArgs
   anggotaKelompok?: boolean | PesertaCountOutputTypeCountAnggotaKelompokArgs
   pelaksanaanRemedial?: boolean | PesertaCountOutputTypeCountPelaksanaanRemedialArgs
   catatanCoaching?: boolean | PesertaCountOutputTypeCountCatatanCoachingArgs
@@ -3595,6 +3830,13 @@ export type PesertaCountOutputTypeCountSuratKeteranganArgs<ExtArgs extends runti
  */
 export type PesertaCountOutputTypeCountDokumenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DokumenPesertaWhereInput
+}
+
+/**
+ * PesertaCountOutputType without action
+ */
+export type PesertaCountOutputTypeCountBerkasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BerkasPesertaWhereInput
 }
 
 /**
@@ -3668,6 +3910,7 @@ export type PesertaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   evaluasiPenyelenggaraan?: boolean | Prisma.Peserta$evaluasiPenyelenggaraanArgs<ExtArgs>
   suratKeterangan?: boolean | Prisma.Peserta$suratKeteranganArgs<ExtArgs>
   dokumen?: boolean | Prisma.Peserta$dokumenArgs<ExtArgs>
+  berkas?: boolean | Prisma.Peserta$berkasArgs<ExtArgs>
   anggotaKelompok?: boolean | Prisma.Peserta$anggotaKelompokArgs<ExtArgs>
   pelaksanaanRemedial?: boolean | Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>
   catatanCoaching?: boolean | Prisma.Peserta$catatanCoachingArgs<ExtArgs>
@@ -3755,6 +3998,7 @@ export type PesertaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   evaluasiPenyelenggaraan?: boolean | Prisma.Peserta$evaluasiPenyelenggaraanArgs<ExtArgs>
   suratKeterangan?: boolean | Prisma.Peserta$suratKeteranganArgs<ExtArgs>
   dokumen?: boolean | Prisma.Peserta$dokumenArgs<ExtArgs>
+  berkas?: boolean | Prisma.Peserta$berkasArgs<ExtArgs>
   anggotaKelompok?: boolean | Prisma.Peserta$anggotaKelompokArgs<ExtArgs>
   pelaksanaanRemedial?: boolean | Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>
   catatanCoaching?: boolean | Prisma.Peserta$catatanCoachingArgs<ExtArgs>
@@ -3787,6 +4031,7 @@ export type $PesertaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     evaluasiPenyelenggaraan: Prisma.$EvaluasiPenyelenggaraanPayload<ExtArgs> | null
     suratKeterangan: Prisma.$SuratKeteranganPayload<ExtArgs>[]
     dokumen: Prisma.$DokumenPesertaPayload<ExtArgs>[]
+    berkas: Prisma.$BerkasPesertaPayload<ExtArgs>[]
     anggotaKelompok: Prisma.$AnggotaKelompokPayload<ExtArgs>[]
     pelaksanaanRemedial: Prisma.$PelaksanaanRemedialPayload<ExtArgs>[]
     catatanCoaching: Prisma.$CatatanCoachingPayload<ExtArgs>[]
@@ -4216,6 +4461,7 @@ export interface Prisma__PesertaClient<T, Null = never, ExtArgs extends runtime.
   evaluasiPenyelenggaraan<T extends Prisma.Peserta$evaluasiPenyelenggaraanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$evaluasiPenyelenggaraanArgs<ExtArgs>>): Prisma.Prisma__EvaluasiPenyelenggaraanClient<runtime.Types.Result.GetResult<Prisma.$EvaluasiPenyelenggaraanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   suratKeterangan<T extends Prisma.Peserta$suratKeteranganArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$suratKeteranganArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SuratKeteranganPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dokumen<T extends Prisma.Peserta$dokumenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$dokumenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DokumenPesertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  berkas<T extends Prisma.Peserta$berkasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$berkasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BerkasPesertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   anggotaKelompok<T extends Prisma.Peserta$anggotaKelompokArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$anggotaKelompokArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnggotaKelompokPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pelaksanaanRemedial<T extends Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$pelaksanaanRemedialArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PelaksanaanRemedialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   catatanCoaching<T extends Prisma.Peserta$catatanCoachingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Peserta$catatanCoachingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CatatanCoachingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4862,6 +5108,30 @@ export type Peserta$dokumenArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.DokumenPesertaScalarFieldEnum | Prisma.DokumenPesertaScalarFieldEnum[]
+}
+
+/**
+ * Peserta.berkas
+ */
+export type Peserta$berkasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BerkasPeserta
+   */
+  select?: Prisma.BerkasPesertaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BerkasPeserta
+   */
+  omit?: Prisma.BerkasPesertaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BerkasPesertaInclude<ExtArgs> | null
+  where?: Prisma.BerkasPesertaWhereInput
+  orderBy?: Prisma.BerkasPesertaOrderByWithRelationInput | Prisma.BerkasPesertaOrderByWithRelationInput[]
+  cursor?: Prisma.BerkasPesertaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BerkasPesertaScalarFieldEnum | Prisma.BerkasPesertaScalarFieldEnum[]
 }
 
 /**

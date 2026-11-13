@@ -81,6 +81,7 @@ export const ModelName = {
   PengaturanDokumen: 'PengaturanDokumen',
   AnggotaKelompok: 'AnggotaKelompok',
   DokumenPeserta: 'DokumenPeserta',
+  BerkasPeserta: 'BerkasPeserta',
   PemantauanPersiapan: 'PemantauanPersiapan',
   PelaksanaanRemedial: 'PelaksanaanRemedial',
   MasaTempatKerja: 'MasaTempatKerja',
@@ -698,6 +699,21 @@ export const DokumenPesertaScalarFieldEnum = {
 } as const
 
 export type DokumenPesertaScalarFieldEnum = (typeof DokumenPesertaScalarFieldEnum)[keyof typeof DokumenPesertaScalarFieldEnum]
+
+
+export const BerkasPesertaScalarFieldEnum = {
+  id: 'id',
+  pesertaId: 'pesertaId',
+  jenis: 'jenis',
+  path: 'path',
+  namaBerkas: 'namaBerkas',
+  tipe: 'tipe',
+  ukuran: 'ukuran',
+  diunggahOleh: 'diunggahOleh',
+  diunggahPada: 'diunggahPada'
+} as const
+
+export type BerkasPesertaScalarFieldEnum = (typeof BerkasPesertaScalarFieldEnum)[keyof typeof BerkasPesertaScalarFieldEnum]
 
 
 export const PemantauanPersiapanScalarFieldEnum = {

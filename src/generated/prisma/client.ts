@@ -219,6 +219,11 @@ export type AnggotaKelompok = Prisma.AnggotaKelompokModel
  */
 export type DokumenPeserta = Prisma.DokumenPesertaModel
 /**
+ * Model BerkasPeserta
+ * 
+ */
+export type BerkasPeserta = Prisma.BerkasPesertaModel
+/**
  * Model PemantauanPersiapan
  * Formulir 2 — isian daftar pemantauan persiapan per butir (kode di src/lib/formulir-penyelenggaraan.ts).
  */

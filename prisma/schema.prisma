@@ -322,6 +322,7 @@ model Peserta {
   evaluasiPenyelenggaraan EvaluasiPenyelenggaraan?
   suratKeterangan         SuratKeterangan[]
   dokumen                 DokumenPeserta[]
+  berkas                  BerkasPeserta[]
   anggotaKelompok         AnggotaKelompok[]
   pelaksanaanRemedial     PelaksanaanRemedial[]
   catatanCoaching         CatatanCoaching[]
@@ -909,6 +910,23 @@ model DokumenPeserta {
 
   @@unique([pesertaId, jenis])
   @@map("dokumen_peserta")
+}
+
+// Folder peserta (EB-051): bahan tayang seminar RAP/LAP dan sertifikat self learning. Satu berkas per jenis.
+model BerkasPeserta {
+  id           String   @id @default(cuid())
+  pesertaId    String
+  peserta      Peserta  @relation(fields: [pesertaId], references: [id], onDelete: Cascade)
+  jenis        String // "BAHAN_TAYANG_RAP" | "BAHAN_TAYANG_LAP" | "SERTIFIKAT_MANDIRI"
+  path         String
+  namaBerkas   String
+  tipe         String
+  ukuran       Int // byte, maks 20 MB
+  diunggahOleh String // Akun.id
+  diunggahPada DateTime @default(now())
+
+  @@unique([pesertaId, jenis])
+  @@map("berkas_peserta")
 }
 
 /// Formulir 2 — isian daftar pemantauan persiapan per butir (kode di src/lib/formulir-penyelenggaraan.ts).

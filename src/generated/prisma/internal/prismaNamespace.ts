@@ -422,6 +422,7 @@ export const ModelName = {
   PengaturanDokumen: 'PengaturanDokumen',
   AnggotaKelompok: 'AnggotaKelompok',
   DokumenPeserta: 'DokumenPeserta',
+  BerkasPeserta: 'BerkasPeserta',
   PemantauanPersiapan: 'PemantauanPersiapan',
   PelaksanaanRemedial: 'PelaksanaanRemedial',
   MasaTempatKerja: 'MasaTempatKerja',
@@ -462,7 +463,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman"
+    modelProps: "pegawai" | "timKerja" | "timKerjaAnggota" | "training" | "penugasanApproval" | "penugasanSesi" | "peserta" | "kelompokPeserta" | "sesiPembelajaran" | "kehadiran" | "nilaiPeserta" | "pengaturanJp" | "pengaturanModul" | "akun" | "profilPeserta" | "penugasanSementara" | "logAudit" | "soalTes" | "tes" | "pengerjaanTes" | "sasaranEvaluasi" | "evaluasiPengajar" | "evaluasiPenyelenggaraan" | "roleUpdate" | "loginAttempt" | "suratTugas" | "suratKeterangan" | "konversiWi" | "verifikasiKarken" | "pengaturanDokumen" | "anggotaKelompok" | "dokumenPeserta" | "berkasPeserta" | "pemantauanPersiapan" | "pelaksanaanRemedial" | "masaTempatKerja" | "naskahDinas" | "agendaSurat" | "penghitungNomorSurat" | "suratMasuk" | "disposisi" | "cutiPegawai" | "spd" | "videoCoaching" | "sesiCoaching" | "videoKelompok" | "tontonVideo" | "catatanCoaching" | "topikForum" | "balasanForum" | "bacaForum" | "seminarPeserta" | "wewenangPenyelenggara" | "penugasanAngkatan" | "logAktivitas" | "tugas" | "kirimanTugas" | "riwayatKiriman"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2831,6 +2832,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DokumenPesertaCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DokumenPesertaCountAggregateOutputType> | number
+        }
+      }
+    }
+    BerkasPeserta: {
+      payload: Prisma.$BerkasPesertaPayload<ExtArgs>
+      fields: Prisma.BerkasPesertaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BerkasPesertaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BerkasPesertaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        findFirst: {
+          args: Prisma.BerkasPesertaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BerkasPesertaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        findMany: {
+          args: Prisma.BerkasPesertaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>[]
+        }
+        create: {
+          args: Prisma.BerkasPesertaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        createMany: {
+          args: Prisma.BerkasPesertaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BerkasPesertaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>[]
+        }
+        delete: {
+          args: Prisma.BerkasPesertaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        update: {
+          args: Prisma.BerkasPesertaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        deleteMany: {
+          args: Prisma.BerkasPesertaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BerkasPesertaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BerkasPesertaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>[]
+        }
+        upsert: {
+          args: Prisma.BerkasPesertaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BerkasPesertaPayload>
+        }
+        aggregate: {
+          args: Prisma.BerkasPesertaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBerkasPeserta>
+        }
+        groupBy: {
+          args: Prisma.BerkasPesertaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BerkasPesertaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BerkasPesertaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BerkasPesertaCountAggregateOutputType> | number
         }
       }
     }
@@ -5299,6 +5374,21 @@ export const DokumenPesertaScalarFieldEnum = {
 export type DokumenPesertaScalarFieldEnum = (typeof DokumenPesertaScalarFieldEnum)[keyof typeof DokumenPesertaScalarFieldEnum]
 
 
+export const BerkasPesertaScalarFieldEnum = {
+  id: 'id',
+  pesertaId: 'pesertaId',
+  jenis: 'jenis',
+  path: 'path',
+  namaBerkas: 'namaBerkas',
+  tipe: 'tipe',
+  ukuran: 'ukuran',
+  diunggahOleh: 'diunggahOleh',
+  diunggahPada: 'diunggahPada'
+} as const
+
+export type BerkasPesertaScalarFieldEnum = (typeof BerkasPesertaScalarFieldEnum)[keyof typeof BerkasPesertaScalarFieldEnum]
+
+
 export const PemantauanPersiapanScalarFieldEnum = {
   id: 'id',
   trainingId: 'trainingId',
@@ -5984,6 +6074,7 @@ export type GlobalOmitConfig = {
   pengaturanDokumen?: Prisma.PengaturanDokumenOmit
   anggotaKelompok?: Prisma.AnggotaKelompokOmit
   dokumenPeserta?: Prisma.DokumenPesertaOmit
+  berkasPeserta?: Prisma.BerkasPesertaOmit
   pemantauanPersiapan?: Prisma.PemantauanPersiapanOmit
   pelaksanaanRemedial?: Prisma.PelaksanaanRemedialOmit
   masaTempatKerja?: Prisma.MasaTempatKerjaOmit
