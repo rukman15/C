@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { NAMA_BULAN, akhirDiklat, diklatPadaTanggal, geserBulan, gridBulan, jalurMinggu, periodeTeks, type JadwalDiklat } from "@/lib/jadwal";
-import { GERAK_SOROT } from "@/lib/gerak";
+import { motionTokens } from "@/components/arc/lib/motion-tokens";
 import { cn } from "@/lib/utils";
 import { WARNA_STATUS } from "./kartu-diklat";
 
@@ -97,7 +97,7 @@ export function Kalender({ diklat, hariIni, onPilih }: { diklat: JadwalDiklat[];
                       diBulan ? "hover:bg-card" : "bg-card/60 text-muted-foreground/60",
                     )}
                   >
-                    {dipilih ? <motion.span layoutId="kalender-pilih" className="absolute inset-0 rounded-[3px] ring-2 ring-primary ring-inset" transition={GERAK_SOROT} /> : null}
+                    {dipilih ? <motion.span layoutId="kalender-pilih" className="absolute inset-0 rounded-[3px] ring-2 ring-primary ring-inset" transition={motionTokens.spring.morph} /> : null}
                     <span
                       className={cn(
                         "relative flex size-6 items-center justify-center self-end rounded-full font-mono text-xs",

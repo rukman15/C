@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { motion } from "motion/react";
+import { Menu } from "lucide-react";
+import { Drawer, DrawerContent } from "@/components/arc/drawer/drawer";
 import { menuAktif, type ButirMenu, type menuAkun } from "@/lib/navigasi";
 import { NAMA_APLIKASI, LEMBAGA_SINGKAT } from "@/lib/aplikasi";
 import { cn } from "@/lib/utils";
 import { IKON_MENU } from "./ikon";
 import { MenuPengguna, type InfoPengguna } from "./menu-pengguna";
-import { TombolTema } from "@/components/tombol-tema";
 
 type Menu = ReturnType<typeof menuAkun>;
 
@@ -21,17 +21,9 @@ type Menu = ReturnType<typeof menuAkun>;
 export function Kerangka({ menu, pengguna, children }: { menu: Menu | null; pengguna: InfoPengguna; children: React.ReactNode }) {
   const [laci, setLaci] = useState(false);
   const path = usePathname();
-  const reduce = useReducedMotion();
 
   // Tutup laci setelah pindah halaman.
   useEffect(() => setLaci(false), [path]);
-
-  useEffect(() => {
-    if (!laci) return;
-    const tutup = (e: KeyboardEvent) => e.key === "Escape" && setLaci(false);
-    window.addEventListener("keydown", tutup);
-    return () => window.removeEventListener("keydown", tutup);
-  }, [laci]);
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[16rem_1fr]">
@@ -40,42 +32,14 @@ export function Kerangka({ menu, pengguna, children }: { menu: Menu | null; peng
         {menu ? <Navigasi menu={menu} path={path} idSorot="sorot-desktop" /> : <div className="flex-1" />}
       </aside>
 
-      <AnimatePresence>
-        {laci && menu ? (
-          <div className="fixed inset-0 z-40 lg:hidden">
-            <motion.div
-              className="absolute inset-0 bg-foreground/20 backdrop-blur-[2px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setLaci(false)}
-            />
-            <motion.aside
-              role="dialog"
-              aria-modal="true"
-              aria-label="Menu"
-              className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r border-border bg-background"
-              initial={reduce ? { opacity: 0 } : { x: "-100%" }}
-              animate={reduce ? { opacity: 1 } : { x: 0 }}
-              exit={reduce ? { opacity: 0 } : { x: "-100%" }}
-              transition={{ type: "spring", stiffness: 420, damping: 40 }}
-            >
-              <div className="flex items-center justify-between pr-3">
-                <Merek />
-                <button
-                  type="button"
-                  onClick={() => setLaci(false)}
-                  className="flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
-                  aria-label="Tutup menu"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
-              <Navigasi menu={menu} path={path} idSorot="sorot-laci" />
-            </motion.aside>
-          </div>
-        ) : null}
-      </AnimatePresence>
+      {menu ? (
+        // Laci menu di HP: Drawer Arc dari kiri (Esc, klik di luar, dan geser menutupnya).
+        <Drawer open={laci} onOpenChange={setLaci}>
+          <DrawerContent side="left" title={NAMA_APLIKASI} description={LEMBAGA_SINGKAT}>
+            <Navigasi menu={menu} path={path} idSorot="sorot-laci" />
+          </DrawerContent>
+        </Drawer>
+      ) : null}
 
       <div className="flex min-w-0 flex-col">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/85 px-4 backdrop-blur sm:px-6">
@@ -92,7 +56,6 @@ export function Kerangka({ menu, pengguna, children }: { menu: Menu | null; peng
           ) : null}
           <span className="text-sm font-medium lg:hidden">{NAMA_APLIKASI}</span>
           <div className="ml-auto flex items-center gap-1">
-            <TombolTema />
             <MenuPengguna pengguna={pengguna} />
           </div>
         </header>
@@ -116,7 +79,7 @@ function Merek() {
 
 function Navigasi({ menu, path, idSorot }: { menu: Menu; path: string; idSorot: string }) {
   return (
-    <nav aria-label="Menu utama" className="flex-1 overflow-y-auto px-3 pb-6">
+    <nav aria-label="Menu utama" className="flex-1 overflow-y-auto px-3 pb-6 lg:px-3">
       <ul className="flex flex-col gap-0.5">
         <ButirNav butir={menu.beranda} aktif={menuAktif(path, menu.beranda.href)} idSorot={idSorot} />
       </ul>

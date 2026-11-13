@@ -127,6 +127,16 @@ export function blokTanggal(iso: string): { tgl: string; bln: string } {
   return { tgl: String(a.d), bln: BULAN_PENDEK[a.m - 1] ?? "" };
 }
 
+/** "YYYY-MM-DD" <-> Date tengah malam waktu setempat (untuk pemilih tanggal). */
+export function dariIso(iso: string): Date | undefined {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : undefined;
+}
+
+export function keIso(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 /** Pencarian sederhana: setiap kata harus muncul di nama, tempat, atau kategori. */
 export function cocokCari(d: { name: string; tempat: string }, kategoriLabel: string, cari: string): boolean {
   const teks = `${d.name} ${d.tempat} ${kategoriLabel}`.toLowerCase();

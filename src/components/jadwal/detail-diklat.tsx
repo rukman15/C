@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { ArrowRight, CalendarRange, Clock, MapPin, Tag, Users } from "lucide-react";
-import { Panel } from "@/components/ui/panel";
+import { Drawer, DrawerContent, useDrawerItem } from "@/components/arc/drawer/drawer";
+import { Badge } from "@/components/arc/badge/badge";
+import { Progress } from "@/components/arc/progress/progress";
 import { kemajuan, lamaHari, periodeTeks, type JadwalDiklat } from "@/lib/jadwal";
 import { labelKategori } from "@/lib/skema-training";
-import { cn } from "@/lib/utils";
-import { BilahKemajuan, WARNA_STATUS } from "./kartu-diklat";
+import { NADA_STATUS } from "./kartu-diklat";
 
-/** Panel rincian singkat satu diklat. */
+/** Rincian singkat satu diklat di Drawer Arc dari kanan. */
 export function DetailDiklat({
-  diklat: d,
+  diklat,
   hariIni,
   bolehRincian,
   onTutup,
@@ -20,33 +21,35 @@ export function DetailDiklat({
   bolehRincian: boolean;
   onTutup: () => void;
 }) {
+  // Isi tetap tampil selama animasi menutup.
+  const d = useDrawerItem(diklat);
   return (
-    <Panel buka={!!d} onTutup={onTutup} judul="Rincian diklat">
-      {d ? <Isi d={d} hariIni={hariIni} bolehRincian={bolehRincian} /> : null}
-    </Panel>
+    <Drawer open={!!diklat} onOpenChange={(o) => !o && onTutup()}>
+      <DrawerContent side="right" title="Rincian diklat" description={d ? periodeTeks(d.startDate, d.endDate) : undefined}>
+        {d ? <Isi d={d} hariIni={hariIni} bolehRincian={bolehRincian} /> : null}
+      </DrawerContent>
+    </Drawer>
   );
 }
 
 function Isi({ d, hariIni, bolehRincian }: { d: JadwalDiklat; hariIni: string; bolehRincian: boolean }) {
   const k = kemajuan(d, hariIni);
-  const warna = WARNA_STATUS[d.status];
-  const lama = lamaHari(d);
+  const nada = NADA_STATUS[d.status];
 
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs", warna.blok)}>
-          <span className={cn("size-1.5 rounded-full", warna.titik)} aria-hidden />
-          {warna.label}
-        </span>
+        <Badge tone={nada.tone} dot>
+          {nada.label}
+        </Badge>
         <p className="mt-3 text-xl font-medium text-pretty">{d.name}</p>
-        <p className={cn("mt-1 text-sm", d.status === "Berjalan" ? "text-success" : "text-muted-foreground")}>{k.label}</p>
-        {k.persen !== null ? <BilahKemajuan persen={k.persen} className="mt-3 h-2" /> : null}
+        <p className="mt-1 text-sm text-muted-foreground">{k.label}</p>
+        {k.persen !== null ? <Progress value={k.persen} aria-label="Kemajuan diklat" className="mt-3" /> : null}
       </div>
 
       <dl className="grid gap-4 text-sm">
         <Baris ikon={<CalendarRange className="size-4" />} label="Periode" isi={periodeTeks(d.startDate, d.endDate)} />
-        <Baris ikon={<Clock className="size-4" />} label="Lama" isi={<span className="font-mono">{lama} hari</span>} />
+        <Baris ikon={<Clock className="size-4" />} label="Lama" isi={<span className="font-mono">{lamaHari(d)} hari</span>} />
         <Baris ikon={<MapPin className="size-4" />} label="Tempat" isi={d.tempat} />
         <Baris ikon={<Tag className="size-4" />} label="Kategori" isi={labelKategori(d.category)} />
         <Baris

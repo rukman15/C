@@ -7,6 +7,8 @@ import { ChevronDown, Presentation } from "lucide-react";
 import { periodeTeks, type JadwalMengajar } from "@/lib/jadwal";
 import { formatTanggalId } from "@/lib/sesi";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/arc/badge/badge";
+import { Progress } from "@/components/arc/progress/progress";
 
 /** Jadwal mengajar milik akun yang login: satu kartu per penugasan, bisa dibuka untuk melihat sesinya. */
 export function JadwalMengajarSaya({ daftar, hariIni }: { daftar: JadwalMengajar[]; hariIni: string }) {
@@ -41,30 +43,27 @@ function KartuMengajar({ p, hariIni, buka, onAlih }: { p: JadwalMengajar; hariIn
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-sm font-medium">{p.trainingName}</p>
-            {adaHariIni ? <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] text-primary">mengajar hari ini</span> : null}
+            {adaHariIni ? (
+              <Badge size="sm" tone="info">
+                mengajar hari ini
+              </Badge>
+            ) : null}
           </div>
           {p.mataPelatihanNama ? <p className="mt-0.5 text-sm text-muted-foreground">{p.mataPelatihanNama}</p> : null}
           <p className="mt-1 text-xs text-muted-foreground">
             {periodeTeks(p.startDate, p.endDate)} · {p.tempat}
           </p>
           <div className="mt-3 flex items-center gap-3">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-              <motion.div
-                className="h-full rounded-full bg-primary"
-                initial={reduce ? false : { width: 0 }}
-                animate={{ width: `${persen}%` }}
-                transition={{ type: "spring", stiffness: 120, damping: 24 }}
-              />
-            </div>
+            <Progress value={persen} aria-label={`JP tercatat ${p.trainingName}`} className="flex-1" />
             <span className="shrink-0 font-mono text-xs text-muted-foreground">
               {p.jpSesi}/{p.jp} JP
             </span>
           </div>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
-          <span className={cn("rounded-full px-2 py-0.5 text-[11px]", disetujui ? "bg-success/12 text-success" : "bg-warning/15 text-warning")}>
+          <Badge size="sm" tone={disetujui ? "success" : "warning"} dot>
             {disetujui ? "Disetujui" : "Menunggu persetujuan"}
-          </span>
+          </Badge>
           <motion.span animate={{ rotate: buka ? 180 : 0 }} transition={{ type: "spring", stiffness: 500, damping: 30 }} className="text-muted-foreground">
             <ChevronDown className="size-4" aria-hidden />
           </motion.span>

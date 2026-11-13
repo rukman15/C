@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TriangleAlert } from "lucide-react";
+import { Alert } from "@/components/arc/alert/alert";
 import { roleProfiles } from "@/lib/roles";
 import { rapikanJabatanSurat } from "@/lib/jabatan";
 import { wajibPengguna } from "@/lib/server/halaman";
@@ -15,13 +15,9 @@ export default async function HalamanAkun() {
   return (
     <HalamanDasbor judul="Akun & Kata Sandi" lebar="sempit">
       {p.wajibGantiSandi ? (
-        <div role="alert" className="mb-4 flex gap-3 rounded-2xl border border-warning/40 bg-warning/10 p-4 text-sm">
-          <TriangleAlert className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
-          <p className="text-pretty">
-            Kata sandi Anda masih sementara atau sama dengan NIP. Ganti dulu sebelum memakai aplikasi; NIP tercantum di SK dan surat tugas
-            sehingga mudah ditebak orang lain.
-          </p>
-        </div>
+        <Alert tone="warning" title="Ganti kata sandi dulu" className="mb-4">
+          Kata sandi Anda masih sementara atau sama dengan NIP. NIP tercantum di SK dan surat tugas sehingga mudah ditebak orang lain.
+        </Alert>
       ) : null}
 
       <Kartu>

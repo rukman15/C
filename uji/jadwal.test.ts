@@ -77,3 +77,17 @@ test("kalender: jalur per minggu tetap sejajar", async () => {
   // a selalu di jalur 1; b dan c berbagi jalur 2 karena tidak beririsan.
   assert.deepEqual(j, ["a-", "ab", "ab", "ac", "ac", "a-", "a-"]);
 });
+
+test("rincian: tab per program dan rekap pengampu", async () => {
+  const { tabDiklat, rekapPengampu } = await import("../src/lib/rincian");
+  assert.deepEqual(tabDiklat(false).map((t) => t.kunci), ["rincian", "peserta", "absensi", "evaluasi"]);
+  assert.equal(tabDiklat(true).length, 12);
+  assert.deepEqual(tabDiklat(true, true).map((t) => t.kunci), ["tugas", "seminar", "penilaian"]);
+  const p = (id: string, wi: string, jp: number, status: "disetujui" | "menunggu" | "ditolak") => ({ id, instructorName: wi, instructorId: wi, jp, diajukanOleh: "kd", overCapacity: false, status, jpSesi: 0, jmlSesi: 0 });
+  const r = rekapPengampu({ jpDibutuhkan: 40, penugasan: [p("1", "A", 10, "disetujui"), p("2", "A", 6, "disetujui"), p("3", "B", 8, "menunggu"), p("4", "C", 9, "ditolak")] });
+  assert.equal(r.jpDisetujui, 16);
+  assert.equal(r.wiDisetujui, 1); // satu WI dengan dua mata pelatihan dihitung satu orang
+  assert.equal(r.jpMenunggu, 8);
+  assert.equal(r.persen, 40);
+  assert.equal(r.aktif.length, 3);
+});

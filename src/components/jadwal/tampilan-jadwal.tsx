@@ -2,9 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { CalendarDays, LayoutList, Plus, Search, X } from "lucide-react";
+import { CalendarDays, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Cip, Segmen } from "@/components/ui/segmen";
+import SegmentedControl from "@/components/arc/segmented-control/segmented-control";
+import { ChipGroup } from "@/components/arc/chip-group/chip-group";
+import { EmptyState } from "@/components/arc/empty-state/empty-state";
+import Toast from "@/components/arc/toast/toast";
 import { HalamanDasbor } from "@/components/dasbor/halaman";
 import { cocokCari, type DataJadwal, type JadwalDiklat, type StatusDiklat } from "@/lib/jadwal";
 import { KATEGORI_DIKLAT, labelKategori } from "@/lib/skema-training";
@@ -13,7 +16,7 @@ import { KartuDiklat } from "./kartu-diklat";
 import { Kalender } from "./kalender";
 import { DetailDiklat } from "./detail-diklat";
 import { JadwalMengajarSaya } from "./mengajar";
-import { FormTambahJadwal } from "./form-tambah";
+import { FormTambahJadwal } from "./form-jadwal";
 
 type Saring = "semua" | StatusDiklat;
 type Tampilan = "daftar" | "kalender";
@@ -23,6 +26,10 @@ const KELOMPOK: { status: StatusDiklat; judul: string; kosong: string }[] = [
   { status: "Terjadwal", judul: "Akan datang", kosong: "Belum ada diklat terjadwal." },
   { status: "Selesai", judul: "Baru selesai", kosong: "Belum ada diklat yang selesai." },
 ];
+
+function Jumlah({ n }: { n: number }) {
+  return <span className="ml-1.5 font-mono text-xs opacity-60">{n}</span>;
+}
 
 export function TampilanJadwal({
   data,
@@ -37,7 +44,7 @@ export function TampilanJadwal({
 }) {
   const [tampilan, setTampilan] = useState<Tampilan>("daftar");
   const [saring, setSaring] = useState<Saring>("semua");
-  const [kategori, setKategori] = useState<string>("semua");
+  const [kategori, setKategori] = useState<string[]>([]);
   const [cari, setCari] = useState("");
   const [dipilih, setDipilih] = useState<JadwalDiklat | null>(null);
   const [formBuka, setFormBuka] = useState(false);
@@ -54,13 +61,13 @@ export function TampilanJadwal({
       data.diklat.filter(
         (d) =>
           (saring === "semua" || d.status === saring) &&
-          (kategori === "semua" || d.category === kategori) &&
+          (kategori.length === 0 || kategori.includes(d.category)) &&
           cocokCari(d, labelKategori(d.category), cari),
       ),
     [data.diklat, saring, kategori, cari],
   );
 
-  const adaSaringan = saring !== "semua" || kategori !== "semua" || cari.trim() !== "";
+  const adaSaringan = saring !== "semua" || kategori.length > 0 || cari.trim() !== "";
   const mengajar = data.mengajar ?? [];
 
   return (
@@ -70,17 +77,19 @@ export function TampilanJadwal({
       lebar="penuh"
     >
       <div className="-mt-4 mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Segmen<Saring>
-          label="Saring menurut status"
-          nilai={saring}
-          onPilih={setSaring}
-          pilihan={[
-            { value: "semua", label: "Semua", jumlah: data.diklat.length },
-            { value: "Berjalan", label: "Berlangsung", jumlah: jumlah.Berjalan },
-            { value: "Terjadwal", label: "Akan datang", jumlah: jumlah.Terjadwal },
-            { value: "Selesai", label: "Selesai", jumlah: jumlah.Selesai },
-          ]}
-        />
+        <div className="tanpa-bilah -mx-4 max-w-[calc(100%+2rem)] overflow-x-auto px-4 sm:mx-0 sm:max-w-full sm:px-0">
+          <SegmentedControl
+            label="Saring menurut status"
+            value={saring}
+            onValueChange={(v) => setSaring(v as Saring)}
+            options={[
+              { value: "semua", label: "Semua", accessory: <Jumlah n={data.diklat.length} /> },
+              { value: "Berjalan", label: "Berlangsung", accessory: <Jumlah n={jumlah.Berjalan} /> },
+              { value: "Terjadwal", label: "Akan datang", accessory: <Jumlah n={jumlah.Terjadwal} /> },
+              { value: "Selesai", label: "Selesai", accessory: <Jumlah n={jumlah.Selesai} /> },
+            ]}
+          />
+        </div>
         {tambah ? (
           <Button
             onClick={() => {
@@ -94,67 +103,38 @@ export function TampilanJadwal({
         ) : null}
       </div>
 
-      <AnimatePresence>
-        {kabar ? (
-          <motion.p
-            role="status"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm"
-          >
-            {kabar}
-            <button type="button" onClick={() => setKabar(null)} aria-label="Tutup pesan" className="text-muted-foreground hover:text-foreground">
-              <X className="size-4" />
-            </button>
-          </motion.p>
-        ) : null}
-      </AnimatePresence>
-
       {mengajar.length > 0 ? <JadwalMengajarSaya daftar={mengajar} hariIni={hariIni} /> : null}
 
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-          <label className="relative flex h-9 w-full shrink-0 items-center sm:w-64">
-            <Search className="pointer-events-none absolute left-3 size-4 text-muted-foreground" aria-hidden />
+          <label className="relative flex h-10 w-full shrink-0 items-center sm:w-64">
+            <Search className="pointer-events-none absolute left-3.5 size-4 text-muted-foreground" aria-hidden />
             <span className="sr-only">Cari diklat</span>
             <input
               type="search"
               value={cari}
               onChange={(e) => setCari(e.target.value)}
               placeholder="Cari nama atau tempat"
-              className="h-9 w-full rounded-full border border-border bg-transparent pr-3 pl-9 text-sm outline-none placeholder:text-muted-foreground/70 focus:border-border-strong"
+              className="h-10 w-full rounded-full border border-border bg-transparent pr-3 pl-10 text-sm outline-none placeholder:text-muted-foreground/70 focus:border-border-strong"
             />
           </label>
-          <Cip
-            gulir
-            label="Saring menurut kategori"
-            nilai={kategori}
-            onPilih={setKategori}
-            pilihan={[{ value: "semua", label: "Semua kategori" }, ...KATEGORI_DIKLAT.map((k) => ({ value: k.value as string, label: k.label }))]}
-          />
+          <div className="tanpa-bilah -mx-4 min-w-0 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+            <ChipGroup
+              label="Saring menurut kategori"
+              multiple
+              value={kategori}
+              onValueChange={setKategori}
+              options={KATEGORI_DIKLAT.map((k) => ({ value: k.value, label: k.label }))}
+            />
+          </div>
         </div>
-        <Segmen<Tampilan>
+        <SegmentedControl
           label="Tampilan"
-          nilai={tampilan}
-          onPilih={setTampilan}
-          pilihan={[
-            {
-              value: "daftar",
-              label: (
-                <span className="flex items-center gap-1.5">
-                  <LayoutList className="size-4" aria-hidden /> Daftar
-                </span>
-              ),
-            },
-            {
-              value: "kalender",
-              label: (
-                <span className="flex items-center gap-1.5">
-                  <CalendarDays className="size-4" aria-hidden /> Kalender
-                </span>
-              ),
-            },
+          value={tampilan}
+          onValueChange={(v) => setTampilan(v as Tampilan)}
+          options={[
+            { value: "daftar", label: "Daftar" },
+            { value: "kalender", label: "Kalender" },
           ]}
         />
       </div>
@@ -167,13 +147,25 @@ export function TampilanJadwal({
         ) : (
           <motion.div key="daftar" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }}>
             {tersaring.length === 0 ? (
-              <KosongSaringan
-                ada={adaSaringan}
-                onReset={() => {
-                  setSaring("semua");
-                  setKategori("semua");
-                  setCari("");
-                }}
+              <EmptyState
+                icon={<CalendarDays size={20} />}
+                title={adaSaringan ? "Tidak ada yang cocok" : "Belum ada jadwal diklat"}
+                description={adaSaringan ? "Coba ubah saringan atau kata pencarian." : "Jadwal yang ditambahkan akan tampil di sini."}
+                action={
+                  adaSaringan ? (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        setSaring("semua");
+                        setKategori([]);
+                        setCari("");
+                      }}
+                    >
+                      Hapus saringan
+                    </Button>
+                  ) : undefined
+                }
               />
             ) : (
               <div className="flex flex-col gap-8">
@@ -216,24 +208,12 @@ export function TampilanJadwal({
           onTutup={() => setFormBuka(false)}
           onTersimpan={(nama) => {
             setFormBuka(false);
-            setKabar(`Jadwal "${nama}" ditambahkan.`);
+            setKabar(`"${nama}" ditambahkan ke jadwal.`);
           }}
         />
       ) : null}
-    </HalamanDasbor>
-  );
-}
 
-function KosongSaringan({ ada, onReset }: { ada: boolean; onReset: () => void }) {
-  return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border px-4 py-14 text-center">
-      <CalendarDays className="size-6 text-muted-foreground" aria-hidden />
-      <p className="text-sm text-muted-foreground">{ada ? "Tidak ada diklat yang cocok dengan saringan." : "Belum ada jadwal diklat."}</p>
-      {ada ? (
-        <button type="button" onClick={onReset} className="text-sm text-primary hover:underline">
-          Hapus saringan
-        </button>
-      ) : null}
-    </div>
+      <Toast title="Jadwal tersimpan" description={kabar ?? undefined} open={kabar !== null} onOpenChange={(o) => !o && setKabar(null)} />
+    </HalamanDasbor>
   );
 }

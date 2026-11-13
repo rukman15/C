@@ -5,6 +5,15 @@ import { MapPin, Users } from "lucide-react";
 import { blokTanggal, kemajuan, periodeTeks, type JadwalDiklat } from "@/lib/jadwal";
 import { labelKategori } from "@/lib/skema-training";
 import { cn } from "@/lib/utils";
+import { Badge, type BadgeTone } from "@/components/arc/badge/badge";
+import { Progress } from "@/components/arc/progress/progress";
+
+/** Nada Badge Arc per status. */
+export const NADA_STATUS: Record<JadwalDiklat["status"], { tone: BadgeTone; label: string }> = {
+  Berjalan: { tone: "success", label: "Berlangsung" },
+  Terjadwal: { tone: "info", label: "Akan datang" },
+  Selesai: { tone: "neutral", label: "Selesai" },
+};
 
 export const WARNA_STATUS: Record<JadwalDiklat["status"], { titik: string; blok: string; label: string }> = {
   Berjalan: { titik: "bg-success", blok: "bg-success/12 text-success", label: "Berlangsung" },
@@ -56,26 +65,14 @@ export function KartuDiklat({ diklat: d, hariIni, urutan, onPilih }: { diklat: J
             ) : null}
           </div>
           <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-            <span className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">{labelKategori(d.category)}</span>
+            <Badge size="sm" outline>
+              {labelKategori(d.category)}
+            </Badge>
             <span className={cn("text-xs", d.status === "Berjalan" ? "text-success" : "text-muted-foreground")}>{k.label}</span>
           </div>
-          {k.persen !== null ? <BilahKemajuan persen={k.persen} /> : null}
+          {k.persen !== null ? <Progress value={k.persen} aria-label={`Kemajuan ${d.name}`} className="mt-2" /> : null}
         </div>
       </motion.button>
     </motion.li>
-  );
-}
-
-export function BilahKemajuan({ persen, className }: { persen: number; className?: string }) {
-  const reduce = useReducedMotion();
-  return (
-    <div className={cn("mt-2 h-1.5 overflow-hidden rounded-full bg-muted", className)} role="progressbar" aria-valuenow={persen} aria-valuemin={0} aria-valuemax={100}>
-      <motion.div
-        className="h-full rounded-full bg-success"
-        initial={reduce ? false : { width: 0 }}
-        animate={{ width: `${persen}%` }}
-        transition={{ type: "spring", stiffness: 120, damping: 24, delay: 0.1 }}
-      />
-    </div>
   );
 }

@@ -1,57 +1,27 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 /*
- * Token warna e-Balai v2 — bersih ala Arc/beUI. Hanya token ini yang dipakai komponen;
- * tanpa warna mentah di halaman.
+ * Warna dan token desain berasal dari Arc (src/components/arc/foundation.css, diimpor di layout).
+ * Tema gelap: data-theme="dark" di <html>; aksen biru e-Balai: data-accent="blue".
+ * Kelas Tailwind di bawah hanya menamai ulang token Arc, jadi halaman dan komponen Arc
+ * selalu memakai warna yang sama.
  */
-:root {
-  --background: oklch(99% 0 0);
-  --foreground: oklch(17% 0.005 260);
-  --card: oklch(97.2% 0.002 260);
-  --muted: oklch(96% 0.003 260);
-  --muted-foreground: oklch(50% 0.01 260);
-  --border: oklch(17% 0.01 260 / 0.08);
-  --border-strong: oklch(17% 0.01 260 / 0.14);
-  --primary: oklch(52% 0.17 255);
-  --primary-foreground: oklch(99% 0 0);
-  --success: oklch(58% 0.14 155);
-  --warning: oklch(70% 0.15 75);
-  --destructive: oklch(58% 0.2 25);
-  --ring: oklch(52% 0.17 255 / 0.45);
-}
-
-.dark {
-  --background: oklch(16% 0.005 260);
-  --foreground: oklch(96% 0.003 260);
-  --card: oklch(20% 0.006 260);
-  --muted: oklch(23% 0.006 260);
-  --muted-foreground: oklch(66% 0.01 260);
-  --border: oklch(100% 0 0 / 0.07);
-  --border-strong: oklch(100% 0 0 / 0.13);
-  --primary: oklch(68% 0.15 255);
-  --primary-foreground: oklch(16% 0.005 260);
-  --success: oklch(70% 0.14 155);
-  --warning: oklch(78% 0.14 75);
-  --destructive: oklch(68% 0.18 25);
-  --ring: oklch(68% 0.15 255 / 0.5);
-}
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--surface-muted);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--text-secondary);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--accent-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
-  --color-destructive: var(--destructive);
-  --color-ring: var(--ring);
+  --color-destructive: var(--danger);
+  --color-ring: var(--accent);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
@@ -59,11 +29,10 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html {
-  color-scheme: light;
-}
-html.dark {
-  color-scheme: dark;
+/* Arc membaca --font-geist (judul) dan --font-inter (teks); e-Balai memakai Geist untuk keduanya. */
+:root {
+  --font-geist: var(--font-geist-sans);
+  --font-inter: var(--font-geist-sans);
 }
 
 body {
@@ -73,13 +42,30 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Fokus keyboard saja; klik mouse tidak memunculkan cincin. */
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+/* Pergantian tema "reveal" dari tombol tema Arc: lingkaran membesar dari posisi tombol. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
-:focus:not(:focus-visible) {
-  outline: none;
+::view-transition-new(root) {
+  animation: tema-reveal 480ms var(--ease-enter, ease-out);
+}
+@keyframes tema-reveal {
+  from {
+    clip-path: circle(0 at var(--x, 50%) var(--y, 0));
+  }
+  to {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 0));
+  }
+}
+
+/* Baris geser ke samping tanpa bilah gulir. */
+@utility tanpa-bilah {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -88,13 +74,5 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-  }
-}
-
-/* Baris geser ke samping tanpa bilah gulir (cip, segmen di HP). */
-@utility tanpa-bilah {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
   }
 }

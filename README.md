@@ -11,6 +11,7 @@ Bangun ulang e-Balai dengan Next.js + React. Aplikasi lama (SvelteKit) ada di re
 - **Beranda**: sapaan, data akun dan keanggotaan, pintasan.
 - **Akun & Kata Sandi**: ganti kata sandi (sesi lain gugur), keluar, keluar dari semua perangkat.
 - **Jadwal Diklat** (tahap 2): daftar per status (berlangsung, akan datang, baru selesai) dengan kemajuan hari, saring status dan kategori, pencarian, kalender bulanan (batang diklat per minggu, pilih hari), panel rincian, jadwal mengajar milik sendiri (sesi dan JP tercatat), dan tambah jadwal (program PKA/PKP dengan saran nama dan JP dari kurikulum, tim pemegang). Aturan data dan hak akses sama dengan aplikasi lama; ubah dan hapus jadwal tetap di Rincian Diklat.
+- **Rincian Diklat** (tahap 3): kepala halaman (lencana program, angkatan, kategori, tim, status), ubah jadwal, hapus jadwal kosong (konfirmasi berubah bentuk), tab ke 12 bagian, ringkasan angka beranimasi, kemajuan JP pengampu, kurikulum LAN per tahap (batang komposisi JP, rincian kegiatan bisa dibuka), mata pelatihan & pengampu (saring yang belum/sudah ada), dan daftar pengampu dengan JP sesi tercatat. Hak akses sama dengan aplikasi lama. Menetapkan pengampu, mencatat sesi mengajar, dan surat tugas masih di aplikasi lama; 11 tab lain tampil "belum dibangun ulang".
 - Halaman menu lain menampilkan "Belum dibangun ulang".
 - Tema terang/gelap, tampilan HP (menu laci).
 
@@ -43,10 +44,11 @@ Skema ada di `prisma/schema.prisma`, salinan dari `prisma/schema.prisma` di repo
 - `src/app/` — halaman dan API (`api/auth/session`, `api/akun/kata-sandi`, `api/training`).
 - `src/lib/` — logika murni, sebagian besar disalin dari `src/lib` repo bangkom (roles, navigasi, plt, tanggal, tim-kerja).
 - `src/lib/server/` — sesi, auth, akses database.
+- `src/components/arc/` — komponen [Arc UI](https://uiarc.dev), dipasang dari registry-nya: fondasi token (warna, tema terang/gelap, gerak), Tabs, Segmented control, Chip group, Dialog, Drawer, User menu, Theme switch, Badge, Progress, Metric card, Alert, Toast, Empty state, Confirm morph, Date picker, Number field, Select, dan lainnya.
 - `src/components/ui/` — Input dan Button dari [beUI](https://beui.dev) (MIT, lihat `LICENSE-beui`).
 - `src/components/dasbor/` — kerangka dasbor, menu pengguna, ikon menu.
 - `uji/` — uji tanpa database.
 
 ## Tampilan
 
-Token warna di `src/app/globals.css` (terang dan gelap); halaman hanya memakai token, tanpa warna mentah. Font Geist dan Geist Mono (angka, email, NIP). Kartu bergaris tanpa bayangan, ketebalan huruf 400/500.
+Token warna berasal dari fondasi Arc (`src/components/arc/foundation.css`, aksen biru `data-accent="blue"`, tema `data-theme`); `src/app/globals.css` hanya menamai ulang token itu untuk kelas Tailwind. Halaman tanpa warna mentah. Komponen buatan sendiri hanya untuk yang tidak ada di library: kalender bulan berisi batang diklat, kartu diklat, dan kerangka dasbor. Font Geist dan Geist Mono (angka, email, NIP). Kartu bergaris tanpa bayangan, ketebalan huruf 400/500.

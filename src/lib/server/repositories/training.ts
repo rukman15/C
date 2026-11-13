@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/server/prisma";
-import { ValidationError } from "@/lib/server/errors";
+import { ConflictError, NotFoundError, ValidationError, kodePrisma } from "@/lib/server/errors";
 import { TEMPAT_DEFAULT } from "@/lib/sesi";
 import { HARI_MS, awalHariWib, bacaTanggalIso, statusDariTanggal } from "@/lib/tanggal";
 import { isKodeJenis, isModePelatihan } from "@/lib/kurikulum";
@@ -96,4 +96,77 @@ export async function createTraining(input: IsianTraining): Promise<{ id: string
       angkatan: input.angkatan?.trim() || null,
     },
   });
+}
+
+/**
+ * Ubah jadwal diklat (sama dengan updateTraining aplikasi lama). Status dihitung ulang dari tanggal.
+ * Program tidak boleh diganti bila sudah ada penugasan/sesi per mata pelatihan, dan program/mode
+ * tidak boleh diganti bila peserta sudah punya nilai.
+ */
+export async function updateTraining(id: string, input: IsianTraining): Promise<{ id: string; name: string }> {
+  const lama = await prisma.training.findUnique({ where: { id }, select: { jenisPelatihan: true, modePelatihan: true } });
+  if (!lama) throw new NotFoundError(`Training "${id}" tidak ditemukan`);
+  const { startDate, endDate } = bacaPeriode(input.startDate, input.endDate);
+  const program = bacaProgram(input.jenisPelatihan, input.modePelatihan);
+  const timKerjaId = await bacaTim(input.timKerjaId);
+
+  if (program.jenisPelatihan !== lama.jenisPelatihan) {
+    const [terikat, sesiTerikat] = await Promise.all([
+      prisma.penugasanApproval.count({ where: { trainingId: id, mataPelatihan: { not: null } } }),
+      prisma.sesiPembelajaran.count({ where: { trainingId: id, mataPelatihan: { not: null } } }),
+    ]);
+    if (terikat > 0) throw new ConflictError("Program tidak bisa diganti karena sudah ada penugasan WI per mata pelatihan pada jadwal ini");
+    if (sesiTerikat > 0) throw new ConflictError("Program tidak bisa diganti karena jadwal pembelajarannya sudah memakai mata pelatihan program ini");
+  }
+  if (program.jenisPelatihan !== lama.jenisPelatihan || program.modePelatihan !== lama.modePelatihan) {
+    const bernilai = await prisma.nilaiPeserta.count({ where: { peserta: { trainingId: id } } });
+    if (bernilai > 0) throw new ConflictError("Program atau mode tidak bisa diganti karena peserta jadwal ini sudah punya nilai");
+  }
+
+  try {
+    return await prisma.training.update({
+      where: { id },
+      select: { id: true, name: true },
+      data: {
+        ...(timKerjaId !== undefined ? { timKerjaId } : {}),
+        name: input.name.trim(),
+        category: input.category,
+        participants: input.participants ?? 0,
+        startDate,
+        endDate,
+        jpDibutuhkan: input.jpDibutuhkan ?? 0,
+        tempat: input.tempat?.trim() || TEMPAT_DEFAULT,
+        status: statusDariTanggal(startDate, endDate),
+        ...program,
+        angkatan: input.angkatan?.trim() || null,
+      },
+    });
+  } catch (e) {
+    if (kodePrisma(e) === "P2025") throw new NotFoundError(`Training "${id}" tidak ditemukan`);
+    throw e;
+  }
+}
+
+/**
+ * Hapus jadwal diklat yang masih kosong: belum punya pengajuan/penugasan WI (termasuk yang ditolak),
+ * peserta, maupun jadwal pembelajaran. Sama dengan deleteTraining aplikasi lama.
+ */
+export async function deleteTraining(id: string): Promise<void> {
+  const ada = await prisma.training.findUnique({ where: { id }, select: { id: true } });
+  if (!ada) throw new NotFoundError(`Training "${id}" tidak ditemukan`);
+  const [penugasan, peserta, sesi] = await Promise.all([
+    prisma.penugasanApproval.count({ where: { trainingId: id } }),
+    prisma.peserta.count({ where: { trainingId: id } }),
+    prisma.sesiPembelajaran.count({ where: { trainingId: id } }),
+  ]);
+  if (penugasan > 0) throw new ConflictError("Jadwal ini sudah punya pengajuan atau penugasan WI, jadi tidak bisa dihapus. Ubah tanggal atau namanya saja.");
+  if (peserta > 0 || sesi > 0) {
+    throw new ConflictError("Jadwal ini sudah punya peserta atau jadwal pembelajaran, jadi tidak bisa dihapus. Hapus dulu isinya kalau jadwal ini memang batal.");
+  }
+  try {
+    await prisma.training.deleteMany({ where: { id } });
+  } catch (e) {
+    if (kodePrisma(e) === "P2003") throw new ConflictError("Jadwal ini baru saja mendapat isian baru, jadi tidak bisa dihapus.");
+    throw e;
+  }
 }
