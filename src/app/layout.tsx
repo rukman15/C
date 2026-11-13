@@ -21,8 +21,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // data-accent: aksen biru e-Balai dari palet Arc. data-theme dipasang skrip sebelum halaman tergambar.
-    <html lang="id" data-accent="blue" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+    // data-accent: palet e-Balai (Biru Langit, Putih, Merah Scarlet; EB-054). data-theme dipasang skrip sebelum halaman tergambar.
+    <html lang="id" data-accent="balai" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SKRIP_TEMA }} />
       </head>

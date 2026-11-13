@@ -2,7 +2,7 @@
 
 /*
  * Warna dan token desain berasal dari Arc (src/components/arc/foundation.css, diimpor di layout).
- * Tema gelap: data-theme="dark" di <html>; aksen biru e-Balai: data-accent="blue".
+ * Tema gelap: data-theme="dark" di <html>; palet e-Balai: data-accent="balai".
  * Kelas Tailwind di bawah hanya menamai ulang token Arc, jadi halaman dan komponen Arc
  * selalu memakai warna yang sama.
  */
@@ -21,12 +21,52 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-destructive: var(--danger);
+  --color-sorot: var(--sorot, var(--danger));
+  --color-sorot-foreground: var(--sorot-foreground, #fff);
   --color-ring: var(--accent);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Palet e-Balai (EB-054): Biru Langit #2C99D6 (aksen), Putih #F8FAFC (latar), Merah Scarlet #EB2E33 (bahaya/sorotan).
+ * Ditulis sebagai aksen "balai" di atas token Arc agar semua komponen ikut; tema gelap memakai versi lebih terang.
+ */
+:root[data-accent="balai"]:not([data-theme="dark"]) {
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-muted: #eef3f8;
+  --border: #e2e8f0;
+  --border-subtle: #edf2f7;
+  --border-strong: #c3ced9;
+  --accent: #2c99d6;
+  --accent-strong: #1e7bb3;
+  --accent-subtle: rgb(44 153 214 / 0.12);
+  --accent-foreground: #ffffff;
+  --control-on: #2c99d6;
+  --control-thumb-on: #fff;
+  --control-glyph: #fff;
+  --control-fill: #2c99d6;
+  --danger: #eb2e33;
+  --sorot: #eb2e33;
+  --sorot-foreground: #ffffff;
+}
+:root[data-theme="dark"][data-accent="balai"] {
+  --accent: #5bb4e6;
+  --accent-strong: #9dd3f2;
+  --accent-subtle: rgb(44 153 214 / 0.22);
+  --accent-foreground: #0b1a24;
+  --control-on: #2c99d6;
+  --control-thumb-on: #fff;
+  --control-glyph: #fff;
+  --control-fill: #2c99d6;
+  --danger: #ff6b6f;
+  --sorot: #ff5a5f;
+  --sorot-foreground: #1f0a0b;
 }
 
 /* Arc membaca --font-geist (judul) dan --font-inter (teks); e-Balai memakai Geist untuk keduanya. */
