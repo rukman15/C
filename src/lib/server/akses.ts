@@ -113,3 +113,10 @@ export async function wewenangPegawai(pegawaiId: string | null | undefined): Pro
     throw e;
   }
 }
+
+/** Membaca formulir penyelenggaraan satu jadwal (akses-formulir.ts aplikasi lama): pembaca semua atau pengelola jadwal itu. */
+export async function wajibBacaFormulir(trainingId: string): Promise<AksesDiklat> {
+  const a = await aksesDiklat();
+  if (!pembacaSemua(a, ["ketua-diklat", "kepala-balai", "kabag-tu"])) await wajibKelolaTraining(a, trainingId);
+  return a;
+}
