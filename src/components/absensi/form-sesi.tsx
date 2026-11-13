@@ -109,11 +109,23 @@ export function FormSesi({
   return (
     <form onSubmit={simpan} noValidate className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-[1fr_9rem]">
-        <DatePicker label="Tanggal" value={dariIso(tanggal)} onChange={(d) => setTanggal(d ? keIso(d) : "")} locale="id-ID" format={{ weekday: "long", day: "numeric", month: "long", year: "numeric" }} />
+        <DatePicker
+          label="Tanggal"
+          value={dariIso(tanggal)}
+          onChange={(d) => setTanggal(d ? keIso(d) : "")}
+          locale="id-ID"
+          format={{ weekday: "long", day: "numeric", month: "long", year: "numeric" }}
+        />
         <Input label="Jam mulai" value={jam} onChange={setJam} placeholder="08:00" inputMode="numeric" maxLength={5} />
       </div>
       {mpPilihan.length > 0 ? (
-        <Select label="Mata pelatihan" placeholder="Bukan mata pelatihan (mis. pembukaan)" value={mp || undefined} onValueChange={pilihMp} options={mpPilihan.map((m) => ({ value: m.kode, label: m.nama }))} />
+        <Select
+          label="Mata pelatihan"
+          placeholder="Bukan mata pelatihan (mis. pembukaan)"
+          value={mp || undefined}
+          onValueChange={pilihMp}
+          options={mpPilihan.map((m) => ({ value: m.kode, label: m.nama }))}
+        />
       ) : null}
       <div className="grid gap-4 sm:grid-cols-[1fr_9rem]">
         <Input label="Kegiatan" value={kegiatan} onChange={setKegiatan} maxLength={200} placeholder="mis. Pembukaan dan orientasi" />
@@ -180,16 +192,20 @@ export function FormTempel({ data, onSelesai }: { data: JadwalPembelajaran; onSe
           </p>
           {hasil.galat.length ? (
             <Alert tone="warning" title={`${hasil.galat.length} baris tidak terbaca dan akan dilewati`}>
-              <ul className="mt-1 list-disc pl-4">
+              <span className="block mt-1">
                 {hasil.galat.slice(0, 6).map((g) => (
-                  <li key={g.nomor}>
+                  <span key={g.nomor} className="block before:mr-1.5 before:content-['•']">
                     Baris <span className="font-mono">{g.nomor}</span>: {g.alasan}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </span>
             </Alert>
           ) : null}
-          {terlaluBanyak ? <Alert tone="danger" title={`Maksimal ${SESI_MAKS_PER_PERMINTAAN} sesi sekali simpan`}>Tempel sebagian dulu.</Alert> : null}
+          {terlaluBanyak ? (
+            <Alert tone="danger" title={`Maksimal ${SESI_MAKS_PER_PERMINTAAN} sesi sekali simpan`}>
+              Tempel sebagian dulu.
+            </Alert>
+          ) : null}
           {hasil.baris.length ? (
             <div className="max-h-48 overflow-y-auto rounded-2xl border border-border text-sm">
               {hasil.baris.map((b, i) => (

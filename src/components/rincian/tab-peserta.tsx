@@ -79,7 +79,12 @@ export function TabPeserta({ trainingId, data, bolehUbah }: { trainingId: string
         <MetricCard label="Peserta aktif" value={aktif.length} suffix={" orang"} context={`${data.peserta.length} terdaftar`} />
         <MetricCard label="Belum punya akun" value={tanpaAkun.length} suffix={" orang"} context="Peserta aktif tanpa akun login" />
         <MetricCard label="Sesi wajib hadir" value={data.jumlahSesiWajib} suffix={" sesi"} context={adaRekap ? "Dasar rekap kehadiran" : "Jadwal pembelajaran belum diisi"} />
-        <MetricCard label="Mencapai batas" value={diBatas} suffix={" orang"} context={data.aturan ? `Batas ${data.aturan.maksJp} JP / ${data.aturan.maksHari} hari` : "Tanpa batas ketidakhadiran"} />
+        <MetricCard
+          label="Mencapai batas"
+          value={diBatas}
+          suffix={" orang"}
+          context={data.aturan ? `Batas ${data.aturan.maksJp} JP / ${data.aturan.maksHari} hari` : "Tanpa batas ketidakhadiran"}
+        />
       </section>
 
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -253,7 +258,11 @@ export function TabPeserta({ trainingId, data, bolehUbah }: { trainingId: string
             </DialogContent>
           </Dialog>
           <Dialog open={akun !== null} onOpenChange={(o) => !o && setAkun(null)}>
-            <DialogContent title="Akun peserta" description="Kata sandi sementara hanya tampil sekali. Bagikan kepada peserta; mereka wajib menggantinya saat pertama masuk." className="max-w-2xl">
+            <DialogContent
+              title="Akun peserta"
+              description="Kata sandi sementara hanya tampil sekali. Bagikan kepada peserta; mereka wajib menggantinya saat pertama masuk."
+              className="max-w-2xl"
+            >
               {akun ? <HasilAkun h={akun} /> : null}
             </DialogContent>
           </Dialog>
@@ -352,13 +361,13 @@ function FormTempel({ trainingId, onSelesai }: { trainingId: string; onSelesai: 
             </p>
             {hasil.galat.length ? (
               <Alert tone="warning" title="Baris bermasalah tidak ikut disimpan">
-                <ul className="mt-1 max-h-28 list-disc overflow-y-auto pl-4">
+                <span className="block mt-1 max-h-28  overflow-y-auto">
                   {hasil.galat.map((g) => (
-                    <li key={g.nomor}>
+                    <span key={g.nomor} className="block before:mr-1.5 before:content-['•']">
                       Baris {g.nomor}: {g.alasan}
-                    </li>
+                    </span>
                   ))}
-                </ul>
+                </span>
               </Alert>
             ) : null}
             {hasil.baris.length ? (
@@ -419,7 +428,12 @@ function FormUbah({ p, onSelesai }: { p: PesertaBaris; onSelesai: () => void }) 
       <Input label="Nama" value={isi.nama} onChange={atur("nama")} maxLength={150} />
       <div className="grid gap-4 sm:grid-cols-2">
         <Input label="NIP" value={isi.nip} onChange={atur("nip")} inputMode="numeric" />
-        <Select label="Status" value={status} onValueChange={(v) => setStatus(v as StatusPeserta)} options={STATUS_PESERTA.map((s) => ({ value: s, label: LABEL_STATUS_PESERTA[s] }))} />
+        <Select
+          label="Status"
+          value={status}
+          onValueChange={(v) => setStatus(v as StatusPeserta)}
+          options={STATUS_PESERTA.map((s) => ({ value: s, label: LABEL_STATUS_PESERTA[s] }))}
+        />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Input label="Jabatan" value={isi.jabatan} onChange={atur("jabatan")} maxLength={200} />
@@ -483,24 +497,24 @@ function HasilAkun({ h }: { h: HasilAkunPeserta }) {
       ) : null}
       {h.ditautkan.length ? (
         <Alert tone="info" title={`${h.ditautkan.length} peserta memakai akun yang sudah ada`}>
-          <ul className="mt-1 list-disc pl-4">
+          <span className="block mt-1">
             {h.ditautkan.map((d) => (
-              <li key={d.pesertaId}>
+              <span key={d.pesertaId} className="block before:mr-1.5 before:content-['•']">
                 {d.nama}: {d.keterangan}
-              </li>
+              </span>
             ))}
-          </ul>
+          </span>
         </Alert>
       ) : null}
       {h.dilewati.length ? (
         <Alert tone="warning" title={`${h.dilewati.length} peserta dilewati`}>
-          <ul className="mt-1 list-disc pl-4">
+          <span className="block mt-1">
             {h.dilewati.map((d) => (
-              <li key={d.pesertaId}>
+              <span key={d.pesertaId} className="block before:mr-1.5 before:content-['•']">
                 {d.nama}: {d.alasan}
-              </li>
+              </span>
             ))}
-          </ul>
+          </span>
         </Alert>
       ) : null}
       {!h.dibuat.length && !h.ditautkan.length && !h.dilewati.length ? <p className="text-muted-foreground">Semua peserta aktif sudah punya akun.</p> : null}

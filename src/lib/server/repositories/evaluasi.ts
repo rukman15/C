@@ -3,7 +3,7 @@ import { prisma } from "@/lib/server/prisma";
 import { ConflictError, ForbiddenError, NotFoundError, ValidationError } from "@/lib/server/errors";
 import { namaMataPelatihan } from "@/lib/kurikulum";
 import { labelKelompok } from "@/lib/kelompok";
-import { kelompokElearningPeserta } from "@/lib/server/repositories/kelompok";
+import { kelompokCoachPeserta } from "@/lib/server/repositories/kelompok";
 import { awalHariWib, isoTanggal } from "@/lib/tanggal";
 import { LABEL_KUALIFIKASI } from "@/lib/penilaian";
 import {
@@ -27,6 +27,7 @@ import {
   rekap23B,
   type Rekap23B,
 } from "@/lib/evaluasi-penyelenggaraan";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 
 /**
  * Evaluasi oleh peserta (BARU — pengganti Google Form evaluasi WI & penyelenggara).
@@ -109,7 +110,7 @@ export async function daftarSasaran(trainingId: string): Promise<SasaranRecord[]
     orderBy: { createdAt: "asc" },
   });
   const coach: { id: string; nomor: number; nama: string | null; coachNama: string | null; coachPegawaiId: string | null }[] = await prisma.kelompokPeserta.findMany({
-    where: { trainingId, jenis: "ELEARNING", coachNama: { not: null } },
+    where: { trainingId, jenis: JENIS_KELOMPOK_COACH, coachNama: { not: null } },
     orderBy: { nomor: "asc" },
   });
   return [
@@ -172,7 +173,7 @@ async function pesertaMilik(pesertaId: string, pembaca: { pratinjau: true } | { 
     select: { id: true, trainingId: true, status: true, akunId: true },
   });
   // Kelompok e-learning (coach) — membatasi sasaran evaluasi coach.
-  const ps = baris ? { ...baris, kelompokId: await kelompokElearningPeserta(baris.id) } : null;
+  const ps = baris ? { ...baris, kelompokId: await kelompokCoachPeserta(baris.id) } : null;
   if (!ps) throw new NotFoundError("Data peserta tidak ditemukan");
   if (!pembaca.pratinjau) {
     const akun: { id: string } | null = await prisma.akun.findUnique({ where: { email: pembaca.email }, select: { id: true } });
@@ -237,7 +238,7 @@ export async function evaluasiTertunda(trainingId: string, pesertaId: string, no
     const ada: number = await prisma.evaluasiPenyelenggaraan.count({ where: { pesertaId } });
     if (!ada) n++;
   }
-  const kelompokId = await kelompokElearningPeserta(pesertaId);
+  const kelompokId = await kelompokCoachPeserta(pesertaId);
   const sasaran = (await daftarSasaran(trainingId)).filter((s) => s.tersediaMulai <= hariIni && untukPeserta(s, kelompokId));
   if (!sasaran.length) return n;
   const sudah = new Set(

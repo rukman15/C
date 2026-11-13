@@ -95,7 +95,12 @@ export const skemaAksiKelompok = z.discriminatedUnion("aksi", [
     coachNama: z.string().trim().max(150, "Nama coach maksimal 150 karakter").nullable().optional(),
     coachPegawaiId: z.string().max(60).nullable().optional(),
     tautan: z.string().trim().max(500, "Tautan maksimal 500 karakter").nullable().optional(),
+    ketuaPesertaId: z.string().max(60).nullable().optional(),
+    kategori: z.string().trim().max(120, "Kategori maksimal 120 karakter").nullable().optional(),
+    lokus: z.string().trim().max(150, "Lokus maksimal 150 karakter").nullable().optional(),
+    kelas: z.string().trim().max(30, "Kelas maksimal 30 karakter").nullable().optional(),
   }),
+  z.object({ aksi: z.literal("kategori-peserta"), pesertaId: z.string().min(1).max(60), kategori: z.string().max(30).nullable() }),
   z.object({ aksi: z.literal("pindah"), jenis: jenisKelompok, pesertaId: z.string().min(1).max(60), kelompokId: z.string().min(1).max(60).nullable() }),
 ]);
 

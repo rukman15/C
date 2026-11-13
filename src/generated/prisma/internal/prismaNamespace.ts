@@ -4939,6 +4939,7 @@ export const PesertaScalarFieldEnum = {
   jalurDaftar: 'jalurDaftar',
   ukuranKaos: 'ukuranKaos',
   judulAksiPerubahan: 'judulAksiPerubahan',
+  kategoriInstansi: 'kategoriInstansi',
   daftarUlangPada: 'daftarUlangPada',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -4955,6 +4956,10 @@ export const KelompokPesertaScalarFieldEnum = {
   coachNama: 'coachNama',
   coachPegawaiId: 'coachPegawaiId',
   tautan: 'tautan',
+  ketuaPesertaId: 'ketuaPesertaId',
+  kategori: 'kategori',
+  lokus: 'lokus',
+  kelas: 'kelas',
   jenis: 'jenis',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

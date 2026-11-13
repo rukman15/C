@@ -7,6 +7,7 @@ import { bolehKelolaDiklat } from "@/lib/tim-kerja";
 import { labelKelompok, pakaiKelompok } from "@/lib/kelompok";
 import type { PeranCoaching } from "@/lib/coaching";
 import type { UserRole } from "@/lib/roles";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 
 /**
  * Hak atas Ruang Coaching (src/lib/coaching.ts). Peran dihitung tiap permintaan, urutan:
@@ -95,7 +96,7 @@ export async function aksesRuangCoaching(kelompokId: string): Promise<AksesRuang
     coachPegawaiId: string | null;
     tautan: string | null;
   } | null = await prisma.kelompokPeserta.findUnique({ where: { id: kelompokId } });
-  if (!k || k.jenis !== "ELEARNING") throw new NotFoundError(TIDAK_ADA);
+  if (!k || k.jenis !== JENIS_KELOMPOK_COACH) throw new NotFoundError(TIDAK_ADA);
   const t: (TrainingRuang & { jenisPelatihan: string | null }) | null = await prisma.training.findUnique({
     where: { id: k.trainingId },
     select: { id: true, name: true, status: true, startDate: true, endDate: true, timKerjaId: true, jenisPelatihan: true },

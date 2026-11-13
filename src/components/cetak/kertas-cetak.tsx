@@ -51,7 +51,9 @@ export function KertasCetak({ ukuran = "A4", judul, children }: { ukuran?: Ukura
         .kertas-alat button { border: 1px solid #94a3b8; background: #fff; border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: #000; }
         .kertas-alat button:first-of-type { background: #0b4fb3; color: #fff; border-color: #0b4fb3; }
         .kertas { background: #fff; margin: 0 auto; font-size: 11pt; line-height: 1.3; overflow-x: auto; color: #000; }
+        .kertas-halaman + .kertas-halaman { border-top: 1px dashed #9ca3af; margin-top: 1.5cm; padding-top: 1.2cm; }
         @media print {
+          .kertas-halaman + .kertas-halaman { border-top: 0; margin-top: 0; padding-top: 0; }
           .kertas-layar { background: #fff; padding: 0; }
           .kertas-alat { display: none; }
           .kertas { margin: 0; overflow: visible; zoom: 1 !important; }

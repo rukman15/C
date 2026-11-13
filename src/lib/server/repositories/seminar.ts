@@ -18,6 +18,7 @@ import {
   type StatusPanggil,
 } from "@/lib/seminar";
 import type { FaktaSeminar } from "@/lib/perhatian";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 
 /**
  * Seminar aksi perubahan RAP/LAP per peserta (src/lib/seminar.ts, CATATAN-SEMINAR-AKSI-PERUBAHAN.md).
@@ -127,7 +128,7 @@ export async function getSeminar(trainingId: string, jenis: JenisSeminar, a: Aks
   const rowDari = new Map(rows.map((r) => [r.pesertaId, r]));
 
   // Coach dari kelompok e-learning tiap peserta.
-  const kel: { id: string; coachNama: string | null }[] = await prisma.kelompokPeserta.findMany({ where: { trainingId, jenis: "ELEARNING" }, select: { id: true, coachNama: true } });
+  const kel: { id: string; coachNama: string | null }[] = await prisma.kelompokPeserta.findMany({ where: { trainingId, jenis: JENIS_KELOMPOK_COACH }, select: { id: true, coachNama: true } });
   const anggota: { kelompokId: string; pesertaId: string }[] = kel.length
     ? await prisma.anggotaKelompok.findMany({ where: { kelompokId: { in: kel.map((k) => k.id) } }, select: { kelompokId: true, pesertaId: true } })
     : [];

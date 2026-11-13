@@ -49,6 +49,7 @@ export type PesertaMinAggregateOutputType = {
   jalurDaftar: string | null
   ukuranKaos: string | null
   judulAksiPerubahan: string | null
+  kategoriInstansi: string | null
   daftarUlangPada: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,6 +70,7 @@ export type PesertaMaxAggregateOutputType = {
   jalurDaftar: string | null
   ukuranKaos: string | null
   judulAksiPerubahan: string | null
+  kategoriInstansi: string | null
   daftarUlangPada: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -89,6 +91,7 @@ export type PesertaCountAggregateOutputType = {
   jalurDaftar: number
   ukuranKaos: number
   judulAksiPerubahan: number
+  kategoriInstansi: number
   daftarUlangPada: number
   createdAt: number
   updatedAt: number
@@ -119,6 +122,7 @@ export type PesertaMinAggregateInputType = {
   jalurDaftar?: true
   ukuranKaos?: true
   judulAksiPerubahan?: true
+  kategoriInstansi?: true
   daftarUlangPada?: true
   createdAt?: true
   updatedAt?: true
@@ -139,6 +143,7 @@ export type PesertaMaxAggregateInputType = {
   jalurDaftar?: true
   ukuranKaos?: true
   judulAksiPerubahan?: true
+  kategoriInstansi?: true
   daftarUlangPada?: true
   createdAt?: true
   updatedAt?: true
@@ -159,6 +164,7 @@ export type PesertaCountAggregateInputType = {
   jalurDaftar?: true
   ukuranKaos?: true
   judulAksiPerubahan?: true
+  kategoriInstansi?: true
   daftarUlangPada?: true
   createdAt?: true
   updatedAt?: true
@@ -266,6 +272,7 @@ export type PesertaGroupByOutputType = {
   jalurDaftar: string
   ukuranKaos: string | null
   judulAksiPerubahan: string | null
+  kategoriInstansi: string | null
   daftarUlangPada: Date | null
   createdAt: Date
   updatedAt: Date
@@ -309,6 +316,7 @@ export type PesertaWhereInput = {
   jalurDaftar?: Prisma.StringFilter<"Peserta"> | string
   ukuranKaos?: Prisma.StringNullableFilter<"Peserta"> | string | null
   judulAksiPerubahan?: Prisma.StringNullableFilter<"Peserta"> | string | null
+  kategoriInstansi?: Prisma.StringNullableFilter<"Peserta"> | string | null
   daftarUlangPada?: Prisma.DateTimeNullableFilter<"Peserta"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
@@ -346,6 +354,7 @@ export type PesertaOrderByWithRelationInput = {
   jalurDaftar?: Prisma.SortOrder
   ukuranKaos?: Prisma.SortOrderInput | Prisma.SortOrder
   judulAksiPerubahan?: Prisma.SortOrderInput | Prisma.SortOrder
+  kategoriInstansi?: Prisma.SortOrderInput | Prisma.SortOrder
   daftarUlangPada?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -387,6 +396,7 @@ export type PesertaWhereUniqueInput = Prisma.AtLeast<{
   jalurDaftar?: Prisma.StringFilter<"Peserta"> | string
   ukuranKaos?: Prisma.StringNullableFilter<"Peserta"> | string | null
   judulAksiPerubahan?: Prisma.StringNullableFilter<"Peserta"> | string | null
+  kategoriInstansi?: Prisma.StringNullableFilter<"Peserta"> | string | null
   daftarUlangPada?: Prisma.DateTimeNullableFilter<"Peserta"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
@@ -424,6 +434,7 @@ export type PesertaOrderByWithAggregationInput = {
   jalurDaftar?: Prisma.SortOrder
   ukuranKaos?: Prisma.SortOrderInput | Prisma.SortOrder
   judulAksiPerubahan?: Prisma.SortOrderInput | Prisma.SortOrder
+  kategoriInstansi?: Prisma.SortOrderInput | Prisma.SortOrder
   daftarUlangPada?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -452,6 +463,7 @@ export type PesertaScalarWhereWithAggregatesInput = {
   jalurDaftar?: Prisma.StringWithAggregatesFilter<"Peserta"> | string
   ukuranKaos?: Prisma.StringNullableWithAggregatesFilter<"Peserta"> | string | null
   judulAksiPerubahan?: Prisma.StringNullableWithAggregatesFilter<"Peserta"> | string | null
+  kategoriInstansi?: Prisma.StringNullableWithAggregatesFilter<"Peserta"> | string | null
   daftarUlangPada?: Prisma.DateTimeNullableWithAggregatesFilter<"Peserta"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Peserta"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Peserta"> | Date | string
@@ -469,6 +481,7 @@ export type PesertaCreateInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -506,6 +519,7 @@ export type PesertaUncheckedCreateInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -537,6 +551,7 @@ export type PesertaUpdateInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -574,6 +589,7 @@ export type PesertaUncheckedUpdateInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -608,6 +624,7 @@ export type PesertaCreateManyInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -625,6 +642,7 @@ export type PesertaUpdateManyMutationInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -645,6 +663,7 @@ export type PesertaUncheckedUpdateManyInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -680,6 +699,7 @@ export type PesertaCountOrderByAggregateInput = {
   jalurDaftar?: Prisma.SortOrder
   ukuranKaos?: Prisma.SortOrder
   judulAksiPerubahan?: Prisma.SortOrder
+  kategoriInstansi?: Prisma.SortOrder
   daftarUlangPada?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -704,6 +724,7 @@ export type PesertaMaxOrderByAggregateInput = {
   jalurDaftar?: Prisma.SortOrder
   ukuranKaos?: Prisma.SortOrder
   judulAksiPerubahan?: Prisma.SortOrder
+  kategoriInstansi?: Prisma.SortOrder
   daftarUlangPada?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -724,6 +745,7 @@ export type PesertaMinOrderByAggregateInput = {
   jalurDaftar?: Prisma.SortOrder
   ukuranKaos?: Prisma.SortOrder
   judulAksiPerubahan?: Prisma.SortOrder
+  kategoriInstansi?: Prisma.SortOrder
   daftarUlangPada?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -1072,6 +1094,7 @@ export type PesertaCreateWithoutTrainingInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1107,6 +1130,7 @@ export type PesertaUncheckedCreateWithoutTrainingInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1170,6 +1194,7 @@ export type PesertaScalarWhereInput = {
   jalurDaftar?: Prisma.StringFilter<"Peserta"> | string
   ukuranKaos?: Prisma.StringNullableFilter<"Peserta"> | string | null
   judulAksiPerubahan?: Prisma.StringNullableFilter<"Peserta"> | string | null
+  kategoriInstansi?: Prisma.StringNullableFilter<"Peserta"> | string | null
   daftarUlangPada?: Prisma.DateTimeNullableFilter<"Peserta"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Peserta"> | Date | string
@@ -1187,6 +1212,7 @@ export type PesertaCreateWithoutKelompokInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1222,6 +1248,7 @@ export type PesertaUncheckedCreateWithoutKelompokInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1279,6 +1306,7 @@ export type PesertaCreateWithoutKehadiranInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1315,6 +1343,7 @@ export type PesertaUncheckedCreateWithoutKehadiranInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1361,6 +1390,7 @@ export type PesertaUpdateWithoutKehadiranInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1397,6 +1427,7 @@ export type PesertaUncheckedUpdateWithoutKehadiranInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1427,6 +1458,7 @@ export type PesertaCreateWithoutNilaiInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1463,6 +1495,7 @@ export type PesertaUncheckedCreateWithoutNilaiInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1509,6 +1542,7 @@ export type PesertaUpdateWithoutNilaiInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1545,6 +1579,7 @@ export type PesertaUncheckedUpdateWithoutNilaiInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1575,6 +1610,7 @@ export type PesertaCreateWithoutAkunInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1610,6 +1646,7 @@ export type PesertaUncheckedCreateWithoutAkunInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1667,6 +1704,7 @@ export type PesertaCreateWithoutTesInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1703,6 +1741,7 @@ export type PesertaUncheckedCreateWithoutTesInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1749,6 +1788,7 @@ export type PesertaUpdateWithoutTesInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1785,6 +1825,7 @@ export type PesertaUncheckedUpdateWithoutTesInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1815,6 +1856,7 @@ export type PesertaCreateWithoutEvaluasiInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1851,6 +1893,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1897,6 +1940,7 @@ export type PesertaUpdateWithoutEvaluasiInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1933,6 +1977,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1963,6 +2008,7 @@ export type PesertaCreateWithoutEvaluasiPenyelenggaraanInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1999,6 +2045,7 @@ export type PesertaUncheckedCreateWithoutEvaluasiPenyelenggaraanInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2045,6 +2092,7 @@ export type PesertaUpdateWithoutEvaluasiPenyelenggaraanInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2081,6 +2129,7 @@ export type PesertaUncheckedUpdateWithoutEvaluasiPenyelenggaraanInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2111,6 +2160,7 @@ export type PesertaCreateWithoutSuratKeteranganInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2147,6 +2197,7 @@ export type PesertaUncheckedCreateWithoutSuratKeteranganInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2193,6 +2244,7 @@ export type PesertaUpdateWithoutSuratKeteranganInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2229,6 +2281,7 @@ export type PesertaUncheckedUpdateWithoutSuratKeteranganInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2259,6 +2312,7 @@ export type PesertaCreateWithoutAnggotaKelompokInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2295,6 +2349,7 @@ export type PesertaUncheckedCreateWithoutAnggotaKelompokInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2341,6 +2396,7 @@ export type PesertaUpdateWithoutAnggotaKelompokInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2377,6 +2433,7 @@ export type PesertaUncheckedUpdateWithoutAnggotaKelompokInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2407,6 +2464,7 @@ export type PesertaCreateWithoutDokumenInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2443,6 +2501,7 @@ export type PesertaUncheckedCreateWithoutDokumenInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2489,6 +2548,7 @@ export type PesertaUpdateWithoutDokumenInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2525,6 +2585,7 @@ export type PesertaUncheckedUpdateWithoutDokumenInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2555,6 +2616,7 @@ export type PesertaCreateWithoutBerkasInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2591,6 +2653,7 @@ export type PesertaUncheckedCreateWithoutBerkasInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2637,6 +2700,7 @@ export type PesertaUpdateWithoutBerkasInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2673,6 +2737,7 @@ export type PesertaUncheckedUpdateWithoutBerkasInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2703,6 +2768,7 @@ export type PesertaCreateWithoutPelaksanaanRemedialInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2739,6 +2805,7 @@ export type PesertaUncheckedCreateWithoutPelaksanaanRemedialInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2785,6 +2852,7 @@ export type PesertaUpdateWithoutPelaksanaanRemedialInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2821,6 +2889,7 @@ export type PesertaUncheckedUpdateWithoutPelaksanaanRemedialInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2851,6 +2920,7 @@ export type PesertaCreateWithoutTontonVideoInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2887,6 +2957,7 @@ export type PesertaUncheckedCreateWithoutTontonVideoInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2933,6 +3004,7 @@ export type PesertaUpdateWithoutTontonVideoInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2969,6 +3041,7 @@ export type PesertaUncheckedUpdateWithoutTontonVideoInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2999,6 +3072,7 @@ export type PesertaCreateWithoutCatatanCoachingInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3035,6 +3109,7 @@ export type PesertaUncheckedCreateWithoutCatatanCoachingInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3081,6 +3156,7 @@ export type PesertaUpdateWithoutCatatanCoachingInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3117,6 +3193,7 @@ export type PesertaUncheckedUpdateWithoutCatatanCoachingInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3147,6 +3224,7 @@ export type PesertaCreateWithoutSeminarInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3183,6 +3261,7 @@ export type PesertaUncheckedCreateWithoutSeminarInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3229,6 +3308,7 @@ export type PesertaUpdateWithoutSeminarInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3265,6 +3345,7 @@ export type PesertaUncheckedUpdateWithoutSeminarInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3295,6 +3376,7 @@ export type PesertaCreateWithoutKirimanTugasInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3331,6 +3413,7 @@ export type PesertaUncheckedCreateWithoutKirimanTugasInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3377,6 +3460,7 @@ export type PesertaUpdateWithoutKirimanTugasInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3413,6 +3497,7 @@ export type PesertaUncheckedUpdateWithoutKirimanTugasInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3445,6 +3530,7 @@ export type PesertaCreateManyTrainingInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3462,6 +3548,7 @@ export type PesertaUpdateWithoutTrainingInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3497,6 +3584,7 @@ export type PesertaUncheckedUpdateWithoutTrainingInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3530,6 +3618,7 @@ export type PesertaUncheckedUpdateManyWithoutTrainingInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3549,6 +3638,7 @@ export type PesertaCreateManyKelompokInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3566,6 +3656,7 @@ export type PesertaUpdateWithoutKelompokInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3601,6 +3692,7 @@ export type PesertaUncheckedUpdateWithoutKelompokInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3634,6 +3726,7 @@ export type PesertaUncheckedUpdateManyWithoutKelompokInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3653,6 +3746,7 @@ export type PesertaCreateManyAkunInput = {
   jalurDaftar?: string
   ukuranKaos?: string | null
   judulAksiPerubahan?: string | null
+  kategoriInstansi?: string | null
   daftarUlangPada?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3670,6 +3764,7 @@ export type PesertaUpdateWithoutAkunInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3705,6 +3800,7 @@ export type PesertaUncheckedUpdateWithoutAkunInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3738,6 +3834,7 @@ export type PesertaUncheckedUpdateManyWithoutAkunInput = {
   jalurDaftar?: Prisma.StringFieldUpdateOperationsInput | string
   ukuranKaos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   judulAksiPerubahan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategoriInstansi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   daftarUlangPada?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3897,6 +3994,7 @@ export type PesertaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   jalurDaftar?: boolean
   ukuranKaos?: boolean
   judulAksiPerubahan?: boolean
+  kategoriInstansi?: boolean
   daftarUlangPada?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3935,6 +4033,7 @@ export type PesertaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   jalurDaftar?: boolean
   ukuranKaos?: boolean
   judulAksiPerubahan?: boolean
+  kategoriInstansi?: boolean
   daftarUlangPada?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3958,6 +4057,7 @@ export type PesertaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   jalurDaftar?: boolean
   ukuranKaos?: boolean
   judulAksiPerubahan?: boolean
+  kategoriInstansi?: boolean
   daftarUlangPada?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3981,12 +4081,13 @@ export type PesertaSelectScalar = {
   jalurDaftar?: boolean
   ukuranKaos?: boolean
   judulAksiPerubahan?: boolean
+  kategoriInstansi?: boolean
   daftarUlangPada?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PesertaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "nomor" | "nama" | "nip" | "jabatan" | "instansi" | "status" | "catatan" | "akunId" | "kelompokId" | "jalurDaftar" | "ukuranKaos" | "judulAksiPerubahan" | "daftarUlangPada" | "createdAt" | "updatedAt", ExtArgs["result"]["peserta"]>
+export type PesertaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "nomor" | "nama" | "nip" | "jabatan" | "instansi" | "status" | "catatan" | "akunId" | "kelompokId" | "jalurDaftar" | "ukuranKaos" | "judulAksiPerubahan" | "kategoriInstansi" | "daftarUlangPada" | "createdAt" | "updatedAt", ExtArgs["result"]["peserta"]>
 export type PesertaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   training?: boolean | Prisma.TrainingDefaultArgs<ExtArgs>
   akun?: boolean | Prisma.Peserta$akunArgs<ExtArgs>
@@ -4054,6 +4155,7 @@ export type $PesertaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     jalurDaftar: string
     ukuranKaos: string | null
     judulAksiPerubahan: string | null
+    kategoriInstansi: string | null
     daftarUlangPada: Date | null
     createdAt: Date
     updatedAt: Date
@@ -4511,6 +4613,7 @@ export interface PesertaFieldRefs {
   readonly jalurDaftar: Prisma.FieldRef<"Peserta", 'String'>
   readonly ukuranKaos: Prisma.FieldRef<"Peserta", 'String'>
   readonly judulAksiPerubahan: Prisma.FieldRef<"Peserta", 'String'>
+  readonly kategoriInstansi: Prisma.FieldRef<"Peserta", 'String'>
   readonly daftarUlangPada: Prisma.FieldRef<"Peserta", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Peserta", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Peserta", 'DateTime'>

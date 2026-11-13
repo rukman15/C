@@ -18,6 +18,7 @@ import { LABEL_STATUS_TES } from "@/lib/tes";
 import { formatTanggalId } from "@/lib/sesi";
 import { kirimJson } from "@/lib/api-klien";
 import { cn } from "@/lib/utils";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 import type { RuangBelajarRecord } from "@/lib/server/types";
 import type { TesPesertaRecord } from "@/lib/server/repositories/tes";
 import type { EvaluasiPesertaRecord } from "@/lib/server/repositories/evaluasi";
@@ -109,7 +110,7 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
 
   const seminar = useMemo(() => infoSeminar(t.jenisPelatihan, t.modePelatihan, data.sesi, hariIni), [t.jenisPelatihan, t.modePelatihan, data.sesi, hariIni]);
   const materi = materiProgram(t.jenisPelatihan);
-  const kelompokCoach = data.kelompok.find((k) => k.jenis === "ELEARNING") ?? null;
+  const kelompokCoach = data.kelompok.find((k) => k.jenis === JENIS_KELOMPOK_COACH) ?? null;
   const giliran = data.seminar.find((x) => x.status === "DIPANGGIL" || x.status === "PRESENTASI") ?? null;
   const seminarHariIni = data.seminar.some((x) => x.tanggal === hariIni && x.status !== "SELESAI" && x.status !== "TIDAK_HADIR");
 
@@ -227,7 +228,7 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
               }
               aksi={
                 <div className="flex flex-wrap gap-2">
-                  {k.jenis === "ELEARNING" ? (
+                  {k.jenis === JENIS_KELOMPOK_COACH ? (
                     <ButtonLink size="sm" variant="secondary" href={`/dashboard/coaching/${k.kelompokId}`}>
                       Ruang Coaching
                     </ButtonLink>
@@ -240,7 +241,23 @@ export function RuangBelajar({ data, tes, evaluasi, mentor, folder, tugasWi }: P
                 </div>
               }
             >
-              {k.coachNama ? <p className="text-sm">Coach: {k.coachNama}</p> : null}
+              {k.coachNama || k.ketuaNama || k.lokus || k.kelas ? (
+                <dl className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                  {[
+                    ["Coach", k.coachNama],
+                    ["Ketua kelompok", k.ketuaNama],
+                    ["Lokus", k.lokus],
+                    ["Kelas seminar", k.kelas],
+                  ]
+                    .filter(([, v]) => v)
+                    .map(([l, v]) => (
+                      <div key={l}>
+                        <dt className="inline text-muted-foreground">{l}: </dt>
+                        <dd className="inline">{v}</dd>
+                      </div>
+                    ))}
+                </dl>
+              ) : null}
               {k.anggota.length ? (
                 <p className="mt-2 flex items-start gap-2 text-xs text-muted-foreground">
                   <Users className="mt-0.5 size-3.5 shrink-0" aria-hidden /> {k.anggota.join(" · ")}

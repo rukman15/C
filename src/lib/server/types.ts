@@ -534,7 +534,7 @@ export type RuangBelajarRecord = {
   /** Dokumen persyaratan (null bila jadwal tidak mewajibkan). `terkunci` = tes & evaluasi belum bisa dibuka. */
   dokumen: { terkunci: boolean; kurang: number; ditolak: number; menunggu: number; batas: string | null; sisaHari: number | null } | null;
   /** Kelompok peserta per jenis kegiatan (PKA/PKP); kosong bila belum dibagi. */
-  kelompok: { kelompokId: string; jenis: string; labelJenis: string; label: string; coachNama: string | null; tautan: string | null; anggota: string[] }[];
+  kelompok: { kelompokId: string; jenis: string; labelJenis: string; label: string; coachNama: string | null; tautan: string | null; ketuaNama: string | null; lokus: string | null; kelas: string | null; anggota: string[] }[];
   /** Jadwal seminar RAP/LAP peserta ini (repositories/seminar.ts); kosong bila belum disusun penyelenggara. */
   seminar: {
     jenis: "RAP" | "LAP";

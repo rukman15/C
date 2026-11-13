@@ -25,6 +25,7 @@ import {
   type PeranPenulis,
 } from "@/lib/coaching";
 import type { FaktaCoaching } from "@/lib/perhatian";
+import { JENIS_KELOMPOK_COACH } from "@/lib/kelompok";
 
 /**
  * Ruang Coaching (src/lib/coaching.ts, CATATAN-RUANG-COACHING.md). Hak diperiksa lewat `AksesRuang`
@@ -141,7 +142,7 @@ type BarisTraining = { id: string; name: string; status: string; startDate: Date
 
 /** Ruang coaching yang boleh dibuka akun ini (coach, penyelenggara, peserta anggota, pembaca). */
 export async function listRuang(i: IdentitasAkun, hariIni: string): Promise<RuangRingkasRecord[]> {
-  const kelompok: BarisKelompok[] = await prisma.kelompokPeserta.findMany({ where: { jenis: "ELEARNING" }, orderBy: { nomor: "asc" } });
+  const kelompok: BarisKelompok[] = await prisma.kelompokPeserta.findMany({ where: { jenis: JENIS_KELOMPOK_COACH }, orderBy: { nomor: "asc" } });
   if (!kelompok.length) return [];
   const training: BarisTraining[] = await prisma.training.findMany({
     where: { id: { in: [...new Set(kelompok.map((k) => k.trainingId))] } },
@@ -152,7 +153,7 @@ export async function listRuang(i: IdentitasAkun, hariIni: string): Promise<Ruan
   // Keanggotaan akun ini (peserta AKTIF) — satu kueri.
   const milik: { id: string; trainingId: string }[] = await prisma.peserta.findMany({ where: { akunId: i.akunId, status: "AKTIF" }, select: { id: true, trainingId: true } });
   const anggotaSaya: { kelompokId: string; pesertaId: string }[] = milik.length
-    ? await prisma.anggotaKelompok.findMany({ where: { pesertaId: { in: milik.map((m) => m.id) }, jenis: "ELEARNING" }, select: { kelompokId: true, pesertaId: true } })
+    ? await prisma.anggotaKelompok.findMany({ where: { pesertaId: { in: milik.map((m) => m.id) }, jenis: JENIS_KELOMPOK_COACH }, select: { kelompokId: true, pesertaId: true } })
     : [];
   const pesertaDi = new Map(anggotaSaya.map((a) => [a.kelompokId, a.pesertaId]));
 
@@ -748,7 +749,7 @@ export async function faktaCoaching(i: Pick<IdentitasAkun, "akunId"> & { pegawai
   };
 
   if (i.pegawaiId) {
-    const dibimbing: BarisKelompok[] = await prisma.kelompokPeserta.findMany({ where: { coachPegawaiId: i.pegawaiId, jenis: "ELEARNING" } });
+    const dibimbing: BarisKelompok[] = await prisma.kelompokPeserta.findMany({ where: { coachPegawaiId: i.pegawaiId, jenis: JENIS_KELOMPOK_COACH } });
     const nama = await aktif(dibimbing.map((k) => k.trainingId));
     const ids = dibimbing.filter((k) => nama.has(k.trainingId)).map((k) => k.id);
     const topik: { kelompokId: string }[] = ids.length
@@ -764,7 +765,7 @@ export async function faktaCoaching(i: Pick<IdentitasAkun, "akunId"> & { pegawai
   if (milik.length) {
     const nama = await aktif(milik.map((m) => m.trainingId));
     const anggota: { kelompokId: string; pesertaId: string }[] = await prisma.anggotaKelompok.findMany({
-      where: { pesertaId: { in: milik.filter((m) => nama.has(m.trainingId)).map((m) => m.id) }, jenis: "ELEARNING" },
+      where: { pesertaId: { in: milik.filter((m) => nama.has(m.trainingId)).map((m) => m.id) }, jenis: JENIS_KELOMPOK_COACH },
       select: { kelompokId: true, pesertaId: true },
     });
     for (const an of anggota) {

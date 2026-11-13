@@ -310,6 +310,8 @@ model Peserta {
   jalurDaftar        String           @default("INSTANSI") // "INSTANSI" | "PERORANGAN"
   ukuranKaos         String? // "S" | "M" | "L" | "XL" | "XXL" | ... (teks bebas pendek)
   judulAksiPerubahan String?
+  // Kategori instansi untuk kelompok studi lapangan (EB-050); kosong = ditebak dari jabatan/instansi.
+  kategoriInstansi   String?
   // Waktu peserta melakukan daftar ulang (online). Kosong = belum.
   daftarUlangPada    DateTime?
   createdAt          DateTime         @default(now())
@@ -349,13 +351,18 @@ model KelompokPeserta {
   coachNama      String?
   coachPegawaiId String? // bila coach pegawai balai (WI)
   tautan         String? // ruang rapat daring kelompok
+  // Revisi kelompok (EB-046 s/d EB-050): ketua (peserta anggota, tanpa FK), kategori & lokus studi lapangan, kelas seminar.
+  ketuaPesertaId String?
+  kategori       String?
+  lokus          String?
+  kelas          String?
   // Jenis kegiatan (src/lib/kelompok.ts JENIS_KELOMPOK). Kelompok lama = ELEARNING.
   jenis          String            @default("ELEARNING") // "ELEARNING" | "STULA" | "MANDIRI" | "SEMINAR"
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
   peserta        Peserta[]
   anggota        AnggotaKelompok[]
-  // Ruang Coaching (hanya kelompok ELEARNING & pembimbingan coach).
+  // Ruang Coaching: kelompok bimbingan & seminar (EB-046; sebelumnya kelompok ELEARNING).
   sesiCoaching   SesiCoaching[]
   videoKelompok  VideoKelompok[]
   topikForum     TopikForum[]

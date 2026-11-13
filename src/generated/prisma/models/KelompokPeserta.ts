@@ -42,6 +42,10 @@ export type KelompokPesertaMinAggregateOutputType = {
   coachNama: string | null
   coachPegawaiId: string | null
   tautan: string | null
+  ketuaPesertaId: string | null
+  kategori: string | null
+  lokus: string | null
+  kelas: string | null
   jenis: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +59,10 @@ export type KelompokPesertaMaxAggregateOutputType = {
   coachNama: string | null
   coachPegawaiId: string | null
   tautan: string | null
+  ketuaPesertaId: string | null
+  kategori: string | null
+  lokus: string | null
+  kelas: string | null
   jenis: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -68,6 +76,10 @@ export type KelompokPesertaCountAggregateOutputType = {
   coachNama: number
   coachPegawaiId: number
   tautan: number
+  ketuaPesertaId: number
+  kategori: number
+  lokus: number
+  kelas: number
   jenis: number
   createdAt: number
   updatedAt: number
@@ -91,6 +103,10 @@ export type KelompokPesertaMinAggregateInputType = {
   coachNama?: true
   coachPegawaiId?: true
   tautan?: true
+  ketuaPesertaId?: true
+  kategori?: true
+  lokus?: true
+  kelas?: true
   jenis?: true
   createdAt?: true
   updatedAt?: true
@@ -104,6 +120,10 @@ export type KelompokPesertaMaxAggregateInputType = {
   coachNama?: true
   coachPegawaiId?: true
   tautan?: true
+  ketuaPesertaId?: true
+  kategori?: true
+  lokus?: true
+  kelas?: true
   jenis?: true
   createdAt?: true
   updatedAt?: true
@@ -117,6 +137,10 @@ export type KelompokPesertaCountAggregateInputType = {
   coachNama?: true
   coachPegawaiId?: true
   tautan?: true
+  ketuaPesertaId?: true
+  kategori?: true
+  lokus?: true
+  kelas?: true
   jenis?: true
   createdAt?: true
   updatedAt?: true
@@ -217,6 +241,10 @@ export type KelompokPesertaGroupByOutputType = {
   coachNama: string | null
   coachPegawaiId: string | null
   tautan: string | null
+  ketuaPesertaId: string | null
+  kategori: string | null
+  lokus: string | null
+  kelas: string | null
   jenis: string
   createdAt: Date
   updatedAt: Date
@@ -253,6 +281,10 @@ export type KelompokPesertaWhereInput = {
   coachNama?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   coachPegawaiId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   tautan?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  ketuaPesertaId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kategori?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  lokus?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kelas?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   jenis?: Prisma.StringFilter<"KelompokPeserta"> | string
   createdAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
@@ -273,6 +305,10 @@ export type KelompokPesertaOrderByWithRelationInput = {
   coachNama?: Prisma.SortOrderInput | Prisma.SortOrder
   coachPegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
   tautan?: Prisma.SortOrderInput | Prisma.SortOrder
+  ketuaPesertaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  kategori?: Prisma.SortOrderInput | Prisma.SortOrder
+  lokus?: Prisma.SortOrderInput | Prisma.SortOrder
+  kelas?: Prisma.SortOrderInput | Prisma.SortOrder
   jenis?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -297,6 +333,10 @@ export type KelompokPesertaWhereUniqueInput = Prisma.AtLeast<{
   coachNama?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   coachPegawaiId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   tautan?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  ketuaPesertaId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kategori?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  lokus?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kelas?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   jenis?: Prisma.StringFilter<"KelompokPeserta"> | string
   createdAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
@@ -317,6 +357,10 @@ export type KelompokPesertaOrderByWithAggregationInput = {
   coachNama?: Prisma.SortOrderInput | Prisma.SortOrder
   coachPegawaiId?: Prisma.SortOrderInput | Prisma.SortOrder
   tautan?: Prisma.SortOrderInput | Prisma.SortOrder
+  ketuaPesertaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  kategori?: Prisma.SortOrderInput | Prisma.SortOrder
+  lokus?: Prisma.SortOrderInput | Prisma.SortOrder
+  kelas?: Prisma.SortOrderInput | Prisma.SortOrder
   jenis?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -338,6 +382,10 @@ export type KelompokPesertaScalarWhereWithAggregatesInput = {
   coachNama?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
   coachPegawaiId?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
   tautan?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
+  ketuaPesertaId?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
+  kategori?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
+  lokus?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
+  kelas?: Prisma.StringNullableWithAggregatesFilter<"KelompokPeserta"> | string | null
   jenis?: Prisma.StringWithAggregatesFilter<"KelompokPeserta"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"KelompokPeserta"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"KelompokPeserta"> | Date | string
@@ -350,6 +398,10 @@ export type KelompokPesertaCreateInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -370,6 +422,10 @@ export type KelompokPesertaUncheckedCreateInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -388,6 +444,10 @@ export type KelompokPesertaUpdateInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -408,6 +468,10 @@ export type KelompokPesertaUncheckedUpdateInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -427,6 +491,10 @@ export type KelompokPesertaCreateManyInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -439,6 +507,10 @@ export type KelompokPesertaUpdateManyMutationInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -452,6 +524,10 @@ export type KelompokPesertaUncheckedUpdateManyInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -486,6 +562,10 @@ export type KelompokPesertaCountOrderByAggregateInput = {
   coachNama?: Prisma.SortOrder
   coachPegawaiId?: Prisma.SortOrder
   tautan?: Prisma.SortOrder
+  ketuaPesertaId?: Prisma.SortOrder
+  kategori?: Prisma.SortOrder
+  lokus?: Prisma.SortOrder
+  kelas?: Prisma.SortOrder
   jenis?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -503,6 +583,10 @@ export type KelompokPesertaMaxOrderByAggregateInput = {
   coachNama?: Prisma.SortOrder
   coachPegawaiId?: Prisma.SortOrder
   tautan?: Prisma.SortOrder
+  ketuaPesertaId?: Prisma.SortOrder
+  kategori?: Prisma.SortOrder
+  lokus?: Prisma.SortOrder
+  kelas?: Prisma.SortOrder
   jenis?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -516,6 +600,10 @@ export type KelompokPesertaMinOrderByAggregateInput = {
   coachNama?: Prisma.SortOrder
   coachPegawaiId?: Prisma.SortOrder
   tautan?: Prisma.SortOrder
+  ketuaPesertaId?: Prisma.SortOrder
+  kategori?: Prisma.SortOrder
+  lokus?: Prisma.SortOrder
+  kelas?: Prisma.SortOrder
   jenis?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -665,6 +753,10 @@ export type KelompokPesertaCreateWithoutTrainingInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -683,6 +775,10 @@ export type KelompokPesertaUncheckedCreateWithoutTrainingInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -731,6 +827,10 @@ export type KelompokPesertaScalarWhereInput = {
   coachNama?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   coachPegawaiId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   tautan?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  ketuaPesertaId?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kategori?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  lokus?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
+  kelas?: Prisma.StringNullableFilter<"KelompokPeserta"> | string | null
   jenis?: Prisma.StringFilter<"KelompokPeserta"> | string
   createdAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KelompokPeserta"> | Date | string
@@ -743,6 +843,10 @@ export type KelompokPesertaCreateWithoutPesertaInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -762,6 +866,10 @@ export type KelompokPesertaUncheckedCreateWithoutPesertaInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -795,6 +903,10 @@ export type KelompokPesertaUpdateWithoutPesertaInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -814,6 +926,10 @@ export type KelompokPesertaUncheckedUpdateWithoutPesertaInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -831,6 +947,10 @@ export type KelompokPesertaCreateWithoutAnggotaInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -850,6 +970,10 @@ export type KelompokPesertaUncheckedCreateWithoutAnggotaInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -883,6 +1007,10 @@ export type KelompokPesertaUpdateWithoutAnggotaInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -902,6 +1030,10 @@ export type KelompokPesertaUncheckedUpdateWithoutAnggotaInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -919,6 +1051,10 @@ export type KelompokPesertaCreateWithoutSesiCoachingInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -938,6 +1074,10 @@ export type KelompokPesertaUncheckedCreateWithoutSesiCoachingInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -971,6 +1111,10 @@ export type KelompokPesertaUpdateWithoutSesiCoachingInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -990,6 +1134,10 @@ export type KelompokPesertaUncheckedUpdateWithoutSesiCoachingInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1007,6 +1155,10 @@ export type KelompokPesertaCreateWithoutVideoKelompokInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1026,6 +1178,10 @@ export type KelompokPesertaUncheckedCreateWithoutVideoKelompokInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1059,6 +1215,10 @@ export type KelompokPesertaUpdateWithoutVideoKelompokInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1078,6 +1238,10 @@ export type KelompokPesertaUncheckedUpdateWithoutVideoKelompokInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1095,6 +1259,10 @@ export type KelompokPesertaCreateWithoutTopikForumInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1114,6 +1282,10 @@ export type KelompokPesertaUncheckedCreateWithoutTopikForumInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1147,6 +1319,10 @@ export type KelompokPesertaUpdateWithoutTopikForumInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1166,6 +1342,10 @@ export type KelompokPesertaUncheckedUpdateWithoutTopikForumInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1183,6 +1363,10 @@ export type KelompokPesertaCreateWithoutBacaForumInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1202,6 +1386,10 @@ export type KelompokPesertaUncheckedCreateWithoutBacaForumInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1235,6 +1423,10 @@ export type KelompokPesertaUpdateWithoutBacaForumInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1254,6 +1446,10 @@ export type KelompokPesertaUncheckedUpdateWithoutBacaForumInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1271,6 +1467,10 @@ export type KelompokPesertaCreateManyTrainingInput = {
   coachNama?: string | null
   coachPegawaiId?: string | null
   tautan?: string | null
+  ketuaPesertaId?: string | null
+  kategori?: string | null
+  lokus?: string | null
+  kelas?: string | null
   jenis?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1283,6 +1483,10 @@ export type KelompokPesertaUpdateWithoutTrainingInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1301,6 +1505,10 @@ export type KelompokPesertaUncheckedUpdateWithoutTrainingInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1319,6 +1527,10 @@ export type KelompokPesertaUncheckedUpdateManyWithoutTrainingInput = {
   coachNama?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coachPegawaiId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tautan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ketuaPesertaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kategori?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lokus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kelas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jenis?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1408,6 +1620,10 @@ export type KelompokPesertaSelect<ExtArgs extends runtime.Types.Extensions.Inter
   coachNama?: boolean
   coachPegawaiId?: boolean
   tautan?: boolean
+  ketuaPesertaId?: boolean
+  kategori?: boolean
+  lokus?: boolean
+  kelas?: boolean
   jenis?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1429,6 +1645,10 @@ export type KelompokPesertaSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   coachNama?: boolean
   coachPegawaiId?: boolean
   tautan?: boolean
+  ketuaPesertaId?: boolean
+  kategori?: boolean
+  lokus?: boolean
+  kelas?: boolean
   jenis?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1443,6 +1663,10 @@ export type KelompokPesertaSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   coachNama?: boolean
   coachPegawaiId?: boolean
   tautan?: boolean
+  ketuaPesertaId?: boolean
+  kategori?: boolean
+  lokus?: boolean
+  kelas?: boolean
   jenis?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1457,12 +1681,16 @@ export type KelompokPesertaSelectScalar = {
   coachNama?: boolean
   coachPegawaiId?: boolean
   tautan?: boolean
+  ketuaPesertaId?: boolean
+  kategori?: boolean
+  lokus?: boolean
+  kelas?: boolean
   jenis?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type KelompokPesertaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "nomor" | "nama" | "coachNama" | "coachPegawaiId" | "tautan" | "jenis" | "createdAt" | "updatedAt", ExtArgs["result"]["kelompokPeserta"]>
+export type KelompokPesertaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainingId" | "nomor" | "nama" | "coachNama" | "coachPegawaiId" | "tautan" | "ketuaPesertaId" | "kategori" | "lokus" | "kelas" | "jenis" | "createdAt" | "updatedAt", ExtArgs["result"]["kelompokPeserta"]>
 export type KelompokPesertaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   training?: boolean | Prisma.TrainingDefaultArgs<ExtArgs>
   peserta?: boolean | Prisma.KelompokPeserta$pesertaArgs<ExtArgs>
@@ -1499,6 +1727,10 @@ export type $KelompokPesertaPayload<ExtArgs extends runtime.Types.Extensions.Int
     coachNama: string | null
     coachPegawaiId: string | null
     tautan: string | null
+    ketuaPesertaId: string | null
+    kategori: string | null
+    lokus: string | null
+    kelas: string | null
     jenis: string
     createdAt: Date
     updatedAt: Date
@@ -1939,6 +2171,10 @@ export interface KelompokPesertaFieldRefs {
   readonly coachNama: Prisma.FieldRef<"KelompokPeserta", 'String'>
   readonly coachPegawaiId: Prisma.FieldRef<"KelompokPeserta", 'String'>
   readonly tautan: Prisma.FieldRef<"KelompokPeserta", 'String'>
+  readonly ketuaPesertaId: Prisma.FieldRef<"KelompokPeserta", 'String'>
+  readonly kategori: Prisma.FieldRef<"KelompokPeserta", 'String'>
+  readonly lokus: Prisma.FieldRef<"KelompokPeserta", 'String'>
+  readonly kelas: Prisma.FieldRef<"KelompokPeserta", 'String'>
   readonly jenis: Prisma.FieldRef<"KelompokPeserta", 'String'>
   readonly createdAt: Prisma.FieldRef<"KelompokPeserta", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"KelompokPeserta", 'DateTime'>

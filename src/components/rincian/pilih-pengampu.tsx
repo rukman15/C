@@ -31,7 +31,19 @@ const peringkat = (j: string) => {
  * dengan beban JP bulan mulai diklat, pratinjau bentrok (peringatan), mata pelatihan, JP, catatan.
  * Aturan yang mencegah (cuti, bentrok surat tugas, kembar) dijaga server.
  */
-export function PilihPengampu({ d, kodeMp, buka, onTutup, onTersimpan }: { d: RincianDiklat; kodeMp: string; buka: boolean; onTutup: () => void; onTersimpan: (pesan: string) => void }) {
+export function PilihPengampu({
+  d,
+  kodeMp,
+  buka,
+  onTutup,
+  onTersimpan,
+}: {
+  d: RincianDiklat;
+  kodeMp: string;
+  buka: boolean;
+  onTutup: () => void;
+  onTersimpan: (pesan: string) => void;
+}) {
   return (
     <Dialog open={buka} onOpenChange={(o) => !o && onTutup()}>
       <DialogContent
@@ -167,7 +179,10 @@ function Isi({ d, kodeMp, onTersimpan, onBatal }: { d: RincianDiklat; kodeMp: st
                           </span>
                           {w.jpMaksimal !== null ? (
                             <span className="h-1 w-full overflow-hidden rounded-full bg-muted">
-                              <span className={cn("block h-full rounded-full", persen >= 100 ? "bg-destructive" : persen >= 80 ? "bg-warning" : "bg-primary")} style={{ width: `${persen}%` }} />
+                              <span
+                                className={cn("block h-full rounded-full", persen >= 100 ? "bg-destructive" : persen >= 80 ? "bg-warning" : "bg-primary")}
+                                style={{ width: `${persen}%` }}
+                              />
                             </span>
                           ) : null}
                         </span>
@@ -185,13 +200,13 @@ function Isi({ d, kodeMp, onTersimpan, onBatal }: { d: RincianDiklat; kodeMp: st
         {bentrok.length > 0 ? (
           <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
             <Alert tone="warning" title="Jadwal beririsan dengan diklat lain">
-              <ul className="mt-1 list-disc pl-4">
+              <span className="block mt-1">
                 {bentrok.map((b) => (
-                  <li key={b.trainingId}>
+                  <span key={b.trainingId} className="block before:mr-1.5 before:content-['•']">
                     {b.trainingName} ({b.periode}) · <span className="font-mono">{b.hariBentrok}</span> hari beririsan{b.status === "menunggu" ? " · pengajuan lama" : ""}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </span>
             </Alert>
           </motion.div>
         ) : null}
