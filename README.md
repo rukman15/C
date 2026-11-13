@@ -10,6 +10,7 @@ Bangun ulang e-Balai dengan Next.js + React. Aplikasi lama (SvelteKit) ada di re
 - **Menu per peran** dari `src/lib/navigasi.ts` (salinan apa adanya), termasuk Koordinator WI, tim kerja diklat, dan Admin Penyelenggara.
 - **Beranda**: sapaan, data akun dan keanggotaan, pintasan.
 - **Akun & Kata Sandi**: ganti kata sandi (sesi lain gugur), keluar, keluar dari semua perangkat.
+- **Jadwal Diklat** (tahap 2): daftar per status (berlangsung, akan datang, baru selesai) dengan kemajuan hari, saring status dan kategori, pencarian, kalender bulanan (batang diklat per minggu, pilih hari), panel rincian, jadwal mengajar milik sendiri (sesi dan JP tercatat), dan tambah jadwal (program PKA/PKP dengan saran nama dan JP dari kurikulum, tim pemegang). Aturan data dan hak akses sama dengan aplikasi lama; ubah dan hapus jadwal tetap di Rincian Diklat.
 - Halaman menu lain menampilkan "Belum dibangun ulang".
 - Tema terang/gelap, tampilan HP (menu laci).
 
@@ -31,7 +32,7 @@ npm run dev             # http://localhost:3001
 |---|---|
 | `npm run dev` | Server pengembangan di port 3001 |
 | `npm run check` | Pemeriksaan TypeScript |
-| `npm run uji` | Uji sesi, kata sandi, pembatas, dan menu |
+| `npm run uji` | Uji sesi, kata sandi, pembatas, menu, dan jadwal |
 | `npm run build` | Build produksi |
 | `npm run db:generate` | `prisma generate` ke `src/generated/prisma` (ikut di-commit) |
 
@@ -39,7 +40,7 @@ Skema ada di `prisma/schema.prisma`, salinan dari `prisma/schema.prisma` di repo
 
 ## Struktur
 
-- `src/app/` — halaman dan API (`api/auth/session`, `api/akun/kata-sandi`).
+- `src/app/` — halaman dan API (`api/auth/session`, `api/akun/kata-sandi`, `api/training`).
 - `src/lib/` — logika murni, sebagian besar disalin dari `src/lib` repo bangkom (roles, navigasi, plt, tanggal, tim-kerja).
 - `src/lib/server/` — sesi, auth, akses database.
 - `src/components/ui/` — Input dan Button dari [beUI](https://beui.dev) (MIT, lihat `LICENSE-beui`).

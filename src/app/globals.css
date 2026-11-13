@@ -90,3 +90,11 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Baris geser ke samping tanpa bilah gulir (cip, segmen di HP). */
+@utility tanpa-bilah {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

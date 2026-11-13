@@ -11,9 +11,16 @@ function alamat(segmen: string[]) {
   return "/dashboard/" + segmen.map(encodeURIComponent).join("/");
 }
 
+/** Judul halaman yang tidak punya butir menu sendiri (dibuka dari halaman lain). */
+function judul(path: string): string | null {
+  if (/^\/dashboard\/diklat\/[^/]+\/penilaian$/.test(path)) return "Penilaian Peserta";
+  if (/^\/dashboard\/diklat\/[^/]+/.test(path)) return "Rincian Diklat";
+  return judulDariAlamat(path);
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { halaman } = await params;
-  return { title: judulDariAlamat(alamat(halaman)) ?? "Belum tersedia" };
+  return { title: judul(alamat(halaman)) ?? "Belum tersedia" };
 }
 
 /** Halaman menu yang belum dibangun ulang di v2. */
@@ -21,10 +28,10 @@ export default async function BelumDibangun({ params }: Props) {
   await wajibPengguna();
   const { halaman } = await params;
   const path = alamat(halaman);
-  const judul = judulDariAlamat(path) ?? "Halaman tidak ditemukan";
+  const teksJudul = judul(path) ?? "Halaman tidak ditemukan";
 
   return (
-    <HalamanDasbor judul={judul} lebar="sempit">
+    <HalamanDasbor judul={teksJudul} lebar="sempit">
       <Kartu className="flex flex-col items-start gap-4">
         <span className="flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
           <Hammer className="size-5" aria-hidden />
