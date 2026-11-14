@@ -87,14 +87,6 @@ export default async function Beranda() {
           )}
         </Kartu>
       </div>
-
-      <Kartu className="mt-4">
-        <h2 className="text-sm text-muted-foreground">Versi baru sedang dibangun</h2>
-        <p className="mt-2 max-w-2xl text-sm text-pretty">
-          Tahap pertama berisi halaman masuk, menu sesuai peran, Beranda, dan Akun &amp; Kata Sandi. Halaman kerja lain (jadwal diklat, LMS,
-          persuratan, kepegawaian) masih memakai aplikasi lama sampai dibangun ulang satu per satu.
-        </p>
-      </Kartu>
     </HalamanDasbor>
   );
 }
