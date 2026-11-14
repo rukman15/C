@@ -26,6 +26,7 @@ Bangun ulang e-Balai dengan Next.js + React. Aplikasi lama (SvelteKit) ada di re
 - **Tab Penilaian** (sama dengan aplikasi lama): lembar nilai 0–100 per evaluasi (tempel blok dari Excel, rata-rata isian WI sebagai petunjuk), Rekap & Kelulusan (nilai × bobot, nilai akhir, kualifikasi, lulus/ditunda/tidak lulus, remedial maks 85, peringkat 3 terbaik), unduh CSV, cetak Formulir 14. WI yang ditugaskan mengisi aspek bagiannya; Kepala Balai melihat saja. Panel Formulir 15 (pelaksanaan remedial, cetak) dan surat keterangan ditunda/tidak lulus (Word & PDF, TTE Kepala Balai).
 - **Tab Tugas & Tinjau Tugas** (EB-038, sama dengan aplikasi lama): pengelola/pengampu membuat tugas, rekap kiriman per tugas; Tinjau Tugas berisi daftar kiriman yang menunggu dan rincian (terima, minta revisi, catatan, persetujuan mentor, catat atas nama peninjau, riwayat).
 - **Tab Pre/Post Test** (susun paket, atur waktu, terbitkan/tutup, reset, hasil + N-gain, analisis butir, CSV, lembar baca pembukaan/penutupan) dan **tab Evaluasi** (rekap Formulir 22 & 23B, tambah sasaran, tutup/buka, CSV), sama dengan aplikasi lama.
+- **Tab Persiapan** (Formulir 2 + cetak), **tab Dokumen** (wajibkan, periksa terima/tolak, jalur, unggahkan atas nama peserta, buka berkas tercatat audit), **tab Penugasan** (EB-035: tambah dengan larangan rangkap, setujui/tolak usulan mentor, cabut), sama dengan aplikasi lama. Dengan ini semua tab halaman diklat sudah ada di v2.
 - Halaman menu lain menampilkan "Belum dibangun ulang".
 - Tema terang/gelap, tampilan HP (menu laci).
 
