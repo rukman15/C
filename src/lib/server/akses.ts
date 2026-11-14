@@ -127,3 +127,37 @@ export async function wajibKelolaFormulir(trainingId: string): Promise<AksesDikl
   await wajibKelolaTraining(a, trainingId);
   return a;
 }
+
+// ------------------------------------------------------------------ dari akses-diklat.ts aplikasi lama
+
+export type AksesKoordinator = { role: UserRole; email: string; name: string; pegawaiId: string | null; koordinatorWi: boolean };
+
+export async function aksesKoordinator(): Promise<AksesKoordinator> {
+  const s = await requireRole([]);
+  return { role: s.role, email: s.email, name: s.name, pegawaiId: s.pegawaiId ?? null, koordinatorWi: await koordinatorWiPegawai(s.pegawaiId) };
+}
+
+/** Lolos bila admin, perannya ada di `peran`, atau Koordinator WI. */
+export async function wajibKoordinatorAtau(peran: UserRole[]): Promise<AksesKoordinator> {
+  const k = await aksesKoordinator();
+  if (k.role !== "admin" && !peran.includes(k.role) && !k.koordinatorWi) throw new ForbiddenError();
+  return k;
+}
+
+export function wajibPembacaDiklat(a: AksesDiklat, peran: UserRole[]) {
+  if (!pembacaSemua(a, peran) && a.tim.length === 0) throw new ForbiddenError();
+}
+
+/** Wajib boleh mengelola diklat dari satu penugasan WI. */
+export async function wajibKelolaPenugasan(a: AksesDiklat, penugasanId: string): Promise<void> {
+  const p = await prisma.penugasanApproval.findUnique({ where: { id: penugasanId }, select: { trainingId: true } });
+  if (!p) throw new NotFoundError(`Penugasan "${penugasanId}" tidak ditemukan`);
+  await wajibKelolaTraining(a, p.trainingId);
+}
+
+/** Pembaca beban JP semua Widyaiswara: peran pemakai halaman + anggota tim berwenang "tugaskan-wi". */
+export const PERAN_PEMBACA_WI: UserRole[] = ["ketua-diklat", "kepala-balai", "kabag-tu", "kepegawaian", "widyaiswara"];
+
+export function wajibPembacaWi(a: AksesDiklat) {
+  if (!a.global && !PERAN_PEMBACA_WI.includes(a.role) && a.tim.length === 0) throw new ForbiddenError();
+}

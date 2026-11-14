@@ -70,8 +70,42 @@ export async function catatAudit(pelaku: Pelaku, aksi: string, sasaran?: string 
   }
 }
 
-/** Pelaku dari sesi yang sedang login (pengganti pelakuDari(cookies) aplikasi lama). */
+/** Pelaku dari sesi yang sedang login (pengganti pelakuDari() aplikasi lama). */
 export async function pelakuSesi(): Promise<Pelaku> {
   const s = await getActiveSession();
   return { email: s?.email ?? "(tidak dikenal)", name: s?.name ?? "(tidak dikenal)", sebagai: s?.plt?.sebagai ?? null };
+}
+
+
+export type LogAuditRecord = {
+  id: string;
+  waktu: string;
+  pelaku: string;
+  pelakuNama: string;
+  sebagai: string | null;
+  aksi: string;
+  sasaran: string | null;
+  rincian: string | null;
+};
+
+export async function listAudit(opsi: { take?: number; cari?: string } = {}): Promise<LogAuditRecord[]> {
+  const cari = opsi.cari?.trim();
+  const rows: {
+    id: string; waktu: Date; pelaku: string; pelakuNama: string; sebagai: string | null;
+    aksi: string; sasaran: string | null; rincian: string | null;
+  }[] = await prisma.logAudit.findMany({
+    where: cari
+      ? {
+          OR: [
+            { pelakuNama: { contains: cari, mode: "insensitive" } },
+            { pelaku: { contains: cari, mode: "insensitive" } },
+            { aksi: { contains: cari, mode: "insensitive" } },
+            { sasaran: { contains: cari, mode: "insensitive" } },
+          ],
+        }
+      : undefined,
+    orderBy: { waktu: "desc" },
+    take: Math.min(Math.max(opsi.take ?? 200, 1), 1000),
+  });
+  return rows.map((r) => ({ ...r, waktu: r.waktu.toISOString() }));
 }

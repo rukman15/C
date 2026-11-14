@@ -216,3 +216,101 @@ export async function getTrainingByIdOrThrow(id: string): Promise<TrainingRow> {
   if (!row) throw new NotFoundError(`Training "${id}" tidak ditemukan`);
   return row;
 }
+
+
+export async function listTraining(): Promise<TrainingRecord[]> {
+  await sinkronStatusTraining();
+  const rows: TrainingRow[] = await prisma.training.findMany({ orderBy: { startDate: "asc" }, include: SERTA_TIM });
+  return rows.map(toTrainingRecord);
+}
+
+/**
+ * `wiDisetujui`/`jpDisetujui` = banyaknya WI (orang) yang punya penugasan
+ * disetujui dan jumlah JP-nya; `wiMenunggu` = pengajuan yang belum diputuskan.
+ */
+export type TrainingWithUrgensi = TrainingRecord & {
+  urgensi: UrgensiPenugasan;
+  wiDisetujui: number;
+  jpDisetujui: number;
+  wiMenunggu: number;
+};
+
+/**
+ * Sama seperti `listTraining()`, ditambah `urgensi` dan rekap penugasan per
+ * baris (dihitung server-side, sekali, supaya halaman tidak perlu menggabungkan
+ * dua endpoint sendiri).
+ */
+export async function listTrainingWithUrgensi(): Promise<TrainingWithUrgensi[]> {
+  await sinkronStatusTraining();
+  const rows: (TrainingRow & { approvals: { status: string; jp: number; instructorId: string }[] })[] =
+    await prisma.training.findMany({
+      orderBy: { startDate: "asc" },
+      include: {
+        ...SERTA_TIM,
+        approvals: {
+          where: { status: { in: ["disetujui", "menunggu"] } },
+          select: { status: true, jp: true, instructorId: true },
+        },
+      },
+    });
+  return rows.map((row) => {
+    const disetujui = row.approvals.filter((a) => a.status === "disetujui");
+    return {
+      ...toTrainingRecord(row),
+      urgensi: hitungUrgensi(row.startDate, disetujui.length > 0),
+      // Banyaknya ORANG, bukan baris: satu WI bisa punya beberapa penugasan (per mata pelatihan).
+      wiDisetujui: new Set(disetujui.map((a) => a.instructorId)).size,
+      jpDisetujui: disetujui.reduce((sum, a) => sum + a.jp, 0),
+      wiMenunggu: row.approvals.length - disetujui.length,
+    };
+  });
+}
+
+export type TrainingInput = {
+  name: string;
+  category: string;
+  participants?: number;
+  startDate: string;
+  endDate?: string | null;
+  jpDibutuhkan?: number;
+  tempat?: string;
+  /** Kode program berkurikulum ("PKA"/"PKP"); null/kosong = diklat tanpa kurikulum. */
+  jenisPelatihan?: string | null;
+  modePelatihan?: string | null;
+  angkatan?: string | null;
+  /** Tim kerja pemegang (tahap B). `undefined` saat mengubah = tidak diubah; null = tanpa tim. */
+  timKerjaId?: string | null;
+};
+
+/**
+ * Batas pengajuan WI = H-3 sebelum training mulai (aturan dari diskusi —
+ * lihat CATATAN-PENUGASAN-WI.md sumber). Dipakai server (buat urgensi di
+ * API) MAUPUN client (styling badge) — makanya fungsi murni, bukan
+ * bergantung Prisma.
+ */
+export function hitungBatasPenugasan(startDate: Date): Date {
+  const batas = new Date(startDate);
+  batas.setDate(batas.getDate() - 3);
+  return batas;
+}
+
+export type UrgensiPenugasan = "aman" | "mendesak" | "lewat-batas" | "sudah-mulai";
+
+/**
+ * `sudahDisetujui` = apakah training ini SUDAH punya minimal satu
+ * PenugasanApproval berstatus "disetujui". Kalau sudah, urgensi selalu
+ * "aman" — H-3 cuma relevan buat training yang WI-nya belum fix.
+ */
+export function hitungUrgensi(
+  startDate: Date,
+  sudahDisetujui: boolean,
+  now: Date = new Date(),
+): UrgensiPenugasan {
+  if (sudahDisetujui) return "aman";
+  if (now >= startDate) return "sudah-mulai";
+  const batas = hitungBatasPenugasan(startDate);
+  if (now >= batas) return "lewat-batas";
+  const ambangMendesak = new Date(batas.getTime() - 4 * 24 * 60 * 60 * 1000);
+  if (now >= ambangMendesak) return "mendesak";
+  return "aman";
+}

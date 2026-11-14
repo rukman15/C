@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/server/prisma";
 import { ConflictError, ForbiddenError, NotFoundError, ValidationError, kodePrisma } from "@/lib/server/errors";
-import { sinkronStatusTraining } from "@/lib/server/repositories/training";
+import { getTrainingByIdOrThrow, sinkronStatusTraining } from "@/lib/server/repositories/training";
 import {
   isBentukSesi,
   isStatusKehadiran,
@@ -452,4 +452,16 @@ export async function simpanKehadiran(sesiId: string, items: KehadiranInput[], d
     throw e;
   }
   return getLembarKehadiran(sesiId);
+}
+
+
+/** Masalah presensi harian satu jadwal sampai tanggal `sampai` — untuk kartu "Perlu perhatian". */
+export async function masalahPresensi(trainingId: string, sampai: string): Promise<{ belumLengkap: string[]; tanpaSesi: string[] }> {
+  const training = await getTrainingByIdOrThrow(trainingId);
+  const [rows, hitung, masa] = await Promise.all([
+    prisma.sesiPembelajaran.findMany({ where: { trainingId } }) as Promise<SesiRow[]>,
+    hitungPerSesi(trainingId),
+    masaJadwal(trainingId),
+  ]);
+  return periksaPresensi(training, rows, hitung, masa, sampai);
 }
