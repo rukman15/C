@@ -120,3 +120,10 @@ export async function wajibBacaFormulir(trainingId: string): Promise<AksesDiklat
   if (!pembacaSemua(a, ["ketua-diklat", "kepala-balai", "kabag-tu"])) await wajibKelolaTraining(a, trainingId);
   return a;
 }
+
+/** Mengelola formulir penyelenggaraan satu jadwal (akses-formulir.ts aplikasi lama): penyelenggara pemegang diklat. */
+export async function wajibKelolaFormulir(trainingId: string): Promise<AksesDiklat> {
+  const a = await aksesDiklat();
+  await wajibKelolaTraining(a, trainingId);
+  return a;
+}

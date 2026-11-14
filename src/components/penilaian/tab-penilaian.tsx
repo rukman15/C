@@ -25,6 +25,7 @@ import {
 import { kirimJson } from "@/lib/api-klien";
 import { cn } from "@/lib/utils";
 import type { LembarPenilaianRecord, PesertaPenilaianRecord } from "@/lib/server/types";
+import { PanelRemedial, PanelSuratKeterangan } from "./panel-tindak-lanjut";
 
 const NADA_KUAL: Record<Kualifikasi, BadgeTone> = { SANGAT_MEMUASKAN: "success", MEMUASKAN: "success", BAIK: "info", KURANG_BAIK: "warning", TIDAK_MEMENUHI: "danger" };
 const NADA_LULUS: Record<StatusKelulusan, BadgeTone> = { LULUS: "success", DITUNDA: "warning", TIDAK_LULUS: "danger", BELUM_LENGKAP: "neutral" };
@@ -50,6 +51,8 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
   const [sibuk, setSibuk] = useState(false);
   const [galat, setGalat] = useState("");
   const [toast, setToast] = useState<string | null>(null);
+  // Naik setiap nilai tersimpan: panel remedial & surat keterangan memuat ulang.
+  const [versi, setVersi] = useState(0);
   const peserta = data.peserta;
   const aktif = peserta.filter((p) => p.status === "AKTIF");
   const aspekTab = tab === "REKAP" ? [] : data.aspek.filter((a) => a.jenisEvaluasi === tab);
@@ -138,6 +141,7 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
     setData(res.data);
     setDraft({});
     setToast(`${kirim.length} nilai tersimpan.`);
+    setVersi((v) => v + 1);
   }
 
   function progres(j: JenisEvaluasi) {
@@ -460,6 +464,8 @@ export function TabPenilaian({ awal }: { awal: LembarPenilaianRecord }) {
             perilaku), nilai akhir setelah remedial paling tinggi {NILAI_REMEDIAL_MAKS},00; ada yang &quot;tidak memenuhi&quot; (≤ 60) = tidak lulus. Peringkat {JUMLAH_TERBAIK}{" "}
             terbaik hanya di antara peserta aktif yang lulus. Penetapan tetap oleh Tim Evaluasi Akhir.
           </p>
+          <PanelRemedial trainingId={data.training.id} versi={versi} bolehUbah={penyelenggara} />
+          <PanelSuratKeterangan trainingId={data.training.id} versi={versi} />
         </section>
       )}
 
