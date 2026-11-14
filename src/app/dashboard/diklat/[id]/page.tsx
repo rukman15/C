@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { muatHalamanDiklat } from "@/lib/server/diklat-halaman";
 import { EmptyState } from "@/components/arc/empty-state/empty-state";
 import { IsiRincian } from "@/components/rincian/isi-rincian";
+import { SuratTugasDiklat } from "@/components/persuratan/surat-tugas-diklat";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -11,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: h.boleh ? h.rincian.name : "Rincian Diklat" };
 }
 
-/** Bagian Rincian: ringkasan, kurikulum LAN, mata pelatihan & pengampu, dan daftar pengampu. */
+/** Bagian Rincian: ringkasan, kurikulum LAN, mata pelatihan & pengampu, daftar pengampu, dan surat tugas mengajar. */
 export default async function HalamanRincian({ params }: Props) {
   const { id } = await params;
   const h = await muatHalamanDiklat(id);
@@ -19,5 +20,10 @@ export default async function HalamanRincian({ params }: Props) {
   if (!h.lihatPenuh) {
     return <EmptyState title="Bagian ini bukan untuk Anda" description="Sebagai pengampu, buka bagian Tugas, Seminar, atau Penilaian." />;
   }
-  return <IsiRincian rincian={h.rincian} bolehAtur={h.bolehAtur} bolehLihatSesi={h.bolehLihatSesi} bolehCatatSesi={h.bolehCatatSesi} />;
+  return (
+    <>
+      <IsiRincian rincian={h.rincian} bolehAtur={h.bolehAtur} bolehLihatSesi={h.bolehLihatSesi} bolehCatatSesi={h.bolehCatatSesi} />
+      <SuratTugasDiklat trainingId={id} />
+    </>
+  );
 }
